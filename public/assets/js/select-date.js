@@ -1,0 +1,1 @@
+function formatDate(n){var r=new Date(n),t=""+(r.getMonth()+1),i=""+r.getDate(),u=r.getFullYear();return t.length<2&&(t="0"+t),i.length<2&&(i="0"+i),[u,t,i].join("-")}function formatShortDate(n){var i=new Date(n),r=""+i.toLocaleString("en-US",{month:"short"}),t=""+i.getDate();return t.length<2&&(t="0"+t),r+", "+t}

@@ -1,0 +1,762 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Oswald:wght@200..700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+body {
+    overflow-x: hidden;
+    font-family: Poppins,
+        Arial,
+        Helvetica,
+        sans-serif !important;
+}
+
+.fs-20 {
+    font-size: 20px !important;
+}
+
+.fs-18 {
+    font-size: 18px !important;
+}
+
+.fs-17 {
+    font-size: 17px !important;
+}
+
+.fs-16 {
+    font-size: 16px !important;
+}
+
+.fs-15 {
+    font-size: 15px !important;
+}
+
+.fs-14 {
+    font-size: 14px !important;
+}
+
+.fs-13 {
+    font-size: 13px !important;
+}
+
+.fs-12 {
+    font-size: 12px !important;
+}
+
+.form-control:focus {
+    color: var(--bs-body-color);
+    background-color: var(--bs-body-bg);
+    border-color: transparent !important;
+    outline: 0;
+    box-shadow: none !important;
+}
+
+.fs-26 {
+    font-size: 26px !important;
+}
+
+#header .header1 {
+    position: relative;
+    z-index: 100;
+    height: 6.875rem;
+    background: linear-gradient(to right, #1db4eb 0%, #9cbf17 80%) !important;
+    color: #fff;
+}
+
+.cta {
+    background-color: #1db4eb;
+    color: white !important;
+}
+
+.nav-item .active {
+    background: linear-gradient(to right, #1db4eb 0%, #9cbf17 80%);
+}
+
+.nav-item .active:hover {
+    color: white !important;
+}
+
+.btn-quantity-control {
+    display: flex;
+    width: 2.625rem;
+    height: 2.625rem;
+    border-radius: 1.3125rem;
+    background-color: rgb(156, 191, 23);
+    color: #fff !important;
+    align-items: center;
+    justify-content: center;
+    border: solid 1px transparent;
+    padding: 0;
+    font-size: 1.3rem;
+    cursor: pointer;
+}
+
+.btn-quantity-control.minus {
+    background: rgba(156, 191, 23, .4);
+}
+
+.header-steps .steps ul li .step.active {
+    font-weight: bold;
+    color: rgb(156, 191, 23) !important;
+    border-bottom-color: rgb(156, 191, 23) !important;
+}
+
+.calendar {
+    width: 100%;
+    height: 350px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 4px;
+}
+
+.ui-datepicker-header {
+    height: 40px;
+    line-height: 32px;
+    color: black;
+    background: white;
+    font-weight: bold;
+    margin-bottom: 10px;
+    font-size: 20px;
+    padding: 0px 20px;
+}
+
+.ui-icon .bi-arrow-right-circle,
+.ui-icon .bi-arrow-left-circle {
+    color: #9cbf17;
+    font-size: 35px;
+}
+
+.ui-state-disabled .ui-icon .bi-arrow-right-circle,
+.ui-state-disabled .ui-icon .bi-arrow-left-circle {
+    color: #B6BDCB !important;
+}
+
+/* .ui-datepicker-prev,
+.ui-datepicker-next {
+    width: 40px;
+    height: 40px;
+    text-indent: 9999px;
+    border: 2px solid #b0aead;
+    border-radius: 100%;
+    cursor: pointer;
+    overflow: hidden;
+    margin-top: 12px;
+    padding-left: 12px;
+} */
+
+.ui-datepicker-prev {
+    float: left;
+    margin-left: 12px;
+}
+
+&:after {
+    transform: rotate(45deg);
+    margin: -43px 0px 0px 8px;
+}
+
+.ui-datepicker-next {
+    float: right;
+    margin-right: 12px;
+}
+
+&:after {
+    transform: rotate(-135deg);
+    margin: -43px 0px 0px 6px;
+}
+
+.ui-datepicker-next:after {
+    transform: rotate(215deg);
+}
+
+.ui-datepicker-prev:after {
+    transform: rotate(45deg);
+}
+
+/* .ui-datepicker-prev:after,
+.ui-datepicker-next:after {
+    content: '';
+    position: absolute;
+    display: block;
+    width: 10px;
+    height: 10px;
+    border-left: 2px solid #b0aead;
+    border-bottom: 2px solid #b0aead;
+    top: 72px;
+    
+} */
+
+.ui-datepicker-prev:hover,
+.ui-datepicker-next:hover,
+.ui-datepicker-prev:hover:after,
+.ui-datepicker-next:hover:after {
+    border-color: #5ed1cc;
+}
+
+.ui-datepicker-title {
+    text-align: center;
+}
+
+.ui-datepicker-calendar {
+    width: 100%;
+    text-align: center;
+    height: 88%;
+}
+
+thead tr th span {
+    width: 40px;
+    color: #00a8b2;
+    margin-bottom: 5px;
+    font-size: 20;
+    font-weight: 600;
+}
+
+.ui-state-default {
+    display: block;
+    text-decoration: none;
+    color: #000000b8;
+    line-height: 40px;
+    font-size: 17px;
+}
+
+.ui-datepicker-calendar td[data-handler="selectDay"] {
+    font-weight: bold !important;
+    color: black !important;
+}
+
+&:hover {
+    background: rgba(0, 0, 0, 0.02)
+}
+
+.ui-state-highlight {
+    color: black;
+}
+
+.ui-state-active:hover {
+    background-image: linear-gradient(to right, #1db4eb 0%, #9cbf17 80%) !important;
+    color: white !important;
+    border-radius: 5px;
+}
+
+.ui-state-default:hover,
+.ui-state-active:hover,
+.ui-selected-date {
+    background-image: linear-gradient(to right, #1db4eb 0%, #9cbf17 80%) !important;
+    color: white !important;
+    border-radius: 5px;
+}
+
+.ui-state-active{
+    background-image: none;
+}
+
+
+.ui-datepicker-unselectable .ui-state-default {
+    color: #eee;
+    border: 2px solid transparent;
+}
+
+.ui-datepicker-today a {
+    background-color: #d3d3d317;
+    border-radius: 5px;
+}
+
+.booking-calendar .calendar-legend .color .dot.selected {
+    background-color: #00a8b2 !important;
+}
+
+.gift_card {
+    background-color: #9cbf17 !important;
+}
+
+/* @media screen and (max-width: 1024px) {
+    
+    .ui-datepicker-prev:after,
+        .ui-datepicker-next:after {
+            content: '';
+            position: absolute;
+            display: block;
+            width: 10px;
+            height: 10px;
+            border-left: 2px solid #b0aead;
+            border-bottom: 2px solid #b0aead;
+            top: 62px !important;
+        }
+}*/
+@media screen and (max-width: 425px) {
+
+    .ui-datepicker-header {
+        padding: 0px 5px;
+    }
+}
+
+.nav-item .nav-link {
+    color: black;
+    font-weight: 500;
+    font-size: 16px;
+
+}
+
+.nav-item .nav-link:hover {
+    color: black;
+}
+
+/* .form-checkbox{
+    width: 30px;
+    height: 20px;
+    accent-color: red;
+} */
+/* Hide the default checkbox */
+.custom-checkbox input {
+    display: none;
+}
+
+/* Create a custom checkbox style */
+.custom-checkbox .checkmark {
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    border-radius: 4px;
+    border: 1px solid #9CBF17;
+    position: relative;
+    font-size: 20px;
+    color: white;
+}
+
+/* The white tick mark */
+.custom-checkbox input:checked+.checkmark {
+    background-color: #9CBF17;
+}
+
+.booking-types {
+    color: #797979;
+}
+
+.booking-game-types .nav-link {
+    border: 1px solid #b0aead;
+    margin-bottom: 15px;
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+    text-align: center;
+    font-size: 15px;
+}
+
+.booking-game-types .nav-link:hover {
+    color: white !important;
+    background: linear-gradient(to right, #1db4eb 0%, #9cbf17 80%);
+}
+
+.main-continue {
+    background: linear-gradient(to right, #1db4eb 0%, #9cbf17 80%) !important;
+}
+
+/* .pizza_bowl{
+    border: 2px solid !important;
+    border-image: linear-gradient(to right, #1EB4E8 0%, #9CBF17 100%) 1 !important;
+    border-radius: 20px !important;
+
+} */
+.pizza_bowl,
+.Pakages {
+    position: relative;
+    border-radius: 10px;
+    background-color: white;
+    z-index: 1;
+}
+
+.pizza_bowl::before,
+.Pakages::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    background: linear-gradient(to right, #1EB4E8, #9CBF17);
+    border-radius: 10px;
+    padding: 1px;
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+}
+
+.heading-title {
+    background: linear-gradient(to right, #9cbf17 0%, #1db4eb 80%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 18px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 12px;
+    width: 12px;
+    left: 4px;
+    bottom: 3px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked+.slider {
+    background: linear-gradient(to left, #9cbf17 0%, #1db4eb 80%);
+}
+
+input:focus+.slider {
+    box-shadow: 0 0 1px #9cbf17;
+}
+
+input:checked+.slider:before {
+    -webkit-transform: translateX(20px);
+    -ms-transform: translateX(20px);
+    transform: translateX(20px);
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+.main-title {
+    color: #797979;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.quantity-buttons {
+    width: 20px;
+    height: 28px;
+    border: 1px;
+    border-radius: 18px;
+    color: black;
+    font-size: 16px;
+    color: white;
+    padding: 1px 2px 1px 2px;
+}
+
+.qt-plus,
+.qt-minus {
+    border-radius: 15px;
+    padding: 3px;
+    color: white;
+    border: white;
+}
+
+.qt-minus i,
+.qt-plus i {
+    font-size: 20px !important;
+    padding-right: 0px !important;
+}
+
+.qt-minus {
+    background-color: #2A3D6857 !important;
+}
+
+.qt-plus {
+    background-color: #9CBF17 !important;
+}
+
+.booking-tabs button {
+    font-weight: normal !important;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.booking-tabs i {
+    font-size: 20px;
+    padding-right: 3px;
+}
+
+.iti--allow-dropdown {
+    width: 100%;
+
+}
+
+.iti--allow-dropdown .form-control {
+    padding-top: 18px;
+    padding-bottom: 18px;
+
+}
+
+.iti--inline-dropdown .iti__dropdown-content {
+    z-index: 4 !important;
+}
+
+.timeslots {
+    font-size: 13px !important;
+}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    background-color: #f8f9fa;
+}
+
+.step,
+.step-label-name {
+    display: none;
+}
+
+.active {
+    display: block;
+}
+
+input {
+    padding: 15px 20px;
+    width: 100%;
+    font-size: 1em;
+    border: 1px solid #d1d0d4;
+    border-radius: 5px;
+}
+
+input:focus {
+    border: 1px solid #9CBF17;
+    outline: 0;
+}
+
+.invalid {
+    border: 1px solid #ffaba5;
+}
+
+#prevBtn {
+    color: white;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+    background: linear-gradient(to right, #1db4eb 0%, #9cbf17 80%) !important;
+}
+
+.progress {
+    margin-bottom: 20px;
+}
+
+.stepper {
+    display: flex;
+    justify-content: space-between;
+    padding: 14px;
+
+}
+
+.stepper-item {
+    flex: 1;
+    position: relative;
+    text-align: center;
+}
+
+.stepper-item:first-child:before {
+    width: 50%;
+    left: 50%;
+}
+
+.stepper-item.active .stepper-label {
+    color: #9cbf17;
+    font-weight: bold;
+    border-bottom: 3px solid #9cbf17;
+    padding: 0px 15px;
+}
+
+.stepper-label {
+    display: inline-block;
+    /* padding: 10px;
+        background: white;
+        border-radius: 50%;
+        border: 2px solid #ccc;
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+        margin-bottom: 10px;
+    */
+}
+
+.stepper-item.active .stepper-label {
+    border-color: #9cbf17;
+    background-color: #fff;
+    color: #9cbf17;
+}
+
+.ui-datepicker .ui-datepicker-unselectable .ui-state-default {
+    color: #403C3C !important;
+    border: 2px solid transparent;
+    background: none;
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+.primary-bg-1 {
+    background: linear-gradient(to left, #9cbf17 0%, #1db4eb 80%);
+}
+
+.text-color-1 {
+    color: #1db4eb !important;
+}
+
+.text-color-2 {
+    color: #9cbf17 !important;
+}
+
+.banner-height {
+    height: 100%;
+}
+
+.banner-img {
+    width: 100% !important;
+    height: 200px;
+    object-fit: cover;
+}
+
+@media (min-width:992px) {
+    .banner-height {
+        height: 150px !important;
+    }
+
+    .banner-img {
+        height: 200px !important;
+        width: 100% !important;
+    }
+}
+
+.accordion-button.collapsed::after {
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDI0IiBoZWlnaHQ9IjEwMjQiIHZpZXdCb3g9IjAgMCAxMDI0IDEwMjQiPjxwYXRoIGZpbGw9ImN1cnJlbnRDb2xvciIgZD0iTTQ4MCA0ODBWMTI4YTMyIDMyIDAgMCAxIDY0IDB2MzUyaDM1MmEzMiAzMiAwIDEgMSAwIDY0SDU0NHYzNTJhMzIgMzIgMCAxIDEtNjQgMFY1NDRIMTI4YTMyIDMyIDAgMCAxIDAtNjR6Ii8+PC9zdmc+") !important;
+}
+
+.accordion-button:not(.collapsed)::after {
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxZW0iIGhlaWdodD0iMWVtIiB2aWV3Qm94PSIwIDAgMTAyNCAxMDI0Ij48cGF0aCBmaWxsPSIjZmZmIiBkPSJNNDgwIDQ4MFYxMjhhMzIgMzIgMCAwIDEgNjQgMHYzNTJoMzUyYTMyIDMyIDAgMSAxIDAgNjRINTQ0djM1MmEzMiAzMiAwIDEgMS02NCAwVjU0NEgxMjhhMzIgMzIgMCAwIDEgMC02NHoiLz48L3N2Zz4=") !important;
+}
+
+.accordion-button:not(.collapsed) {
+    background: linear-gradient(to left, #1db4eb83 0%, #9bbf1771 90%);
+    color: white !important;
+    border-radius: 5px 5px 0px 0px !important;
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+
+.accordion-button.collapsed {
+    border-radius: 6px 6px 6px 6px !important;
+    letter-spacing: 1px;
+}
+
+.fs-11 {
+    font-size: 11px !important;
+}
+
+.fs-10 {
+    font-size: 10px !important;
+}
+
+.letter-spacing-0 {
+    letter-spacing: 0px !important;
+}
+
+.letter-spacing-1 {
+    letter-spacing: 0.5px !important;
+}
+
+.letter-spacing-2 {
+    letter-spacing: 1px !important;
+}
+
+letter-spacing-3 {
+    letter-spacing: 1.25px !important;
+}
+
+letter-spacing-4 {
+    letter-spacing: 1.5px !important;
+}
+
+.notSelected {
+    opacity: 0.4 !important;
+    background: #00000008 !important;
+}
+
+.line-height-1 {
+    line-height: 1.6rem;
+}
+
+.timeslots.active {
+    background: #1db4eb !important;
+}
+
+.timeslots:hover {
+    color: white !important;
+    background: #1db4eb !important;
+}
+
+.guest-button.active,
+.congo-guests.active {
+    background: #9cbf17 !important;
+}
+
+.guest-button:hover,
+.congo-guests:hover {
+    color: white !important;
+    background: #9cbf17 !important;
+}
+
+.bg-disabled {
+    background-color: #f4f1f1 !important;
+}
+
+.highlighted-red a {
+    color: red;
+}
+
+.highlighted-orange a {
+    color: orange;
+}
+
+.highlighted-green a {
+    color: green;
+}
+
+.form-control-lg {
+    padding-top: 0.75rem !important;
+    padding-bottom: 0.75rem !important;
+}
+
+.ml-1 {
+    margin-left: 0.25rem !important;
+}
+
+.mr-1 {
+    margin-right: 0.25rem !important;
+}
+
+.required_alert:focus {
+    border: 1px solid red !important;
+}
