@@ -1,15 +1,12 @@
 <?php
 
 
-use App\Http\Controllers\AddOnController;
+use App\Http\Controllers\AttendeeController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\BookingController;
-use App\Http\Controllers\ClassSessionController;
-use App\Http\Controllers\CourseController;
 use App\Http\Controllers\dome_carlow\HomeController;
-use App\Http\Controllers\EmployeeController;
-use App\Http\Controllers\StudentController;
+use App\Http\Controllers\EventController;
+use App\Http\Controllers\checkInController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\File;
 
@@ -18,23 +15,18 @@ Auth::routes();
 Route::group(['middleware' => 'auth'], function () {
 
   Route::resource('User', UserController::class);
-  Route::resource('student', StudentController::class);
-  Route::resource('course', CourseController::class);
-  Route::resource('session', ClassSessionController::class);
+  Route::resource('events', EventController::class);
   Route::get('changeStatus/{model}/{id}', [UserController::class, 'changeStatus'])->name('changeStatus');
   Route::get('dashboard', [UserController::class, 'dashboard'])->name('dashboard');
-  Route::get('parents', [UserController::class, 'parents'])->name('parents');
 });
-// Route::get('thankYou', [BookingController::class, 'thankYou'])->name('thankYou');
-
-
-// Route::view('/', 'home');
-Route::view('/about', 'about');
-Route::view('/packages', 'packages');
-Route::view('/contact', 'contact');
+Route::resource('attendee', AttendeeController::class);
+Route::get('/events/register/{event_code}', [EventController::class, 'registrationForm'])->name('events.registration');
+Route::get('thankYou/{id}', [CheckInController::class, 'thankYou'])->name('thankYou');
+Route::get('/check-in/{qr_id}', [CheckInController::class, 'show'])->name('attendee.qr');
+Route::post('/check-in/{qr_id}', [CheckInController::class, 'verifyPassword'])->name('attendee.qr.verify');
 
 // Main Page Route
-Route::get('/', [HomeController::class, 'index'])->name('dome-carlow.index');
+Route::get('/', [HomeController::class, 'index']);
 
 // Function to provide the laravel.log file for download
 Route::get('/logsDownload', function () {

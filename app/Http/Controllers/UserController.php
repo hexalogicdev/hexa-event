@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Attendee;
 use App\Models\ClassSession;
+use App\Models\Event;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
@@ -198,45 +200,14 @@ class UserController extends Controller
   public function dashboard()
   {
     $user = Auth::user();
-    $teachers = User::where('user_type', 'teacher')->where('status', 1)->count();
-    $parents = User::where('user_type', 'parent')->where('status', 1)->count();
-    $today = Carbon::today();
-
     if ($user?->role?->name === "admin") {
-      $classes = ClassSession::whereDate('date', '>=', $today)->get();
-      $students = Student::count();
-      return view('dashboards.admin_dashboard', compact('teachers', 'students', 'parents','classes'));
-    }
-
-    if ($user?->role?->name === "parent") {
-      $classes = ClassSession::where('parent_id', $user->id)->whereDate('date', '>=', $today)->get();
-      $students = Student::where('parent_id', $user->id)->get();
-      return view('dashboards.parent_dashboard', compact('teachers', 'students', 'parents', 'classes'));
-    }
-
-    if ($user?->role?->name === "teacher") {
-      $classes = ClassSession::where('teacher_id', $user->id)->whereDate('date', '>=', $today)->get();
-      $students = Student::where('teacher_id', $user->id)->get();
-      return view('dashboards.teacher_dashboard', compact('teachers', 'students', 'parents', 'classes'));
+      $eventsCount = Event::count();
+      $events = Event::all();
+      $attendees = Attendee::count();
+      $revenue = Attendee::sum('amount');
+      return view('dashboards.admin_dashboard', compact('eventsCount', 'events', 'attendees', 'revenue'));
     }
     abort(403, 'Unauthorized access');
-  }
-
-  public function parents()
-  {
-    $user = Auth::user();
-    if ($user?->role?->name !== 'admin') {
-      return redirect()->back()->with('error', 'No access');
-    }
-    $role = Role::where('name', 'parent')->first();
-
-    if (!$role) {
-      return redirect()->back()->with('error', 'Parent role not found.');
-    }
-
-    $parents = User::where('role_id', $role->id)->get();
-
-    return view('users.parents', compact('parents'));
   }
 
   public function changeStatus($model, $id)

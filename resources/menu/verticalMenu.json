@@ -5,52 +5,14 @@
       "icon": "menu-icon tf-icons ti ti-smart-home",
       "slug": "dashboard",
       "url": "dashboard",
-      "roles": ["admin", "teacher", "parent"],
-      "env": ["local","staging" , "production"]
-    },
-    {
-      "name": "Teachers",
-      "icon": "menu-icon tf-icons ti ti-user",
-      "slug": "User.index",
-      "url": "User.index",
       "roles": ["admin"],
       "env": ["local","staging" , "production"]
     },
     {
-      "name": "Parents",
-      "icon": "menu-icon tf-icons ti ti-star",
-      "slug": "parents",
-      "url": "parents",
-      "roles": ["admin"],
-      "env": ["local","staging" , "production"]
-    },
-    {
-      "name": "Students",
+      "name": "Events",
       "icon": "menu-icon tf-icons ti ti-shopping-cart",
-      "slug": "student.index",
-      "url": "student.index",
-      "roles": ["admin","teacher"],
-      "env": ["local","staging" , "production"]
-    },{
-      "name": "Children",
-      "icon": "menu-icon tf-icons ti ti-shopping-cart",
-      "slug": "student.index",
-      "url": "student.index",
-      "roles": ["parent"],
-      "env": ["local","staging" , "production"]
-    },
-    {
-      "name": "Courses",
-      "icon": "menu-icon tf-icons ti ti-wallet",
-      "slug": "course.index",
-      "url": "course.index",
-      "roles": ["admin"],
-      "env": ["local","staging" , "production"]
-    },{
-      "name": "Class Sessions",
-      "icon": "menu-icon tf-icons ti ti-gift",
-      "slug": "session.index",
-      "url": "session.index",
+      "slug": "events.index",
+      "url": "events.index",
       "roles": ["admin"],
       "env": ["local","staging" , "production"]
     }

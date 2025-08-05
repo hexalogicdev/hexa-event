@@ -1,15 +1,14 @@
 @extends('layouts.layoutMaster')
-@section('title', 'Courses')
+@section('title', 'Events')
 
 @section('content')
     <div class="card">
         <div class="card-header border-bottom">
-            <h5 class="card-title mb-0 float-start">Courses</h5>
-            <button class="add-new btn btn-md float-end btn-primary waves-effect waves-light" data-bs-toggle="offcanvas"
-                data-bs-target="#offcanvasAddUser">
+            <h5 class="card-title mb-0 float-start">Events</h5>
+            <a href="{{ route('events.create') }}" class="add-new btn btn-md float-end btn-primary waves-effect waves-light">
                 <i class="ti ti-plus me-0 me-sm-1 ti-xs"></i>
-                <span class="d-none d-sm-inline-block">Add New Course</span>
-            </button>
+                <span class="d-none d-sm-inline-block">Add New Event</span>
+            </a>
         </div>
         <div class="card-body">
             <div class="card-datatable text-nowrap table-responsive">
@@ -17,34 +16,55 @@
                     <thead class="border-top">
                         <tr>
                             <th class="fw-bold">Id</th>
-                            <th class="fw-bold">Title</th>
-                            <th class="fw-bold">File</th>
-                            <th class="text-center fw-bold">Course</th>
-                            <th class="text-center fw-bold">Actions</th>
+                            <th class="fw-bold">Name</th>
+                            <th class="fw-bold">location</th>
+                            <th class="fw-bold">Event Start Date</th>
+                            <th class="fw-bold">Event End Date</th>
+                            <th class="fw-bold">Booking Start Date</th>
+                            <th class="fw-bold">Booking End Date</th>
+                            <th class="fw-bold">Attendees</th>
+                            <th class="text-center fw-bold">URL</th>
                         </tr>
                     </thead>
                     <tbody>
                         @php
                             $i = 1;
                         @endphp
-                        @foreach ($courses as $course)
+                        @foreach ($events as $event)
                             <tr>
                                 <td>{{ $i++ }}</td>
-                                <td>{{ \Illuminate\Support\Str::title($course->title) }}</td>
-                                <td>{{ $course->attachment }}</td>
-                                <td class="text-center">
-                                    <a href="{{ route('changeStatus', ['model' => 'Course', 'id' => $course->id]) }}"
-                                        class="btn btn-primary btn-sm">{{ $course->status == 1 ? 'Active' : 'InActive' }}</a>
+                                <td>{{ \Illuminate\Support\Str::title($event->name) }}</td>
+                                <td>{{ $event->location }}</td>
+                                <td>{{ $event->event_start_date }}</td>
+                                <td>{{ $event->event_end_date }}</td>
+                                <td>{{ $event->booking_start_date }}</td>
+                                <td>{{ $event->booking_end_date }}</td>
+                                <td>{{ $event->attendees_count }}</td>
+                                <td>
+                                    <div class="d-flex gap-2">
+                                        <a href="{{ route('events.show', $event->id) }}" class="btn btn-primary btn-sm">
+                                            <i class="fa fa-eye"></i>
+                                        </a>
+                                        <button class="btn btn-secondary btn-sm"
+                                            onclick="copyToClipboard('{{ route('events.registration', $event->event_code) }}')">
+                                            <i class="fa fa-clipboard"></i>
+                                        </button>
+                                    </div>
                                 </td>
-                                <td class="text-center">
+
+                                {{-- <td class="text-center">
+                                    <a href="{{ route('changeStatus', ['model' => 'Event', 'id' => $event->id]) }}"
+                                        class="btn btn-primary btn-sm">{{ $event->status == 1 ? 'Active' : 'InActive' }}</a>
+                                </td> --}}
+                                {{-- <td class="text-center">
                                     <button type="button" class="btn btn-primary btn-sm mx-1 my-1" data-bs-toggle="modal"
                                         data-bs-target="#deletecourse-{{ $course->id }}"> <i class="fa fa-trash"></i>
                                     </button>
-                                </td>
+                                </td> --}}
                             </tr>
                             <!--edit modal closed-->
                             <!--delete modal start-->
-                            <div class="modal fade" id="deletecourse-{{ $course->id }}" tabindex="-1" aria-hidden="true">
+                            {{-- <div class="modal fade" id="deletecourse-{{ $course->id }}" tabindex="-1" aria-hidden="true">
                                 <div class="modal-dialog modal-lg modal-simple modal-edit-user">
                                     <div class="modal-content">
                                         <div class="modal-body">
@@ -73,40 +93,31 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                             <!--delete closed-->
                         @endforeach
                     </tbody>
                 </table>
             </div>
-            <!-- Offcanvas to add new user -->
-            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasAddUser"
-                aria-labelledby="offcanvasAddUserLabel">
-                <div class="offcanvas-header border-bottom">
-                    <h5 id="offcanvasAddUserLabel" class="offcanvas-title">Add New Course</h5>
-                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
-                        aria-label="Close"></button>
-                </div>
-                <div class="offcanvas-body mx-0 flex-grow-0 p-6 h-100">
-                    <form class="add-new-user pt-0 form" action="{{ route('course.store') }}" method="POST">
-                        @csrf
-                        <input type="hidden" name="id" id="user_id">
-                        <div class="mb-6">
-                            <label class="form-label" for="name">Title<i class="text-danger">*</i></label>
-                            <input type="text" class="form-control" id="name" placeholder="Ttile" name="title"
-                                value="{{ old('title') }}" minlength="3" maxlength="20" aria-label="Title" required />
-                            @if ($errors->add_course->has('title'))
-                                <div class="text-danger">{{ $errors->add_course->first('title') }}</div>
-                            @endif
-                        </div>
-                        <button type="submit"
-                            class="submitButton btn btn-primary me-3 data-submit submit-button">Submit</button>
-                        <button type="reset" class="btn btn-label-danger" data-bs-dismiss="offcanvas">Cancel</button>
-                    </form>
-                </div>
-            </div>
         </div>
     </div>
 @endsection
+<script>
+    function copyToClipboard(text) {
+        // Create temporary input
+        const tempInput = document.createElement('input');
+        tempInput.value = text;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        tempInput.setSelectionRange(0, 99999); // For mobile devices
 
+        try {
+            document.execCommand("copy");
+            alert("Link copied to clipboard!");
+        } catch (err) {
+            console.error("Fallback copy failed", err);
+        }
+
+        document.body.removeChild(tempInput);
+    }
 </script>

@@ -49,9 +49,9 @@
                             </a>
                         </div>
                         <!-- /Logo -->
-                        <h4 class="mb-1">Welcome to Darulquran! </h4>
+                        <h4 class="mb-1">Welcome to Event Managemtn! </h4>
                         {{-- 👋 --}}
-                        <p class="mb-6">Log in to manage your child’s Quran lessons.</p>
+                        <p class="mb-6">Log in to manage your Events.</p>
 
                         <form id="formAuthentication" class="mb-4" action="{{ route('login') }}" method="POST">
                             @csrf
