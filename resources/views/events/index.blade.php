@@ -35,10 +35,10 @@
                                 <td>{{ $i++ }}</td>
                                 <td>{{ \Illuminate\Support\Str::title($event->name) }}</td>
                                 <td>{{ $event->location }}</td>
-                                <td>{{ $event->event_start_date }}</td>
-                                <td>{{ $event->event_end_date }}</td>
-                                <td>{{ $event->booking_start_date }}</td>
-                                <td>{{ $event->booking_end_date }}</td>
+                                <td>{{ $event->event_start_date?->format('d/m/Y h:i A') }}</td>
+                                <td>{{ $event->event_end_date?->format('d/m/Y h:i A') }}</td>
+                                <td>{{ $event->booking_start_date?->format('d/m/Y h:i A') }}</td>
+                                <td>{{ $event->booking_end_date?->format('d/m/Y h:i A') }}</td>
                                 <td>{{ $event->attendees_count }}</td>
                                 <td>
                                     <div class="d-flex gap-2">
