@@ -3,7 +3,7 @@
 return [
   "creatorName" => "Moebotech",
   "creatorUrl" => "https://pixinvent.com",
-  "templateName" => "Darulquran",
+  "templateName" => "Event Booking System",
   // "templateSuffix" => "Bootstrap Admin Template",
   "templateVersion" => "2.0.0",
   "templateFree" => false,

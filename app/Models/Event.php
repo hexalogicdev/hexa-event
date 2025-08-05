@@ -1,0 +1,34 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Event extends Model
+{
+    use HasFactory;
+    protected $fillable = [
+        'user_id',
+        'name',
+        'description',
+        'location',
+        'event_start_date',
+        'event_end_date',
+        'booking_start_date',
+        'booking_end_date',
+        'max_attendees',
+        'event_code',
+        'checkin_password',
+        'price',
+        'is_active'
+    ];
+    public function admin()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+    public function attendees()
+    {
+        return $this->hasMany(Attendee::class);
+    }
+}
