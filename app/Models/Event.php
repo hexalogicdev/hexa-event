@@ -31,4 +31,10 @@ class Event extends Model
     {
         return $this->hasMany(Attendee::class);
     }
+    protected $casts = [
+        'event_start_date' => 'datetime',
+        'event_end_date' => 'datetime',
+        'booking_start_date' => 'datetime',
+        'booking_end_date' => 'datetime',
+    ];
 }

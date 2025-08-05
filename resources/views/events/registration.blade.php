@@ -53,7 +53,7 @@
     <div class="register-card text-dark">
         <h2 class="text-center mb-4">Register for {{ $event->name }}</h2>
         <h5 class="text-center mb-4">Location {{ $event->location }}</h5>
-        <h5 class="text-center mb-4">Event Date {{ $event->event_start_date }}</h5>
+        <h5 class="text-center mb-4">Event Date {{ $event->event_start_date?->format('d/m/Y h:i A') }}</h5>
 
         <form action="{{ route('attendee.store') }}" method="POST">
             @csrf

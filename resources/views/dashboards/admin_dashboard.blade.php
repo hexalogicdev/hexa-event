@@ -31,7 +31,7 @@
                         <div class="card h-100 shadow border-0  mb-4">
                             <div class="card-body py-3">
                                 <h5 class="mb-3 mt-2 card-title">Total Events</h5>
-                                <h4 class="mb-0">{{ $events }}</h4>
+                                <h4 class="mb-0">{{ $eventsCount }}</h4>
                             </div>
                         </div>
                     </div>
@@ -68,7 +68,7 @@
                             <th class="fw-bold">Id</th>
                             <th class="fw-bold">Name</th>
                             <th class="fw-bold">Event Date</th>
-                            <th class="fw-bold">Link</th>
+                            <th class="fw-bold">Location</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -78,9 +78,9 @@
                         @foreach ($events as $event)
                             <tr>
                                 <td>{{ $i++ }}</td>
-                                <td>{{ \Illuminate\Support\Str::title($event->name) }}</td>
-                                <td>{{ $event->date?->format('d/m/Y') }}</td>
-                                <td>{{ $event->link }}</td>
+                                <td>{{ $event->name }}</td>
+                                <td>{{ $event->event_start_date?->format('d/m/Y') }}</td>
+                                <td>{{ $event->location }}</td>
                             </tr>
                         @endforeach
                     </tbody>

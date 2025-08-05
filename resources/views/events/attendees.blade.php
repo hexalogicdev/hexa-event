@@ -35,7 +35,7 @@
                                 <td>{{ $attendee->name }}</td>
                                 <td>{{ $attendee->email }}</td>
                                 <td>{{ $attendee->phone }}</td>
-                                <td>{{$attendee->checked_in_at ?? 'N/A'}}</td>
+                                <td>{{$attendee->checked_in_at?->format('d/m/Y h:i A') ?? 'N/A'}}</td>
                             </tr>
 
                             <!--delete closed-->
