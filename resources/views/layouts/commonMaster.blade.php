@@ -41,7 +41,7 @@
     <!-- Canonical SEO -->
     <link rel="canonical" href="{{ config('variables.productPage') ? config('variables.productPage') : '' }}">
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="{{ asset('assets/img/black_transparent.png') }}" />
+    <link rel="icon" type="image/x-icon" href="{{ asset('assets/img/event-logo.png') }}" />
 
 
     <!-- Include Styles -->
