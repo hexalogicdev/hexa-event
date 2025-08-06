@@ -1,0 +1,1 @@
+let e=new Date;new Date(new Date().getTime()+24*60*60*1e3);e.getMonth()===11?new Date(e.getFullYear()+1,0,1):new Date(e.getFullYear(),e.getMonth()+1,1);e.getMonth()===11?new Date(e.getFullYear()-1,0,1):new Date(e.getFullYear(),e.getMonth()-1,1);window.events=bookings.map(function(t){return{id:t.id,url:"",title:t.name,start:t.date,allDay:!0,extendedProps:{calendar:"Business"}}});
