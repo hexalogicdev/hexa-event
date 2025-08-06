@@ -5,7 +5,7 @@
                 <div class="col col-lg-3">
                     <div class="logo">
                         <a href="#" class="">
-                            <img src="{{ asset('assets/img/logo.png') }}" alt="Dome Carlow">
+                            <img src="{{ asset('assets/img/event-logo.png') }}" alt="Dome Carlow">
                         </a>
                     </div>
                 </div>
