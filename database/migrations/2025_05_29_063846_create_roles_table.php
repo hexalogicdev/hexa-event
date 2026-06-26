@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name')->unique();
             $table->timestamps();
         });
-        $roles = ['admin', 'teacher', 'parent', 'student'];
+        $roles = ['admin','organizer'];
 
         foreach ($roles as $role) {
             DB::table('roles')->updateOrInsert(['name' => $role]);

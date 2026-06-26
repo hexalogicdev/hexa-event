@@ -15,6 +15,21 @@
     "file": "assets/bootstrap.esm-B-2spzFP.js",
     "name": "bootstrap.esm"
   },
+  "_flash-notifications-!~{03H}~.js": {
+    "file": "assets/flash-notifications-CRqTeSpx.css",
+    "src": "resources/assets/vendor/libs/toastr/toastr.scss",
+    "isEntry": true
+  },
+  "_flash-notifications-BBT2i-y9.js": {
+    "file": "assets/flash-notifications-BBT2i-y9.js",
+    "name": "flash-notifications",
+    "imports": [
+      "_toastr-KXWBn683.js"
+    ],
+    "css": [
+      "assets/flash-notifications-CRqTeSpx.css"
+    ]
+  },
   "_index-D_6hAncj.js": {
     "file": "assets/index-D_6hAncj.js",
     "name": "index"
@@ -32,6 +47,14 @@
     "name": "jquery",
     "imports": [
       "__commonjsHelpers-BosuxZz1.js"
+    ]
+  },
+  "_toastr-KXWBn683.js": {
+    "file": "assets/toastr-KXWBn683.js",
+    "name": "toastr",
+    "imports": [
+      "__commonjsHelpers-BosuxZz1.js",
+      "_jquery-Czc5UB_B.js"
     ]
   },
   "node_modules/jstree/dist/themes/default-dark/32px.png": {
@@ -450,10 +473,16 @@
     "isEntry": true
   },
   "resources/assets/js/datatables-custom.js": {
-    "file": "assets/datatables-custom-DUrfJnNY.js",
+    "file": "assets/datatables-custom-BIr_Vn2U.js",
     "name": "datatables-custom",
     "src": "resources/assets/js/datatables-custom.js",
-    "isEntry": true
+    "isEntry": true,
+    "imports": [
+      "_flash-notifications-BBT2i-y9.js",
+      "_toastr-KXWBn683.js",
+      "__commonjsHelpers-BosuxZz1.js",
+      "_jquery-Czc5UB_B.js"
+    ]
   },
   "resources/assets/js/extended-ui-blockui.js": {
     "file": "assets/extended-ui-blockui-cIeesocv.js",
@@ -750,7 +779,7 @@
     "isEntry": true
   },
   "resources/assets/js/pages-auth.js": {
-    "file": "assets/pages-auth-4cwqwrAj.js",
+    "file": "assets/pages-auth-DF9H9PNb.js",
     "name": "pages-auth",
     "src": "resources/assets/js/pages-auth.js",
     "isEntry": true
@@ -3780,17 +3809,18 @@
     "isEntry": true
   },
   "resources/assets/vendor/libs/toastr/toastr.js": {
-    "file": "assets/toastr-D9BmDGHY.js",
+    "file": "assets/toastr-8BkxLHuo.js",
     "name": "toastr",
     "src": "resources/assets/vendor/libs/toastr/toastr.js",
     "isEntry": true,
     "imports": [
+      "_toastr-KXWBn683.js",
       "__commonjsHelpers-BosuxZz1.js",
       "_jquery-Czc5UB_B.js"
     ]
   },
   "resources/assets/vendor/libs/toastr/toastr.scss": {
-    "file": "assets/toastr-CRqTeSpx.css",
+    "file": "assets/flash-notifications-CRqTeSpx.css",
     "src": "resources/assets/vendor/libs/toastr/toastr.scss",
     "isEntry": true
   },
@@ -3985,23 +4015,26 @@
     "isEntry": true
   },
   "resources/css/app.css": {
-    "file": "assets/app-l0sNRNKZ.js",
-    "name": "app",
+    "file": "assets/app-DTexKck-.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
   "resources/css/custom-style.css": {
-    "file": "assets/custom-style-WY6ldSqp.css",
+    "file": "assets/custom-style-CDY4S8BI.css",
     "src": "resources/css/custom-style.css",
     "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-DhK4XYAT.js",
+    "file": "assets/app-BpoQ3zl6.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
     "imports": [
-      "_bootstrap.esm-B-2spzFP.js"
+      "_bootstrap.esm-B-2spzFP.js",
+      "__commonjsHelpers-BosuxZz1.js",
+      "_flash-notifications-BBT2i-y9.js",
+      "_toastr-KXWBn683.js",
+      "_jquery-Czc5UB_B.js"
     ]
   },
   "resources/js/main-custom.js": {

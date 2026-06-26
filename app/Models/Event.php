@@ -20,6 +20,10 @@ class Event extends Model
         'max_attendees',
         'event_code',
         'checkin_password',
+        'status',
+        'visibility',
+        'banner_image',
+        'registration_fields',
         'price',
         'is_active'
     ];
@@ -36,5 +40,7 @@ class Event extends Model
         'event_end_date' => 'datetime',
         'booking_start_date' => 'datetime',
         'booking_end_date' => 'datetime',
+        'registration_fields' => 'array',
+        'is_active' => 'boolean',
     ];
 }

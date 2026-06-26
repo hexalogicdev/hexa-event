@@ -7,8 +7,30 @@ const formAuthentication = document.querySelector('#formAuthentication');
 
 document.addEventListener('DOMContentLoaded', function (e) {
   (function () {
-    // Form validation for Add new record
-    if (formAuthentication) {
+    const passwordToggles = document.querySelectorAll('.form-password-toggle');
+
+    passwordToggles.forEach(toggle => {
+      const input = toggle.querySelector('input[type="password"], input[type="text"]');
+      const icon = toggle.querySelector('i');
+
+      if (!input || !icon) {
+        return;
+      }
+
+      const button = toggle.querySelector('.input-group-text');
+
+      if (button) {
+        button.addEventListener('click', () => {
+          const isPassword = input.getAttribute('type') === 'password';
+          input.setAttribute('type', isPassword ? 'text' : 'password');
+          icon.classList.toggle('ti-eye');
+          icon.classList.toggle('ti-eye-off');
+        });
+      }
+    });
+
+    // Form validation for auth forms
+    if (formAuthentication && window.FormValidation) {
       const fv = FormValidation.formValidation(formAuthentication, {
         fields: {
           username: {
@@ -83,16 +105,15 @@ document.addEventListener('DOMContentLoaded', function (e) {
           trigger: new FormValidation.plugins.Trigger(),
           bootstrap5: new FormValidation.plugins.Bootstrap5({
             eleValidClass: '',
-            rowSelector: '.mb-6'
+            rowSelector: '.mb-4, .mb-6, .ems-form-span-6, .ems-form-span-12, .input-group, .form-check'
           }),
           submitButton: new FormValidation.plugins.SubmitButton(),
-
           defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
           autoFocus: new FormValidation.plugins.AutoFocus()
         },
         init: instance => {
           instance.on('plugins.message.placed', function (e) {
-            if (e.element.parentElement.classList.contains('input-group')) {
+            if (e.element && e.element.parentElement && e.element.parentElement.classList.contains('input-group')) {
               e.element.parentElement.insertAdjacentElement('afterend', e.messageElement);
             }
           });

@@ -1,53 +1,12 @@
+import '../../js/flash-notifications';
+
 /**
  * Page User List
  */
 
 'use strict';
 $(document).ready(function () {
-  // Check if there's a success message
-  if (window.successMessage) {
-    Swal.fire({
-      icon: 'success',
-      title: 'Success',
-      text: window.successMessage,
-      confirmButtonText: 'OK',
-      customClass: {
-        confirmButton: 'btn btn-success'
-      }
-    });
-  }
-
-  // Check if there's an error message
-  if (window.errorMessage) {
-    Swal.fire({
-      icon: 'error',
-      title: 'Error',
-      text: window.errorMessage,
-      confirmButtonText: 'OK',
-      customClass: {
-        confirmButton: 'btn btn-danger'
-      }
-    });
-  }
-
-  // Check if there are validation errors
-  if (window.validationErrors.length > 0) {
-    let errorsList = '<ul>';
-    window.validationErrors.forEach(function (error) {
-      errorsList += '<li>' + error + '</li>';
-    });
-    errorsList += '</ul>';
-
-    Swal.fire({
-      icon: 'error',
-      title: 'Validation Errors',
-      html: errorsList,
-      confirmButtonText: 'OK',
-      customClass: {
-        confirmButton: 'btn btn-danger'
-      }
-    });
-  }
+  // Flash notifications are handled by the shared toast helper.
 });
 // Datatable (jquery)
 $(function () {

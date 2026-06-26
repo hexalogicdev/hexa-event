@@ -8,9 +8,9 @@
 @php
     /* Display elements */
     $contentNavbar = $contentNavbar ?? true;
-    $containerNav = $containerNav ?? 'container-xxl';
+    $containerNav = $containerNav ?? 'container-fluid';
     $isNavbar = $isNavbar ?? true;
-    $isMenu = $isMenu ?? true;
+    $isMenu = $isMenu ?? false;
     $isFlex = $isFlex ?? false;
     $isFooter = $isFooter ?? true;
     $customizerHidden = $customizerHidden ?? '';
@@ -25,10 +25,7 @@
     $footerFixed = isset($configData['footerFixed']) ? $configData['footerFixed'] : '';
     $menuCollapsed = isset($configData['menuCollapsed']) ? $configData['menuCollapsed'] : '';
     /* Content classes */
-    $container =
-        isset($configData['contentLayout']) && $configData['contentLayout'] === 'compact'
-            ? 'container-xxl'
-            : 'container-fluid';
+    $container = 'container-fluid';
 
 @endphp
 
@@ -66,8 +63,8 @@
     <div class="drag-target"></div>
     </div>
     <script>
-        window.successMessage = "{{ session('success') }}";
-        window.errorMessage = "{{ session('error') }}";
+        window.successMessage = @json(session('success'));
+        window.errorMessage = @json(session('error'));
         window.validationErrors = @json($errors->all());
     </script>
 @endsection

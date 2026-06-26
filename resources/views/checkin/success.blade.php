@@ -1,43 +1,120 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.app')
 
-<head>
-    <meta charset="UTF-8">
-    <title>Check-In Successful</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+@section('title', 'Check-In Successful')
 
-    <style>
-        body {
-            background: linear-gradient(to right, #4f4f50, #6610f2);
-            color: white;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Segoe UI', sans-serif;
-        }
+@section('content')
+    <section class="container-fluid py-3 py-lg-4">
+        <div class="ems-checkin-shell ems-checkin-shell--wide">
+            <div class="ems-checkin-frame ems-fade-up">
+                <div class="ems-checkin-toolbar">
+                    <div class="d-flex flex-column gap-2">
+                        <span class="ems-badge ems-badge--success">
+                            <i class="ti ti-circle-check"></i>
+                            Attendance recorded
+                        </span>
+                        <div>
+                            <h1 class="ems-checkin-title mb-1">The attendee is now marked as checked in.</h1>
+                            <p class="ems-checkin-subtitle mb-0">
+                                The timestamp has been stored and the record is ready for attendance reporting.
+                            </p>
+                        </div>
+                    </div>
 
-        .card {
-            background: white;
-            color: #333;
-            padding: 2rem;
-            border-radius: 10px;
-            text-align: center;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-        }
-    </style>
-</head>
+                    <div class="d-flex flex-wrap gap-2">
+                        <a href="{{ route('attendee.qr.scan') }}" class="btn btn-outline-light">
+                            <i class="ti ti-scan me-2"></i>
+                            Scan another
+                        </a>
+                        @auth
+                            <a href="{{ route('dashboard') }}" class="btn btn-primary">
+                                <i class="ti ti-layout-dashboard me-2"></i>
+                                Dashboard
+                            </a>
+                        @else
+                            <a href="{{ url('/') }}" class="btn btn-primary">
+                                <i class="ti ti-home-2 me-2"></i>
+                                Home
+                            </a>
+                        @endauth
+                    </div>
+                </div>
 
-<body>
+                <div class="row g-4 align-items-stretch">
+                    <div class="col-xl-6">
+                        <div class="ems-checkin-hero ems-checkin-hero--success">
+                            <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap mb-4">
+                                <span class="ems-kicker mb-0 bg-white bg-opacity-10 text-white">
+                                    <i class="ti ti-shield-check"></i>
+                                    Verified attendee
+                                </span>
+                                <span class="ems-badge ems-badge--success">Completed</span>
+                            </div>
 
-    <div class="card">
-        <h2>✅ Check-In Successful</h2>
-        <p>{{ $attendee->name }} has been checked in.</p>
-        <p><strong>Event:</strong> {{ $attendee->event->name }}</p>
-        <p><strong>Time:</strong> {{ $attendee->checked_in_at->format('d M Y, h:i A') }}</p>
-    </div>
+                            <h2 class="ems-checkin-hero__title">{{ $attendee->name }}</h2>
+                            <p class="ems-checkin-hero__text">
+                                {{ $attendee->event->name }} and the attendee record are now synced with the live attendance list.
+                            </p>
 
-</body>
+                            <div class="ems-checkin-summary">
+                                <div class="ems-checkin-summary__item">
+                                    <span>Check-in time</span>
+                                    <strong>{{ $attendee->checked_in_at?->format('h:i A') }}</strong>
+                                </div>
+                                <div class="ems-checkin-summary__item">
+                                    <span>Check-in date</span>
+                                    <strong>{{ $attendee->checked_in_at?->format('d M Y') }}</strong>
+                                </div>
+                                <div class="ems-checkin-summary__item">
+                                    <span>Token</span>
+                                    <strong>{{ $attendee->qr_id }}</strong>
+                                </div>
+                                <div class="ems-checkin-summary__item">
+                                    <span>Event</span>
+                                    <strong>{{ $attendee->event->name }}</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-</html>
+                    <div class="col-xl-6">
+                        <div class="ems-checkin-card-panel">
+                            <div class="ems-badge ems-badge--success mb-3">Verified</div>
+                            <h2 class="ems-section-title h4 mb-2">{{ $attendee->name }}</h2>
+                            <p class="ems-section-subtitle mb-4">{{ $attendee->event->name }}</p>
+
+                            <div class="ems-grid ems-grid--2 mb-4">
+                                <div class="ems-stat">
+                                    <div class="ems-stat__label">Check-in time</div>
+                                    <div class="ems-stat__value">{{ $attendee->checked_in_at->format('h:i A') }}</div>
+                                    <div class="ems-stat__meta">{{ $attendee->checked_in_at->format('d M Y') }}</div>
+                                </div>
+                                <div class="ems-stat">
+                                    <div class="ems-stat__label">Booking token</div>
+                                    <div class="ems-stat__value">{{ $attendee->qr_id }}</div>
+                                    <div class="ems-stat__meta">Stored securely in the system</div>
+                                </div>
+                            </div>
+
+                            <div class="alert alert-success border-0 rounded-4 mb-4">
+                                The attendee is now included in the live attendance report.
+                            </div>
+
+                            <div class="d-grid gap-2 d-md-flex">
+                                <a href="{{ route('attendee.qr.scan') }}" class="btn btn-outline-light flex-grow-1">
+                                    <i class="ti ti-scan me-2"></i>
+                                    Scan next attendee
+                                </a>
+                                @auth
+                                    <a href="{{ route('events.attendees', $attendee->event_id) }}" class="btn btn-primary flex-grow-1">
+                                        <i class="ti ti-users me-2"></i>
+                                        Open attendee list
+                                    </a>
+                                @endauth
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+@endsection

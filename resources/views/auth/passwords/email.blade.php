@@ -48,8 +48,6 @@
                         <div class="app-brand justify-content-center mb-6">
                             <a href="{{ url('/') }}" class="app-brand-link">
                                 <span class="">@include('_partials.macros')</span>
-                                {{-- <span class="app-brand-logo demo">@include('_partials.macros', ['height' => 20, 'withbg' => 'fill: #fff;'])</span> --}}
-                                {{-- <span class="app-brand-text demo text-heading fw-bold">DomeCarlow</span> --}}
                             </a>
                         </div>
                         <!-- /Logo -->

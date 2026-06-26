@@ -2,18 +2,12 @@
     $customizerHidden = 'customizer-hide';
 @endphp
 
-@extends('layouts/layoutMaster')
+@extends('layouts.app')
 
 @section('title', 'Register')
 
 @section('vendor-style')
     @vite(['resources/assets/vendor/libs/@form-validation/form-validation.scss'])
-@endsection
-
-@section('page-style')
-    @vite(['resources/assets/vendor/scss/pages/page-auth.scss'])
-    <link rel="stylesheet" href="{{ asset('assets/css/custom-style.css') }}">
-
 @endsection
 
 @section('vendor-script')
@@ -25,153 +19,189 @@
 @endsection
 
 @section('content')
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-    <div class="container-xxl">
-        <div class="authentication-wrapper authentication-basic container-p-y">
-            <div class="authentication-inner py-6">
+    <div class="container-fluid px-0 ems-auth-shell">
+        @if ($errors->any())
+            <div class="container pt-3">
+                <div class="alert alert-danger border-0 rounded-4 mb-0">
+                    <div class="fw-semibold mb-1">Please review the highlighted details.</div>
+                    <ul class="mb-0 ps-3">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+        @endif
 
-                <!-- Register Card -->
-                <div class="card">
-                    <div class="card-body">
-                        <!-- Logo -->
-                        <div class="app-brand justify-content-center mb-6">
-                            <a href="{{ url('/') }}" class="app-brand-link">
-                                <span class="">@include('_partials.macros')</span>
-                                {{-- <span class="app-brand-text demo text-heading fw-bold">DomeCarlow</span> --}}
-                            </a>
-                        </div>
-                        <!-- /Logo -->
-                        <h4 class="mb-1">Sign Up </h4>
-                        {{-- 🚀 --}}
-                        <p class="mb-6">Sign up to enroll your child in online Quran classes.</p>
+        <div class="row g-0 ems-fullscreen">
+            <div class="col-lg-5 d-none d-lg-block ems-hero">
+                <div class="p-5 h-100 d-flex flex-column justify-content-between">
 
-                        <form id="formAuthentication" class="mb-6" action="{{ route('register') }}" method="POST">
-                            @csrf
-                            <div class="mb-6">
-                                <label for="name" class="form-label">Name <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="name" name="username"
-                                    placeholder="Enter your name" autocomplete="name" required minlength="3" maxlength="50"
-                                    title="Name should be between 3 and 50 characters">
-                            </div>
-
-                            <div class="mb-6">
-                                <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
-                                <input type="email" class="form-control" id="email" name="email"
-                                    placeholder="Enter your email" autocomplete="email" required maxlength="100"
-                                    title="Enter a valid email address">
-                            </div>
-
-                            <div class="mb-6">
-                                <label for="phone" class="form-label">Phone <span class="text-danger">*</span></label>
-                                <input type="tel" class="form-control" id="phone" name="phone"
-                                    placeholder="Enter your phone (e.g., +1234567890)" autocomplete="tel" required
-                                    pattern="^\+?[0-9]{10,15}$" title="Phone must be 10 to 15 digits and can start with +">
-                            </div>
-
-                            <div class="mb-6">
-                                <label for="address" class="form-label">Address <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="address" name="address"
-                                    placeholder="Enter your address" autocomplete="street-address" required minlength="5"
-                                    maxlength="100" title="Address should be between 5 and 100 characters">
-                            </div>
-
-                            <div class="mb-6">
-                                <label for="country" class="form-label">Country <span class="text-danger">*</span></label>
-                                <select name="country" class="form-control" id="country" required>
-                                    <option value="" disabled selected>Select your country</option>
-                                    <option value="USA">USA</option>
-                                    <option value="UK">UK</option>
-                                    <option value="Canada">Canada</option>
-                                    <option value="Australia">Australia</option>
-                                    <option value="Ireland">Ireland</option>
-                                    <option value="Pakistan">Pakistan</option>
-                                </select>
-                            </div>
-
-                            <div class="mb-6">
-                                <label for="gender" class="form-label">Gender <span class="text-danger">*</span></label>
-                                <select name="gender" class="form-control" id="gender" required>
-                                    <option value="" disabled selected>Select your gender</option>
-                                    <option value="Male">Male</option>
-                                    <option value="Female">Female</option>
-                                </select>
-                            </div>
-
-                            <div class="mb-6 form-password-toggle">
-                                <label class="form-label" for="password">Password <i class="tex-danger">*</i></label>
-                                <div class="input-group input-group-merge">
-                                    <input type="password" id="password" class="form-control" name="password"required
-                                        placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                                        aria-describedby="password" />
-                                    <span class="input-group-text cursor-pointer"><i class="ti ti-eye-off"></i></span>
-                                </div>
-                            </div>
-                            <div class="mb-6 form-password-toggle">
-                                <label class="form-label" for="password-confirm">Confirm Password <i
-                                        class="tex-danger">*</i></label>
-                                <div class="input-group input-group-merge">
-                                    <input type="password" id="password-confirm" class="form-control"required
-                                        name="password_confirmation"
-                                        placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                                        aria-describedby="password" />
-                                    <span class="input-group-text cursor-pointer"><i class="ti ti-eye-off"></i></span>
-                                </div>
-                            </div>
-                            <div class="my-8">
-                                <div class="form-check mb-0 ms-2">
-                                    <input class="form-check-input p-0" type="checkbox" id="terms-conditions"
-                                        name="terms">
-                                    <label class="form-check-label" for="terms-conditions">
-                                        I agree to
-                                        <a href="javascript:void(0);">privacy policy & terms</a>
-                                    </label>
-                                </div>
-                            </div>
-                            <button type="submit"
-                                class="btn_continue cta text-white cta-100 main-continue btn btn-primary d-grid w-100">
-                                Sign up
-                            </button>
-                        </form>
-
-                        <p class="text-center">
-                            <span>Already have an account?</span>
-                            <a href="{{ url('login') }}">
-                                <span>Sign in instead</span>
-                            </a>
+                    <div class="mt-5">
+                        <span class="ems-kicker mb-4 bg-white bg-opacity-10 text-white">
+                            <i class="ti ti-rocket"></i>
+                            Build with HexaLogicDev
+                        </span>
+                        <h1 class="display-4 fw-bold mb-3">Start your event workspace in minutes.</h1>
+                        <p class="lead mb-4">
+                            Create an organizer account to publish events, manage guests, and run check-in flows from a
+                            polished international system.
                         </p>
+                        <ul class="ems-support-list">
+                            <li>
+                                <i class="ti ti-user-shield"></i>
+                                <div>
+                                    <div class="fw-semibold">Organizer role</div>
+                                    <div class="text-white-50">Create and manage only your own events.</div>
+                                </div>
+                            </li>
+                            <li>
+                                <i class="ti ti-ticket"></i>
+                                <div>
+                                    <div class="fw-semibold">Public event pages</div>
+                                    <div class="text-white-50">Share booking links with unique QR confirmation.</div>
+                                </div>
+                            </li>
+                            <li>
+                                <i class="ti ti-world"></i>
+                                <div>
+                                    <div class="fw-semibold">International format</div>
+                                    <div class="text-white-50">Responsive layout and global-ready design.</div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
 
-                        {{-- <div class="divider my-6">
-            <div class="divider-text">or</div>
-          </div>
-
-          <div class="d-flex justify-content-center">
-            <a href="javascript:;" class="btn btn-sm btn-icon rounded-pill btn-text-facebook me-1_5">
-              <i class="tf-icons ti ti-brand-facebook-filled"></i>
-            </a>
-
-            <a href="javascript:;" class="btn btn-sm btn-icon rounded-pill btn-text-twitter me-1_5">
-              <i class="tf-icons ti ti-brand-twitter-filled"></i>
-            </a>
-
-            <a href="javascript:;" class="btn btn-sm btn-icon rounded-pill btn-text-github me-1_5">
-              <i class="tf-icons ti ti-brand-github-filled"></i>
-            </a>
-
-            <a href="javascript:;" class="btn btn-sm btn-icon rounded-pill btn-text-google-plus">
-              <i class="tf-icons ti ti-brand-google-filled"></i>
-            </a>
-          </div> --}}
+                    <div class="row g-3 mt-4">
+                        <div class="col-4">
+                            <div class="bg-white bg-opacity-10 rounded-4 p-3 h-100">
+                                <div class="small text-white-50">Global</div>
+                                <div class="h4 mb-0 fw-bold">Ready</div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="bg-white bg-opacity-10 rounded-4 p-3 h-100">
+                                <div class="small text-white-50">Design</div>
+                                <div class="h4 mb-0 fw-bold">Premium</div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="bg-white bg-opacity-10 rounded-4 p-3 h-100">
+                                <div class="small text-white-50">Flow</div>
+                                <div class="h4 mb-0 fw-bold">Fast</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <!-- Register Card -->
+            </div>
+
+            <div class="col-lg-7 ems-auth-surface">
+                <div class="d-flex flex-column justify-content-center h-100 p-4 p-lg-5 ems-auth-panel">
+                    <div class="auth-mobile-brand d-lg-none mb-4 text-center">
+                        <img src="{{ asset('assets/img/hexa-logo.png') }}" alt="HexaLogicDev" class="ems-hero-logo mx-auto">
+                    </div>
+
+                    <div class="mb-4 text-center text-lg-start">
+                        <span class="ems-badge ems-badge--info mb-3">Create account</span>
+                        <h2 class="ems-section-title display-6 mb-2">Join the event management platform</h2>
+                        <p class="ems-section-subtitle mb-0">
+                            Fill in your details to create and manage events with a clean, global-ready interface.
+                        </p>
+                    </div>
+
+                    <form id="formAuthentication" action="{{ route('register') }}" method="POST">
+                        @csrf
+                        <div class="ems-form-grid">
+                            <div class="ems-form-span-6">
+                                <label for="name" class="form-label">Name</label>
+                                <input type="text" class="form-control form-control-lg" id="name" name="username"
+                                    placeholder="Your full name" value="{{ old('username') }}" autocomplete="name"
+                                    required minlength="3" maxlength="50">
+                            </div>
+
+                            <div class="ems-form-span-6">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control form-control-lg" id="email" name="email"
+                                    placeholder="name@company.com" value="{{ old('email') }}" autocomplete="email"
+                                    required maxlength="100">
+                            </div>
+
+                            <div class="ems-form-span-6">
+                                <label for="phone" class="form-label">Phone</label>
+                                <input type="tel" class="form-control form-control-lg" id="phone" name="phone"
+                                    placeholder="+1234567890" value="{{ old('phone') }}" autocomplete="tel" required
+                                    pattern="^\+?[0-9]{10,15}$">
+                            </div>
+
+                            <div class="ems-form-span-6">
+                                <label for="country" class="form-label">Country</label>
+                                <select name="country" class="form-select form-select-lg" id="country" required>
+                                    <option value="" disabled @selected(!old('country'))>Select country</option>
+                                    <option value="USA" @selected(old('country') === 'USA')>USA</option>
+                                    <option value="UK" @selected(old('country') === 'UK')>UK</option>
+                                    <option value="Canada" @selected(old('country') === 'Canada')>Canada</option>
+                                    <option value="Australia" @selected(old('country') === 'Australia')>Australia</option>
+                                    <option value="Ireland" @selected(old('country') === 'Ireland')>Ireland</option>
+                                    <option value="Pakistan" @selected(old('country') === 'Pakistan')>Pakistan</option>
+                                </select>
+                            </div>
+
+                            <div class="ems-form-span-12">
+                                <label for="address" class="form-label">Address</label>
+                                <input type="text" class="form-control form-control-lg" id="address" name="address"
+                                    placeholder="Street, city, region" value="{{ old('address') }}" autocomplete="street-address"
+                                    required minlength="5" maxlength="100">
+                            </div>
+
+                            <div class="ems-form-span-6">
+                                <label for="gender" class="form-label">Gender</label>
+                                <select name="gender" class="form-select form-select-lg" id="gender" required>
+                                    <option value="" disabled @selected(!old('gender'))>Select gender</option>
+                                    <option value="Male" @selected(old('gender') === 'Male')>Male</option>
+                                    <option value="Female" @selected(old('gender') === 'Female')>Female</option>
+                                </select>
+                            </div>
+
+                            <div class="ems-form-span-6">
+                                <label for="password" class="form-label">Password</label>
+                                <div class="input-group input-group-merge">
+                                    <input type="password" id="password" class="form-control form-control-lg"
+                                        name="password" placeholder="Create a secure password" autocomplete="new-password"
+                                        required>
+                                    <span class="input-group-text cursor-pointer"><i class="ti ti-eye-off"></i></span>
+                                </div>
+                            </div>
+
+                            <div class="ems-form-span-12">
+                                <label for="password-confirm" class="form-label">Confirm password</label>
+                                <div class="input-group input-group-merge">
+                                    <input type="password" id="password-confirm" class="form-control form-control-lg"
+                                        name="password_confirmation" placeholder="Repeat your password"
+                                        autocomplete="new-password" required>
+                                    <span class="input-group-text cursor-pointer"><i class="ti ti-eye-off"></i></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-3 mt-4 mb-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="terms-conditions" name="terms">
+                                <label class="form-check-label" for="terms-conditions">
+                                    I agree to the <a href="{{ route('legal.policy') }}" target="_blank" rel="noopener noreferrer">privacy policy and terms</a>
+                                </label>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-lg w-100">
+                            Create account
+                        </button>
+                    </form>
+
+                    <div class="mt-4 text-center text-lg-start">
+                        <span class="text-muted">Already have an account?</span>
+                        <a href="{{ url('login') }}" class="fw-semibold text-decoration-none ms-1">Sign in</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

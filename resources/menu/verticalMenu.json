@@ -5,7 +5,7 @@
       "icon": "menu-icon tf-icons ti ti-smart-home",
       "slug": "dashboard",
       "url": "dashboard",
-      "roles": ["admin"],
+      "roles": ["admin", "organizer"],
       "env": ["local","staging" , "production"]
     },
     {
@@ -13,7 +13,7 @@
       "icon": "menu-icon tf-icons ti ti-shopping-cart",
       "slug": "events.index",
       "url": "events.index",
-      "roles": ["admin"],
+      "roles": ["admin", "organizer"],
       "env": ["local","staging" , "production"]
     }
   ]

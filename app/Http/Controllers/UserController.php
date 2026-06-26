@@ -200,14 +200,127 @@ class UserController extends Controller
   public function dashboard()
   {
     $user = Auth::user();
-    if ($user?->role?->name === "admin") {
-      $eventsCount = Event::count();
-      $events = Event::all();
-      $attendees = Attendee::count();
-      $revenue = Attendee::sum('amount');
-      return view('dashboards.admin_dashboard', compact('eventsCount', 'events', 'attendees', 'revenue'));
+    $isAdmin = $user?->role?->name === 'admin';
+    $eventQuery = Event::withCount('attendees')->latest();
+
+    if (! $isAdmin) {
+      $eventQuery->where('user_id', $user->id);
     }
-    abort(403, 'Unauthorized access');
+
+    $events = $eventQuery->get();
+    $recentEvents = $events->take(3)->values();
+    $upcomingEvents = $events->filter(fn ($event) => $event->event_start_date?->isFuture())->values();
+    $publishedEvents = $events->where('status', 'published')->count();
+    $draftEvents = $events->where('status', 'draft')->count();
+    $eventsCount = $events->count();
+    $attendeeQuery = Attendee::with('event')->latest();
+
+    if (! $isAdmin) {
+      $attendeeQuery->whereHas('event', function ($query) use ($user) {
+        $query->where('user_id', $user->id);
+      });
+    }
+
+    $attendees = (clone $attendeeQuery)->count();
+    $revenue = (clone $attendeeQuery)->sum('amount');
+    $checkedInCount = (clone $attendeeQuery)->where('checked_in', true)->count();
+    $pendingCount = max($attendees - $checkedInCount, 0);
+    $recentAttendees = $attendeeQuery->take(5)->get();
+    $attendanceRate = $attendees > 0 ? round(($checkedInCount / $attendees) * 100) : 0;
+
+    return view('dashboards.admin_dashboard', compact(
+      'eventsCount',
+      'events',
+      'recentEvents',
+      'upcomingEvents',
+      'publishedEvents',
+      'draftEvents',
+      'attendees',
+      'revenue',
+      'recentAttendees',
+      'checkedInCount',
+      'pendingCount',
+      'attendanceRate'
+    ));
+  }
+
+  public function profile()
+  {
+    return view('profile.show', [
+      'user' => Auth::user(),
+    ]);
+  }
+
+  public function updateProfile(Request $request)
+  {
+    $user = Auth::user();
+
+    if (! $user) {
+      abort(403);
+    }
+
+    $type = $request->input('type', 'profile');
+
+    if ($type === 'change_password') {
+      $validator = Validator::make(
+        $request->all(),
+        [
+          'password' => [
+            'required',
+            'string',
+            'min:8',
+            'max:64',
+            'confirmed',
+            'regex:/[A-Z]/',
+            'regex:/[a-z]/',
+            'regex:/[!@#$%^&*(),.?":{}|<>]/'
+          ],
+        ],
+        [
+          'password.required' => 'Password is required.',
+          'password.min' => 'Password must be at least 8 characters.',
+          'password.max' => 'Password must not exceed 64 characters.',
+          'password.confirmed' => 'Password and confirm password do not match.',
+          'password.regex' => 'Password must contain at least one uppercase letter, one lowercase letter and one special character',
+        ]
+      );
+
+      if ($validator->fails()) {
+        return redirect()->back()
+          ->withErrors($validator, 'change_password')
+          ->withInput()
+          ->with('show_modal', $user->id);
+      }
+
+      $user->password = bcrypt($request->input('password'));
+      $user->save();
+
+      return redirect()->route('profile.show')->with('success', 'Password updated successfully.');
+    }
+
+    $validator = Validator::make($request->all(), [
+      'name' => 'required|string|min:3|max:20',
+      'email' => 'required|email|max:255|unique:users,email,' . $user->id,
+    ], [
+      'name.required' => 'Name is required.',
+      'name.min' => 'Name must be at least 3 characters.',
+      'name.max' => 'Name must not exceed 20 characters.',
+      'email.required' => 'Email is required.',
+      'email.email' => 'Email must be a valid email address.',
+      'email.unique' => 'Email already exists.',
+    ]);
+
+    if ($validator->fails()) {
+      return redirect()->back()
+        ->withErrors($validator, 'profile')
+        ->withInput();
+    }
+
+    $user->name = $request->name;
+    $user->email = $request->email;
+    $user->save();
+
+    return redirect()->route('profile.show')->with('success', 'Profile updated successfully.');
   }
 
   public function changeStatus($model, $id)
