@@ -12,15 +12,15 @@ class DemoAccountsSeeder extends Seeder
 {
     public function run(): void
     {
-        if (app()->isProduction()) {
-            throw new RuntimeException('Demo accounts cannot be seeded in production.');
-        }
+        // if (app()->isProduction()) {
+        //     throw new RuntimeException('Demo accounts cannot be seeded in production.');
+        // }
 
         $roles = collect(['superadmin', 'organizer', 'security_officer'])
             ->mapWithKeys(fn (string $name) => [$name => Role::firstOrCreate(['name' => $name])]);
 
         $superadmin = User::withTrashed()->updateOrCreate(
-            ['email' => 'superadmin@example.com'],
+            ['email' => 'superadmin@hexa.com'],
             [
                 'name' => 'Demo Super Admin',
                 'password' => Hash::make('Demo@12345'),
@@ -36,7 +36,7 @@ class DemoAccountsSeeder extends Seeder
         }
 
         $organizer = User::withTrashed()->updateOrCreate(
-            ['email' => 'organizer@example.com'],
+            ['email' => 'organizer@hexa.com'],
             [
                 'name' => 'Demo Organizer',
                 'password' => Hash::make('Demo@12345'),
@@ -52,7 +52,7 @@ class DemoAccountsSeeder extends Seeder
         }
 
         $officer = User::withTrashed()->updateOrCreate(
-            ['email' => 'security@example.com'],
+            ['email' => 'security@hexa.com'],
             [
                 'name' => 'Demo Security Officer',
                 'password' => Hash::make('Demo@12345'),
