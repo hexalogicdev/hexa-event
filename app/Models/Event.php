@@ -25,6 +25,7 @@ class Event extends Model
         'banner_image',
         'registration_fields',
         'price',
+        'ticketing_type',
         'is_active'
     ];
     public function admin()
@@ -34,6 +35,26 @@ class Event extends Model
     public function attendees()
     {
         return $this->hasMany(Attendee::class);
+    }
+    public function ticketTypes()
+    {
+        return $this->hasMany(TicketType::class)->orderBy('sort_order');
+    }
+    public function securityOfficers()
+    {
+        return $this->belongsToMany(User::class, 'event_security_officer')->withTimestamps();
+    }
+    public function checkInAttempts()
+    {
+        return $this->hasMany(CheckInAttempt::class);
+    }
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+    public function admissionTickets()
+    {
+        return $this->hasMany(Ticket::class);
     }
     protected $casts = [
         'event_start_date' => 'datetime',

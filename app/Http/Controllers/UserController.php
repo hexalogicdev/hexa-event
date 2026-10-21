@@ -26,9 +26,9 @@ class UserController extends Controller
   }
   public function index()
   {
-    if (Auth::user()->role->name == "admin") {
-      $teachers = User::where('user_type', 'teacher')->get();
-      return view('users.teachers', ['teachers' => $teachers]);
+    if (Auth::user()->isSuperadmin()) {
+      $organizers = User::withCount('events')->where('user_type', 'organizer')->latest()->get();
+      return view('users.organizers', compact('organizers'));
     } else {
       return redirect()->back()->with('error', 'No Access');
     }
@@ -39,7 +39,7 @@ class UserController extends Controller
    */
   public function create()
   {
-    //
+    abort(404);
   }
 
   /**
@@ -79,15 +79,17 @@ class UserController extends Controller
         ->withErrors($validator, 'add_employee')
         ->withInput();
     }
-    $role = Role::where('name', 'teacher')->first();
+    abort_unless(Auth::user()?->isSuperadmin(), 403);
+    $role = Role::where('name', 'organizer')->firstOrFail();
     $user = new User();
     $user->name = $request->name;
     $user->email = $request->email;
     $user->password = bcrypt($request->password);
-    $user->user_type = 'teacher';
+    $user->user_type = 'organizer';
     $user->role_id = $role->id;
+    $user->status = true;
     $user->save();
-    return redirect()->back()->with('success', 'Teacher created');
+    return redirect()->back()->with('success', 'Organizer account created successfully.');
   }
 
   /**
@@ -95,7 +97,7 @@ class UserController extends Controller
    */
   public function show(string $id)
   {
-    //
+    abort(404);
   }
 
   /**
@@ -103,7 +105,7 @@ class UserController extends Controller
    */
   public function edit(string $id)
   {
-    //
+    abort(404);
   }
 
   /**
@@ -111,6 +113,7 @@ class UserController extends Controller
    */
   public function update(Request $request, string $id)
   {
+    abort_unless(Auth::user()?->isSuperadmin(), 403);
     $user = User::find($id);
     if ($user) {
       if ($request->type == "change_password") {
@@ -168,9 +171,9 @@ class UserController extends Controller
       $user->name = $request->name;
       $user->email = $request->email;
       $user->save();
-      return redirect()->back()->with('success', 'Teacher updated');
+        return redirect()->back()->with('success', 'Organizer updated');
     }
-    return redirect()->back()->with('error', 'Teacher not found');
+    return redirect()->back()->with('error', 'Organizer not found');
   }
 
   /**
@@ -178,6 +181,7 @@ class UserController extends Controller
    */
   public function destroy(string $id)
   {
+    abort_unless(Auth::user()?->isSuperadmin(), 403);
     $user = User::find($id);
 
     if ($user) {
@@ -200,7 +204,10 @@ class UserController extends Controller
   public function dashboard()
   {
     $user = Auth::user();
-    $isAdmin = $user?->role?->name === 'admin';
+    if ($user->isSecurityOfficer()) {
+      return redirect()->route('attendee.qr.scan');
+    }
+    $isAdmin = $user?->isSuperadmin();
     $eventQuery = Event::withCount('attendees')->latest();
 
     if (! $isAdmin) {
@@ -227,6 +234,7 @@ class UserController extends Controller
     $pendingCount = max($attendees - $checkedInCount, 0);
     $recentAttendees = $attendeeQuery->take(5)->get();
     $attendanceRate = $attendees > 0 ? round(($checkedInCount / $attendees) * 100) : 0;
+    $organizerCount = $isAdmin ? User::where('user_type', 'organizer')->count() : null;
 
     return view('dashboards.admin_dashboard', compact(
       'eventsCount',
@@ -240,7 +248,8 @@ class UserController extends Controller
       'recentAttendees',
       'checkedInCount',
       'pendingCount',
-      'attendanceRate'
+      'attendanceRate',
+      'organizerCount'
     ));
   }
 
@@ -325,8 +334,8 @@ class UserController extends Controller
 
   public function changeStatus($model, $id)
   {
-    $modelClass = 'App\\Models\\' . $model;
-    $record = $modelClass::find($id);
+    abort_unless(Auth::user()?->isSuperadmin() && $model === 'User', 403);
+    $record = User::where('user_type', 'organizer')->find($id);
     if ($record) {
       $record->status = $record->status == 1 ? 0 : 1;
       $record->save();

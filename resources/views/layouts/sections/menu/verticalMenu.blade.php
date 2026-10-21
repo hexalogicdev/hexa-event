@@ -1,6 +1,5 @@
 @php
     use Illuminate\Support\Facades\Route;
-    $currentEnv = env('APP_ENV'); // Get the current environment
     $configData = Helper::appClasses();
 @endphp
 
@@ -8,8 +7,9 @@
     @if (!isset($navbarFull))
         <div class="app-brand">
             <a href="{{ route('dashboard') }}" class="app-brand-link">
-                <span class="p-5">@include('_partials.macros')</span>
+                <img src="{{ asset('assets/img/hexa-logo.png') }}" alt="EventOps" class="ems-sidebar-logo">
             </a>
+            <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-xl-none"><i class="ti ti-x"></i></a>
         </div>
     @endif
 
@@ -18,10 +18,7 @@
     <ul class="menu-inner py-1">
         @foreach ($menuData[0]->menu as $menu)
             {{-- Check if user has access to this menu item and if it matches the environment --}}
-            @if (isset($menu->roles) &&
-                    in_array(auth()->user()->user_type, $menu->roles) &&
-                    (!isset($menu->env) || in_array($currentEnv, $menu->env)))
-                {{-- Check if env matches or is not set --}}
+            @if (isset($menu->roles) && in_array(auth()->user()->user_type, $menu->roles))
 
                 @if (isset($menu->menuHeader))
                     <li class="menu-header small">
@@ -32,7 +29,8 @@
                         $activeClass = null;
                         $currentRouteName = Route::currentRouteName();
 
-                        if ($currentRouteName === $menu->slug) {
+                        if ($currentRouteName === $menu->slug ||
+                            (!isset($menu->submenu) && $currentRouteName && str_starts_with($currentRouteName, $menu->slug . '.'))) {
                             $activeClass = 'active';
                         } elseif (isset($menu->submenu)) {
                             if (gettype($menu->slug) === 'array') {
@@ -77,4 +75,12 @@
             @endif
         @endforeach
     </ul>
+    <div class="ems-sidebar-account">
+        <div class="ems-sidebar-avatar">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</div>
+        <div class="min-w-0">
+            <div class="fw-semibold text-truncate">{{ auth()->user()->name }}</div>
+            <div class="small text-muted text-truncate">{{ auth()->user()->isSuperadmin() ? 'Superadmin' : (auth()->user()->isSecurityOfficer() ? 'Security officer' : 'Organizer') }}</div>
+        </div>
+        <a href="{{ route('profile.show') }}" class="ms-auto" aria-label="Account settings"><i class="ti ti-settings"></i></a>
+    </div>
 </aside>

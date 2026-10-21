@@ -31,6 +31,9 @@
                     <a href="{{ route('events.report', $event->id) }}" class="btn btn-outline-light">
                         Reports
                     </a>
+                    <a href="{{ route('events.security-officers', $event->id) }}" class="btn btn-outline-light">
+                        Security team
+                    </a>
                 </div>
             </div>
 
@@ -131,6 +134,7 @@
                         <a href="{{ route('events.fields', $event->id) }}" class="btn btn-outline-light">Manage registration fields</a>
                         <a href="{{ route('events.attendees', $event->id) }}" class="btn btn-outline-light">Manage attendees</a>
                         <a href="{{ route('events.report', $event->id) }}" class="btn btn-outline-light">Attendance report</a>
+                        <a href="{{ route('events.security-officers', $event->id) }}" class="btn btn-outline-light">Assign security team</a>
                     </div>
                 </div>
             </div>

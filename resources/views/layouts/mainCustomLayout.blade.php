@@ -10,7 +10,7 @@
     $contentNavbar = $contentNavbar ?? true;
     $containerNav = $containerNav ?? 'container-fluid';
     $isNavbar = $isNavbar ?? true;
-    $isMenu = $isMenu ?? false;
+    $isMenu = ($isMenu ?? true) && !(auth()->check() && auth()->user()->isSecurityOfficer());
     $isFlex = $isFlex ?? false;
     $isFooter = $isFooter ?? true;
     $customizerHidden = $customizerHidden ?? '';

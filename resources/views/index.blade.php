@@ -1,191 +1,93 @@
 @extends('layouts.app')
-
-@section('title', 'Event Management Platform')
+@section('title', 'Discover Events')
 
 @section('content')
-    <section class="container py-4 py-lg-5">
-        <div class="ems-hero ems-fade-up">
-            <div class="row align-items-center g-4 position-relative">
-                <div class="col-lg-7">
-                    <div class="p-4 p-lg-5">
-                        {{-- <img src="{{ asset('assets/img/hexa-logo.png') }}" alt="HexaLogicDev" class="ems-hero-logo mb-4"> --}}
-                        {{-- <span class="ems-kicker mb-3">
-                            <i class="ti ti-globe"></i>
-                            International event operations
-                        </span> --}}
-                        <h5 class=" fw-bold mb-3">
-                            Plan public events, issue QR bookings, and check in attendees with confidence.
-                        </h5>
-                        <p class="lead mb-4">
-                            One platform for organizers, entrance staff, and attendees. Built for responsive,
-                            multilingual use across regions, time zones, and devices.
-                        </p>
-                        <div class="d-flex flex-wrap gap-3">
-                            <a href="{{ route('login') }}" class="btn btn-light px-4">
-                                <i class="ti ti-login me-2"></i>
-                                Log in
-                            </a>
-
-                            <a href="{{ route('register') }}" class="btn btn-outline-light px-4">
-                                <i class="ti ti-user-plus me-2"></i>
-                                Create account
-                            </a>
-                        </div>
-                        <div class="row g-3 mt-4">
-                            <div class="col-sm-4">
-                                <div class="bg-white bg-opacity-10 rounded-4 p-3 h-100">
-                                    <div class="small text-white-50">Public bookings</div>
-                                    <div class="h4 mb-0 fw-bold">Share links</div>
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="bg-white bg-opacity-10 rounded-4 p-3 h-100">
-                                    <div class="small text-white-50">Entrance control</div>
-                                    <div class="h4 mb-0 fw-bold">QR verify</div>
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="bg-white bg-opacity-10 rounded-4 p-3 h-100">
-                                    <div class="small text-white-50">Reporting</div>
-                                    <div class="h4 mb-0 fw-bold">Export cleanly</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+<section class="ems-public-hero">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-7">
+                <span class="ems-public-eyebrow"><i class="ti ti-sparkles"></i> Events worth showing up for</span>
+                <h1>Find your next<br><span>great experience.</span></h1>
+                <p>Explore upcoming events, compare ticket options, and reserve your place through a fast, straightforward booking experience.</p>
+                <div class="d-flex flex-column flex-sm-row gap-3">
+                    <a href="#events" class="btn btn-dark btn-lg px-4">Browse upcoming events <i class="ti ti-arrow-down ms-2"></i></a>
+                    <a href="{{ route('login') }}" class="btn btn-outline-dark btn-lg px-4">Organizer login</a>
                 </div>
-                <div class="col-lg-5">
-                    <div class="p-4 p-lg-5">
-                        <div class="ems-card ems-card--raised bg-white text-dark">
-                            <div class="ems-card-body">
-                                <div class="d-flex align-items-center justify-content-between mb-4">
-                                    <div>
-                                        <div class="text-uppercase text-muted small fw-semibold">Live overview</div>
-                                        <h3 class="mb-0 text-white">Everything in one flow</h3>
-                                    </div>
-                                    <span class="ems-badge ems-badge--info">Global-ready</span>
-                                </div>
-                                <div class="ems-grid ems-grid--2 mb-4">
-                                    <div class="ems-stat">
-                                        <div class="ems-stat__label">Organizers</div>
-                                        <div class="ems-stat__value">4</div>
-                                        <div class="ems-stat__meta">Role-based access</div>
-                                    </div>
-                                    <div class="ems-stat">
-                                        <div class="ems-stat__label">Check-in</div>
-                                        <div class="ems-stat__value">QR</div>
-                                        <div class="ems-stat__meta">Secure token flow</div>
-                                    </div>
-                                </div>
-                                <div class="ems-step">
-                                    <div class="ems-step__index">1</div>
-                                    <div>
-                                        <div class="fw-semibold text-white">Create an event</div>
-                                        <div class="text-muted small">Add schedules, limits, and custom fields.</div>
-                                    </div>
-                                </div>
-                                <div class="ems-step">
-                                    <div class="ems-step__index">2</div>
-                                    <div>
-                                        <div class="fw-semibold text-white">Share the link</div>
-                                        <div class="text-muted small">Open public registration on any device.</div>
-                                    </div>
-                                </div>
-                                <div class="ems-step">
-                                    <div class="ems-step__index">3</div>
-                                    <div>
-                                        <div class="fw-semibold text-white">Verify at the door</div>
-                                        <div class="text-muted small">Use the QR token and check-in password.</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                <div class="ems-public-trust">
+                    <span><i class="ti ti-shield-check"></i> Secure registration</span>
+                    <span><i class="ti ti-ticket"></i> Clear ticket options</span>
+                    <span><i class="ti ti-device-mobile"></i> Mobile friendly</span>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="ems-public-featured">
+                    @if($events->first()?->banner_image)
+                        <img src="{{ asset('storage/'.$events->first()->banner_image) }}" alt="{{ $events->first()->name }}">
+                    @else
+                        <div class="ems-public-featured__placeholder"><i class="ti ti-calendar-event"></i></div>
+                    @endif
+                    <div class="ems-public-featured__content">
+                        <span>Next up</span>
+                        <h2>{{ $events->first()?->name ?? 'New events coming soon' }}</h2>
+                        @if($events->first())
+                            <p><i class="ti ti-calendar me-2"></i>{{ $events->first()->event_start_date?->format('D, d M Y') }}</p>
+                            <p><i class="ti ti-map-pin me-2"></i>{{ $events->first()->location }}</p>
+                            <a href="{{ route('events.registration', $events->first()->event_code) }}">View event <i class="ti ti-arrow-up-right"></i></a>
+                        @else
+                            <p>Our next public event will appear here as soon as booking opens.</p>
+                        @endif
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <section class="container py-4 py-lg-5">
+<section class="ems-public-events" id="events">
+    <div class="container">
+        <div class="ems-public-section-head">
+            <div><span class="ems-public-eyebrow">Upcoming calendar</span><h2>Choose an event</h2><p>Everything you need to decide, presented clearly.</p></div>
+            <span class="ems-public-count">{{ $events->count() }} {{ \Illuminate\Support\Str::plural('event', $events->count()) }}</span>
+        </div>
         <div class="row g-4">
-            <div class="col-lg-4">
-                <div class="ems-card h-100">
-                    <div class="ems-card-body">
-                        <span class="ems-chip mb-3">
-                            <i class="ti ti-layout-dashboard"></i>
-                            Organizer dashboard
-                        </span>
-                        <h3 class="ems-section-title h4">Control the full event lifecycle</h3>
-                        <p class="ems-section-subtitle mb-0">
-                            Keep every event, attendee, and check-in visible in a single responsive workspace.
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="ems-card h-100">
-                    <div class="ems-card-body">
-                        <span class="ems-chip mb-3">
-                            <i class="ti ti-qrcode"></i>
-                            Verification
-                        </span>
-                        <h3 class="ems-section-title h4">Simple mobile check-in</h3>
-                        <p class="ems-section-subtitle mb-0">
-                            Scan the booking QR, enter the event password, and confirm attendance in seconds.
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="ems-card h-100">
-                    <div class="ems-card-body">
-                        <span class="ems-chip mb-3">
-                            <i class="ti ti-language"></i>
-                            International-ready
-                        </span>
-                        <h3 class="ems-section-title h4">Designed for global teams</h3>
-                        <p class="ems-section-subtitle mb-0">
-                            Clear hierarchy, responsive layouts, and locale-friendly navigation make it easy to adopt
-                            anywhere.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="container py-4 py-lg-5">
-        <div class="ems-surface">
-            <div class="ems-card-body">
-                <div class="row align-items-center g-4">
-                    <div class="col-lg-5">
-                        <h2 class="ems-section-title display-6">Built for the flow your team actually uses</h2>
-                        <p class="ems-section-subtitle mb-4">
-                            Organizers publish events, attendees register from a clean public link, and entrance staff
-                            verify entries on a fast mobile-first screen.
-                        </p>
-                        <a href="{{ route('login') }}" class="btn btn-primary px-4">Open dashboard</a>
-                    </div>
-                    <div class="col-lg-7">
-                        <div class="ems-grid ems-grid--3">
-                            <div class="ems-stat">
-                                <div class="ems-stat__label">Public access</div>
-                                <div class="ems-stat__value text-black">1 link</div>
-                                <div class="ems-stat__meta">Share once, register anywhere.</div>
-                            </div>
-                            <div class="ems-stat">
-                                <div class="ems-stat__label">Safety</div>
-                                <div class="ems-stat__value text-black">Secure</div>
-                                <div class="ems-stat__meta">QR token plus password validation.</div>
-                            </div>
-                            <div class="ems-stat">
-                                <div class="ems-stat__label">Reports</div>
-                                <div class="ems-stat__value text-black">CSV</div>
-                                <div class="ems-stat__meta">Track attendance, exports, and answers.</div>
-                            </div>
+            @forelse($events as $event)
+                @php
+                    $soldOut = $event->attendees_count >= $event->max_attendees;
+                    $fromPrice = $event->ticketing_type === 'ticketed' ? $event->ticketTypes->min('price') : 0;
+                    $remaining = max($event->max_attendees - $event->attendees_count, 0);
+                @endphp
+                <div class="col-md-6 col-xl-4">
+                    <article class="ems-public-event-card">
+                        <div class="ems-public-event-card__media">
+                            @if($event->banner_image)<img src="{{ asset('storage/'.$event->banner_image) }}" alt="{{ $event->name }}">@else<div class="ems-public-event-card__placeholder"><i class="ti ti-calendar-event"></i></div>@endif
+                            <span class="ems-public-date"><strong>{{ $event->event_start_date?->format('d') }}</strong>{{ $event->event_start_date?->format('M') }}</span>
+                            <span class="ems-public-price">{{ $soldOut ? 'Sold out' : ($fromPrice > 0 ? 'From '.number_format($fromPrice, 2) : 'Free') }}</span>
                         </div>
-                    </div>
+                        <div class="ems-public-event-card__body">
+                            <div class="ems-public-event-meta"><span><i class="ti ti-map-pin"></i>{{ $event->location }}</span></div>
+                            <h3>{{ $event->name }}</h3>
+                            <p>{{ \Illuminate\Support\Str::limit($event->description ?: 'View event information and reserve your place online.', 110) }}</p>
+                            <div class="ems-public-capacity"><span>{{ $soldOut ? 'No places remaining' : $remaining.' places remaining' }}</span><span>{{ $event->attendees_count }}/{{ $event->max_attendees }}</span></div>
+                            <div class="progress"><div class="progress-bar" style="width: {{ min(($event->attendees_count / max($event->max_attendees, 1))*100, 100) }}%"></div></div>
+                            <a href="{{ route('events.registration', $event->event_code) }}" class="btn btn-dark w-100 {{ $soldOut ? 'disabled' : '' }}">{{ $soldOut ? 'Fully booked' : 'View details and book' }}</a>
+                        </div>
+                    </article>
                 </div>
-            </div>
+            @empty
+                <div class="col-12"><div class="ems-public-empty"><i class="ti ti-calendar-off"></i><h3>No events are open right now</h3><p>New public events will appear here when registration opens.</p></div></div>
+            @endforelse
         </div>
-    </section>
+    </div>
+</section>
+
+<section class="ems-public-how">
+    <div class="container">
+        <div class="text-center mx-auto mb-5" style="max-width: 620px"><span class="ems-public-eyebrow">Simple by design</span><h2>Book your place in minutes</h2><p>Clear information and no unnecessary account creation.</p></div>
+        <div class="row g-4">
+            @foreach([['01','Choose','Browse upcoming events and open the one that interests you.'],['02','Select','Review admission options and select the right ticket.'],['03','Register','Enter your details and receive your booking confirmation.']] as [$number,$title,$copy])
+                <div class="col-md-4"><div class="ems-public-step"><span>{{ $number }}</span><h3>{{ $title }}</h3><p>{{ $copy }}</p></div></div>
+            @endforeach
+        </div>
+    </div>
+</section>
 @endsection

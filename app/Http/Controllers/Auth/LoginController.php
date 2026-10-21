@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -41,5 +42,19 @@ class LoginController extends Controller
     public function showLoginForm(){
       $pageConfigs = ['myLayout' => 'blank'];
       return view('auth.login', ['pageConfigs' => $pageConfigs]);
+    }
+
+    protected function credentials(Request $request): array
+    {
+      return [
+        $this->username() => $request->input($this->username()),
+        'password' => $request->input('password'),
+        'status' => true,
+      ];
+    }
+
+    protected function authenticated(Request $request, $user)
+    {
+      return redirect()->intended($user->isSecurityOfficer() ? route('attendee.qr.scan') : route('dashboard'));
     }
 }

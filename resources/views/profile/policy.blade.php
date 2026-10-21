@@ -16,7 +16,7 @@
                 </div>
                 <div class="d-flex flex-wrap gap-2">
                     <a href="{{ url('/') }}" class="btn btn-outline-light">Home</a>
-                    <a href="{{ route('attendee.qr.scan') }}" class="btn btn-primary">Scan QR</a>
+                    <a href="{{ url('/') }}#events" class="btn btn-primary">Browse events</a>
                 </div>
             </div>
 

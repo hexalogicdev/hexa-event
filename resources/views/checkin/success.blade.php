@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.layoutMaster')
 
 @section('title', 'Check-In Successful')
 
@@ -104,12 +104,12 @@
                                     <i class="ti ti-scan me-2"></i>
                                     Scan next attendee
                                 </a>
-                                @auth
+                                @unless(auth()->user()->isSecurityOfficer())
                                     <a href="{{ route('events.attendees', $attendee->event_id) }}" class="btn btn-primary flex-grow-1">
                                         <i class="ti ti-users me-2"></i>
                                         Open attendee list
                                     </a>
-                                @endauth
+                                @endunless
                             </div>
                         </div>
                     </div>

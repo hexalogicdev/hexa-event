@@ -2,266 +2,46 @@
 @section('title', 'Dashboard')
 
 @section('content')
-    @php
-        $isAdmin = auth()->user()?->role?->name === 'admin';
-        $scopeLabel = $isAdmin ? 'Owner workspace' : 'Organizer workspace';
-        $primaryEvent = $recentEvents->first();
-        $attendanceRate = $attendees > 0 ? round(($checkedInCount / $attendees) * 100) : 0;
-    @endphp
+@php $isAdmin = auth()->user()->isSuperadmin(); @endphp
+<div class="ems-admin-page">
+  <div class="ems-page-heading">
+    <div><span class="ems-page-eyebrow">{{ $isAdmin ? 'Platform overview' : 'Organizer overview' }}</span><h1>Welcome back, {{ auth()->user()->name }}</h1><p>{{ $isAdmin ? 'Monitor organizers, events, registrations, and venue activity across the platform.' : 'Manage your events, registrations, ticket inventory, and check-in activity.' }}</p></div>
+    <div class="ems-page-actions"><a href="{{ route('events.index') }}" class="btn btn-outline-secondary"><i class="ti ti-calendar-event me-2"></i>All events</a><a href="{{ route('events.create') }}" class="btn btn-primary"><i class="ti ti-plus me-2"></i>Create event</a></div>
+  </div>
 
-    <div class="ems-dashboard-shell">
-        <div class="ems-dashboard-frame">
-            <div class="ems-dashboard-topbar">
-                <div class="d-flex align-items-center gap-3 flex-wrap">
-                    {{-- <img src="{{ asset('assets/img/hexa-logo.png') }}" alt="HexaLogicDev" class="ems-dashboard-brand"> --}}
-                    <div>
-                        <div class="ems-dashboard-kicker">{{ $scopeLabel }}</div>
-                        <h1 class="ems-dashboard-title mb-0">Event management dashboard</h1>
-                    </div>
-                </div>
+  <div class="ems-kpi-grid">
+    <div class="ems-kpi-card"><span class="ems-kpi-icon is-blue"><i class="ti ti-calendar-event"></i></span><div><small>Total events</small><strong>{{ number_format($eventsCount) }}</strong><span>{{ $publishedEvents }} published, {{ $draftEvents }} draft</span></div></div>
+    <div class="ems-kpi-card"><span class="ems-kpi-icon is-violet"><i class="ti ti-users"></i></span><div><small>Registrations</small><strong>{{ number_format($attendees) }}</strong><span>Across visible events</span></div></div>
+    <div class="ems-kpi-card"><span class="ems-kpi-icon is-green"><i class="ti ti-user-check"></i></span><div><small>Checked in</small><strong>{{ number_format($checkedInCount) }}</strong><span>{{ $attendanceRate }}% attendance rate</span></div></div>
+    <div class="ems-kpi-card"><span class="ems-kpi-icon is-amber"><i class="ti ti-{{ $isAdmin ? 'building-community' : 'currency-pound' }}"></i></span><div><small>{{ $isAdmin ? 'Organizers' : 'Recorded revenue' }}</small><strong>{{ $isAdmin ? number_format($organizerCount) : 'GBP '.number_format($revenue, 2) }}</strong><span>{{ $isAdmin ? 'Managed accounts' : 'Completed registrations' }}</span></div></div>
+  </div>
 
-                <div class="d-flex flex-wrap gap-2">
-                    <a href="{{ route('events.index') }}" class="btn btn-outline-light btn-sm">View events</a>
-                    <a href="{{ route('events.create') }}" class="btn btn-primary btn-sm">Create event</a>
-                </div>
-            </div>
-
-            <div class="row g-4 align-items-start">
-                <div class="col-12">
-                    <div class="ems-dashboard-hero">
-                        <div class="d-flex flex-column flex-xl-row justify-content-between gap-4">
-                            <div class="pe-xl-5">
-                                <span class="ems-badge ems-badge--info mb-3">International workspace</span>
-                                <h5 class="ems-dashboard-hero__text">A calm, premium operations view for your events.</h5>
-                                <p class="ems-dashboard-hero__text mb-0">
-                                    Monitor event publishing, bookings, and QR check-ins from a clean dashboard that feels
-                                    built for global event teams.
-                                </p>
-                            </div>
-
-                            <div class="ems-dashboard-mini">
-                                <div class="ems-dashboard-mini__label">Primary event</div>
-                                <div class="ems-dashboard-mini__value">{{ $primaryEvent?->name ?? 'No published event yet' }}</div>
-                                <div class="ems-dashboard-mini__meta">{{ $primaryEvent?->location ?: 'Create your first event to start tracking activity.' }}</div>
-                            </div>
-                        </div>
-
-                        <div class="ems-dashboard-metrics">
-                            <div class="ems-dashboard-metric">
-                                <div class="label">Total events</div>
-                                <div class="value">{{ $eventsCount }}</div>
-                            </div>
-                            <div class="ems-dashboard-metric">
-                                <div class="label">Published</div>
-                                <div class="value">{{ $publishedEvents }}</div>
-                            </div>
-                            <div class="ems-dashboard-metric">
-                                <div class="label">Draft</div>
-                                <div class="value">{{ $draftEvents }}</div>
-                            </div>
-                            <div class="ems-dashboard-metric">
-                                <div class="label">Upcoming</div>
-                                <div class="value">{{ $upcomingEvents->count() }}</div>
-                            </div>
-                            <div class="ems-dashboard-metric">
-                                <div class="label">Registrations</div>
-                                <div class="value">{{ $attendees }}</div>
-                            </div>
-                            <div class="ems-dashboard-metric">
-                                <div class="label">Checked in</div>
-                                <div class="value">{{ $checkedInCount }}</div>
-                            </div>
-                            <div class="ems-dashboard-metric">
-                                <div class="label">Pending</div>
-                                <div class="value">{{ $pendingCount }}</div>
-                            </div>
-                            <div class="ems-dashboard-metric">
-                                <div class="label">Revenue</div>
-                                <div class="value">{{ number_format($revenue ?? 0) }}</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-xl-7">
-                    <div class="ems-dashboard-card h-100">
-                        <div class="ems-dashboard-card__head">
-                            <div>
-                                <h2>Recent events</h2>
-                                <p>Bookings, venue details, and audience counts.</p>
-                            </div>
-                            <a href="{{ route('events.create') }}" class="btn btn-outline-light btn-sm">New event</a>
-                        </div>
-                        <div class="ems-dashboard-card__body">
-                            <div class="ems-event-list">
-                                @forelse ($recentEvents as $event)
-                                    <article class="ems-event-row">
-                                        <div class="ems-event-row__icon">
-                                            <i class="ti ti-calendar-event"></i>
-                                        </div>
-                                        <div class="flex-grow-1">
-                                            <div class="d-flex justify-content-between gap-3 flex-wrap">
-                                                <div>
-                                                    <div class="ems-event-row__title">{{ $event->name }}</div>
-                                                    <div class="ems-event-row__meta">{{ $event->location ?: 'Location not set' }}</div>
-                                                </div>
-                                                <span class="ems-pill-dark">
-                                                    {{ $event->event_start_date?->format('d M Y') ?? 'TBA' }}
-                                                </span>
-                                            </div>
-                                            <div class="ems-event-row__footer">
-                                                <span>
-                                                    Booking window
-                                                    {{ $event->booking_start_date?->format('d M') ?? 'TBA' }}
-                                                    -
-                                                    {{ $event->booking_end_date?->format('d M') ?? 'TBA' }}
-                                                </span>
-                                                <span>{{ $event->attendees_count ?? 0 }} attendees</span>
-                                            </div>
-                                        </div>
-                                    </article>
-                                @empty
-                                    <div class="ems-empty-state">
-                                        <div class="ems-empty-state__title">No events yet</div>
-                                        <p class="mb-0">Create an event to populate this dashboard.</p>
-                                    </div>
-                                @endforelse
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-xl-5">
-                    <div class="d-grid gap-4 h-100">
-                        <div class="ems-dashboard-card ems-dashboard-card--soft">
-                            <div class="ems-dashboard-card__head">
-                                <div>
-                                    <h2>Booking overview</h2>
-                                    <p>Quick operational snapshot.</p>
-                                </div>
-                            </div>
-                            <div class="ems-dashboard-card__body d-grid gap-3">
-                                <div class="ems-insight-block">
-                                    <div class="label">Workspace mode</div>
-                                    <div class="value">{{ $isAdmin ? 'Full platform access' : 'My event portfolio' }}</div>
-                                    <div class="meta">{{ $isAdmin ? 'All events and attendees are visible.' : 'Only your own events and attendees are visible.' }}</div>
-                                </div>
-
-                                <div class="ems-insight-block">
-                                    <div class="label">Attendance rate</div>
-                                    <div class="value">{{ $attendanceRate }}%</div>
-                                    <div class="meta">Calculated from checked-in attendees in the current scope.</div>
-                                </div>
-
-                                <div class="ems-insight-block">
-                                    <div class="label">Quick actions</div>
-                                    <div class="d-grid gap-2 mt-3">
-                                        <a href="{{ route('events.create') }}" class="btn btn-primary">Create new event</a>
-                                        <a href="{{ route('events.index') }}" class="btn btn-outline-light">Open event list</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="ems-dashboard-card ems-dashboard-card--soft">
-                            <div class="ems-dashboard-card__head">
-                                <div>
-                                    <h2>Upcoming events</h2>
-                                    <p>Next items on your schedule.</p>
-                                </div>
-                            </div>
-                            <div class="ems-dashboard-card__body d-grid gap-3">
-                                @forelse ($upcomingEvents->take(3) as $event)
-                                    <div class="ems-insight-block">
-                                        <div class="label">{{ $event->event_start_date?->format('d M Y') }}</div>
-                                        <div class="value">{{ $event->name }}</div>
-                                        <div class="meta">{{ $event->location ?: 'Location not set' }}</div>
-                                    </div>
-                                @empty
-                                    <div class="ems-empty-state">
-                                        <div class="ems-empty-state__title">No upcoming events</div>
-                                        <p class="mb-0">Publish an event to see it here.</p>
-                                    </div>
-                                @endforelse
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row g-4 align-items-start">
-                <div class="col-xl-8">
-                    <div class="ems-dashboard-card h-100">
-                        <div class="ems-dashboard-card__head">
-                            <div>
-                                <h2>Recent registrations</h2>
-                                <p>Latest registrations and status badges.</p>
-                            </div>
-                        </div>
-                        <div class="ems-dashboard-card__body">
-                            <div class="ems-attendee-list">
-                                @forelse ($recentAttendees as $attendee)
-                                    <article class="ems-attendee-row">
-                                        <div class="ems-avatar">
-                                            {{ strtoupper(substr($attendee->name, 0, 1)) }}
-                                        </div>
-                                        <div class="flex-grow-1">
-                                            <div class="d-flex justify-content-between gap-3 flex-wrap">
-                                                <div>
-                                                    <div class="ems-event-row__title">{{ $attendee->name }}</div>
-                                                    <div class="ems-event-row__meta">{{ $attendee->email }}</div>
-                                                </div>
-                                                <span class="ems-status {{ $attendee->checked_in ? 'is-success' : 'is-waiting' }}">
-                                                    {{ $attendee->checked_in ? 'Checked in' : 'Pending' }}
-                                                </span>
-                                            </div>
-                                            <div class="ems-attendee-row__meta">
-                                                <span>{{ $attendee->event?->name ?? 'Event' }}</span>
-                                                <span>{{ $attendee->checked_in_at?->format('h:i A') ?? 'Awaiting check-in' }}</span>
-                                            </div>
-                                        </div>
-                                    </article>
-                                @empty
-                                    <div class="ems-empty-state">
-                                        <div class="ems-empty-state__title">No attendee data yet</div>
-                                        <p class="mb-0">Bookings will appear here as guests register.</p>
-                                    </div>
-                                @endforelse
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-xl-4">
-                    <div class="ems-dashboard-card ems-dashboard-card--soft h-100">
-                        <div class="ems-dashboard-card__head">
-                            <div>
-                                <h2>Workspace snapshot</h2>
-                                <p>Shortcuts for daily operations.</p>
-                            </div>
-                        </div>
-                        <div class="ems-dashboard-card__body d-grid gap-3">
-                            <div class="ems-insight-block">
-                                <div class="label">Scope</div>
-                                <div class="value">{{ $isAdmin ? 'All events' : 'Organizer events' }}</div>
-                                <div class="meta">The dashboard respects your current role.</div>
-                            </div>
-
-                            <div class="ems-insight-block">
-                                <div class="label">Latest activity</div>
-                                <div class="value">{{ $recentAttendees->first()?->name ?? 'No activity yet' }}</div>
-                                <div class="meta">{{ $recentAttendees->first()?->event?->name ?? 'Recent registrations will appear here.' }}</div>
-                            </div>
-
-                            <div class="ems-insight-block">
-                                <div class="label">Performance</div>
-                                <div class="value">{{ $eventsCount > 0 ? 'Live' : 'Starting out' }}</div>
-                                <div class="meta">Keep adding events to populate the premium dashboard view.</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <div class="row g-4">
+    <div class="col-xl-8"><section class="ems-admin-card h-100">
+      <div class="ems-admin-card__header"><div><h2>Recent events</h2><p>Upcoming activity and registration progress.</p></div><a href="{{ route('events.index') }}" class="btn btn-sm btn-outline-secondary">View all</a></div>
+      <div class="table-responsive"><table class="table ems-admin-table align-middle mb-0"><thead><tr><th>Event</th><th>Date</th><th>Status</th><th>Registrations</th><th class="text-end">Action</th></tr></thead><tbody>
+      @forelse($recentEvents as $event)
+        <tr><td><div class="ems-table-primary">{{ $event->name }}</div><div class="ems-table-secondary"><i class="ti ti-map-pin"></i>{{ $event->location ?: 'Location not set' }}</div></td><td><div class="ems-table-primary">{{ $event->event_start_date?->format('d M Y') }}</div><div class="ems-table-secondary">{{ $event->event_start_date?->format('H:i') }}</div></td><td><span class="ems-status-pill {{ $event->status === 'published' ? 'is-success' : 'is-neutral' }}">{{ ucfirst($event->status) }}</span></td><td><div class="ems-table-primary">{{ number_format($event->attendees_count ?? 0) }} / {{ number_format($event->max_attendees) }}</div><div class="ems-progress"><span style="width:{{ min(100, (($event->attendees_count ?? 0) / max(1, $event->max_attendees)) * 100) }}%"></span></div></td><td class="text-end"><a href="{{ route('events.show', $event) }}" class="btn btn-sm btn-light">Manage</a></td></tr>
+      @empty
+        <tr><td colspan="5"><div class="ems-table-empty"><i class="ti ti-calendar-plus"></i><strong>No events yet</strong><span>Create your first event to begin accepting registrations.</span><a href="{{ route('events.create') }}" class="btn btn-primary btn-sm">Create event</a></div></td></tr>
+      @endforelse
+      </tbody></table></div>
+    </section></div>
+    <div class="col-xl-4">
+      <section class="ems-admin-card mb-4"><div class="ems-admin-card__header"><div><h2>Quick actions</h2><p>Common management tasks.</p></div></div><div class="ems-quick-actions">
+        <a href="{{ route('events.create') }}"><span><i class="ti ti-calendar-plus"></i></span><div><strong>Create an event</strong><small>Configure tickets and registration</small></div><i class="ti ti-chevron-right"></i></a>
+        @if($isAdmin)<a href="{{ route('User.index') }}"><span><i class="ti ti-building-community"></i></span><div><strong>Manage organizers</strong><small>Onboard and control access</small></div><i class="ti ti-chevron-right"></i></a>@endif
+        <a href="{{ route('security-officers.index') }}"><span><i class="ti ti-shield-lock"></i></span><div><strong>Security team</strong><small>Manage scanner accounts</small></div><i class="ti ti-chevron-right"></i></a>
+        <a href="{{ route('attendee.qr.scan') }}"><span><i class="ti ti-scan"></i></span><div><strong>Open scanner</strong><small>Process venue check-ins</small></div><i class="ti ti-chevron-right"></i></a>
+      </div></section>
+      <section class="ems-admin-card"><div class="ems-admin-card__header"><div><h2>Registration status</h2><p>Live attendance summary.</p></div></div><div class="ems-attendance-summary"><div><span>Checked in</span><strong>{{ number_format($checkedInCount) }}</strong></div><div><span>Awaiting arrival</span><strong>{{ number_format($pendingCount) }}</strong></div><div class="ems-attendance-bar"><span style="width:{{ $attendanceRate }}%"></span></div><small>{{ $attendanceRate }}% of registered attendees have checked in.</small></div></section>
     </div>
+  </div>
+
+  <section class="ems-admin-card mt-4"><div class="ems-admin-card__header"><div><h2>Latest registrations</h2><p>Most recently added attendees.</p></div></div><div class="table-responsive"><table class="table ems-admin-table align-middle mb-0"><thead><tr><th>Attendee</th><th>Event</th><th>Registration</th><th>Check-in</th></tr></thead><tbody>
+  @forelse($recentAttendees as $attendee)
+    <tr><td><div class="d-flex align-items-center gap-3"><span class="ems-table-avatar">{{ strtoupper(substr($attendee->name,0,1)) }}</span><div><div class="ems-table-primary">{{ $attendee->name }}</div><div class="ems-table-secondary">{{ $attendee->email }}</div></div></div></td><td><div class="ems-table-primary">{{ $attendee->event?->name }}</div></td><td>{{ $attendee->created_at?->format('d M Y, H:i') }}</td><td><span class="ems-status-pill {{ $attendee->checked_in ? 'is-success' : 'is-warning' }}">{{ $attendee->checked_in ? 'Checked in' : 'Pending' }}</span></td></tr>
+  @empty<tr><td colspan="4" class="text-center text-muted py-5">No registrations have been received.</td></tr>@endforelse
+  </tbody></table></div></section>
+</div>
 @endsection

@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Attendee;
 use App\Models\Event;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class EventController extends Controller
@@ -15,19 +18,23 @@ class EventController extends Controller
     public function __construct()
     {
         $this->middleware('auth')->except(['registrationForm']);
+        $this->middleware(function ($request, $next) {
+            abort_if(Auth::user()?->isSecurityOfficer(), 403);
+            return $next($request);
+        })->except(['registrationForm']);
     }
 
     public function index()
     {
         $user = Auth::user();
 
-        $events = Event::withCount([
+        $events = Event::with('admin')->withCount([
                 'attendees',
                 'attendees as checked_in_total' => function ($query) {
                     $query->where('checked_in', true);
                 },
             ])
-            ->when($user?->role?->name !== 'admin', function ($query) use ($user) {
+            ->when(! $user?->isSuperadmin(), function ($query) use ($user) {
                 $query->where('user_id', $user->id);
             })
             ->latest()
@@ -45,23 +52,33 @@ class EventController extends Controller
 
     public function create()
     {
-        return view('events.create');
+        $organizers = Auth::user()->isSuperadmin()
+            ? User::where('user_type', 'organizer')->where('status', true)->orderBy('name')->get(['id', 'name', 'email'])
+            : collect();
+
+        return view('events.create', compact('organizers'));
     }
 
     public function store(Request $request)
     {
         $validated = $this->validateEventRequest($request);
         $validated['event_code'] = $this->generateEventCode();
-        $validated['user_id'] = Auth::id();
+        $validated['user_id'] = Auth::user()->isSuperadmin()
+            ? (int) $request->validate(['organizer_id' => ['required', Rule::exists('users', 'id')->where(fn ($query) => $query->where('user_type', 'organizer')->where('status', true))]])['organizer_id']
+            : Auth::id();
         $validated['status'] = $request->input('status', 'draft');
         $validated['visibility'] = $request->input('visibility', 'public');
         $validated['is_active'] = $request->boolean('is_active', true);
+        $validated['price'] = $validated['ticketing_type'] === 'free' ? 0 : ($validated['price'] ?? 0);
 
         if ($request->hasFile('banner_image')) {
             $validated['banner_image'] = $this->storeBannerImage($request->file('banner_image'));
         }
 
-        Event::create($validated);
+        DB::transaction(function () use ($validated, $request) {
+            $event = Event::create($validated);
+            $this->syncTicketTypes($event, $request);
+        });
 
         return redirect()->route('events.index')->with('success', 'Event created successfully.');
     }
@@ -76,7 +93,7 @@ class EventController extends Controller
         ])->findOrFail($id);
         $user = Auth::user();
 
-        if ($user?->role?->name !== 'admin' && $event->user_id !== $user->id) {
+        if (! $user?->isSuperadmin() && $event->user_id !== $user->id) {
             abort(403, 'Unauthorized access');
         }
 
@@ -94,14 +111,21 @@ class EventController extends Controller
     public function edit(string $id)
     {
         $event = $this->findAccessibleEvent($id);
+        $organizers = Auth::user()->isSuperadmin()
+            ? User::where('user_type', 'organizer')->where('status', true)->orderBy('name')->get(['id', 'name', 'email'])
+            : collect();
 
-        return view('events.edit', compact('event'));
+        return view('events.edit', compact('event', 'organizers'));
     }
 
     public function update(Request $request, string $id)
     {
         $event = $this->findAccessibleEvent($id);
         $validated = $this->validateEventRequest($request, $event->id);
+        if (Auth::user()->isSuperadmin()) {
+            $validated['user_id'] = (int) $request->validate(['organizer_id' => ['required', Rule::exists('users', 'id')->where(fn ($query) => $query->where('user_type', 'organizer')->where('status', true))]])['organizer_id'];
+        }
+        $validated['price'] = $validated['ticketing_type'] === 'free' ? 0 : ($validated['price'] ?? $event->price);
 
         if ($request->hasFile('banner_image')) {
             $validated['banner_image'] = $this->storeBannerImage($request->file('banner_image'), $event->banner_image);
@@ -117,7 +141,10 @@ class EventController extends Controller
             $event->banner_image = $validated['banner_image'];
         }
 
-        $event->save();
+        DB::transaction(function () use ($event, $request) {
+            $event->save();
+            $this->syncTicketTypes($event, $request);
+        });
 
         return redirect()->route('events.show', $event->id)->with('success', 'Event updated successfully.');
     }
@@ -241,9 +268,12 @@ class EventController extends Controller
 
     public function registrationForm($event_code)
     {
-        $event = Event::where('event_code', $event_code)->firstOrFail();
+        $event = Event::with(['ticketTypes' => fn ($query) => $query->where('is_active', true)->withCount('attendees')])
+            ->withCount('attendees')
+            ->where('event_code', $event_code)
+            ->firstOrFail();
 
-        if ($event->status === 'draft') {
+        if ($event->status !== 'published' || ! $event->is_active || $event->visibility !== 'public') {
             abort(404);
         }
 
@@ -263,11 +293,53 @@ class EventController extends Controller
             'max_attendees' => 'required|integer|min:1',
             'checkin_password' => 'required|string|max:50',
             'price' => 'nullable|numeric|min:0',
+            'ticketing_type' => 'required|in:free,ticketed',
+            'ticket_types' => 'nullable|required_if:ticketing_type,ticketed|array|min:1',
+            'ticket_types.*.id' => 'nullable|integer',
+            'ticket_types.*.name' => 'required_if:ticketing_type,ticketed|nullable|string|max:100',
+            'ticket_types.*.description' => 'nullable|string|max:1000',
+            'ticket_types.*.price' => 'required_if:ticketing_type,ticketed|nullable|numeric|min:0|max:99999999',
+            'ticket_types.*.quantity' => 'nullable|integer|min:1',
             'is_active' => 'nullable|boolean',
             'status' => 'nullable|in:draft,published',
             'visibility' => 'nullable|in:public,private',
             'banner_image' => 'nullable|image|max:4096',
         ]);
+    }
+
+    private function syncTicketTypes(Event $event, Request $request): void
+    {
+        if ($event->ticketing_type !== 'ticketed') {
+            $event->ticketTypes()->delete();
+            return;
+        }
+
+        $keptIds = [];
+        foreach ($request->input('ticket_types', []) as $index => $ticket) {
+            $values = [
+                'name' => trim((string) ($ticket['name'] ?? '')),
+                'description' => trim((string) ($ticket['description'] ?? '')) ?: null,
+                'price' => $ticket['price'] ?? 0,
+                'quantity' => filled($ticket['quantity'] ?? null) ? (int) $ticket['quantity'] : null,
+                'sort_order' => $index,
+                'is_active' => true,
+            ];
+
+            $ticketType = ! empty($ticket['id'])
+                ? $event->ticketTypes()->whereKey($ticket['id'])->first()
+                : null;
+
+            if ($ticketType) {
+                $ticketType->update($values);
+            } else {
+                $ticketType = $event->ticketTypes()->create($values);
+            }
+            $keptIds[] = $ticketType->id;
+        }
+
+        $event->ticketTypes()->whereNotIn('id', $keptIds)->delete();
+        $event->price = $event->ticketTypes()->min('price') ?? 0;
+        $event->saveQuietly();
     }
 
     private function normalizeFieldOptions($options): array
@@ -303,10 +375,10 @@ class EventController extends Controller
 
     private function findAccessibleEvent(string $id): Event
     {
-        $event = Event::withCount('attendees')->findOrFail($id);
+        $event = Event::with('ticketTypes')->withCount('attendees')->findOrFail($id);
         $user = Auth::user();
 
-        if ($user?->role?->name !== 'admin' && $event->user_id !== $user->id) {
+        if (! $user?->isSuperadmin() && $event->user_id !== $user->id) {
             abort(403, 'Unauthorized access');
         }
 

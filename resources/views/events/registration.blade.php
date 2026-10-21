@@ -10,12 +10,11 @@
                     <div class="p-4 p-lg-5 position-relative">
                         <span class="ems-kicker mb-3">
                             <i class="ti ti-ticket"></i>
-                            Public registration
+                            Event booking
                         </span>
                         <h1 class="display-6 fw-bold mb-3">{{ $event->name }}</h1>
                         <p class="lead mb-4">
-                            Register once, receive a unique booking reference and QR code, then use that QR to check in
-                            on event day.
+                            Review the event information, choose your admission type, and reserve your place.
                         </p>
                         <div class="ems-support-list">
                             <li>
@@ -58,6 +57,7 @@
                         <form action="{{ route('attendee.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <input type="hidden" name="event_id" value="{{ $event->id }}">
+                            <input type="hidden" name="idempotency_key" value="{{ old('idempotency_key', (string) \Illuminate\Support\Str::uuid()) }}">
 
                             @if ($errors->any())
                                 <div class="alert alert-danger border-0 rounded-4">
@@ -65,7 +65,43 @@
                                 </div>
                             @endif
 
+                            @if ($event->attendees_count >= $event->max_attendees)
+                                <div class="alert alert-warning border-0 rounded-4">This event is fully booked.</div>
+                            @elseif (now()->lt($event->booking_start_date) || now()->gt($event->booking_end_date?->endOfDay()))
+                                <div class="alert alert-warning border-0 rounded-4">Registration is not currently open.</div>
+                            @endif
+
                             <div class="ems-form-grid">
+                                @if ($event->ticketing_type === 'ticketed')
+                                    <div class="ems-form-span-12">
+                                        <label class="form-label">Select a ticket</label>
+                                        <div class="d-grid gap-3">
+                                            @foreach ($event->ticketTypes as $ticket)
+                                                @php $ticketSoldOut = $ticket->remaining === 0; @endphp
+                                                <label class="form-check border rounded-4 p-3 mb-0 {{ $ticketSoldOut ? 'opacity-50' : '' }}">
+                                                    <input class="form-check-input me-2" type="radio" name="ticket_type_id"
+                                                        value="{{ $ticket->id }}" @checked((string) old('ticket_type_id') === (string) $ticket->id)
+                                                        {{ $ticketSoldOut ? 'disabled' : 'required' }}>
+                                                    <span class="d-flex justify-content-between gap-3">
+                                                        <span>
+                                                            <strong class="d-block">{{ $ticket->name }}</strong>
+                                                            <span class="text-muted small">{{ $ticket->description ?: 'Event admission' }}</span>
+                                                        </span>
+                                                        <span class="text-end">
+                                                            <strong class="d-block">{{ number_format($ticket->price, 2) }}</strong>
+                                                            <span class="text-muted small">{{ $ticketSoldOut ? 'Sold out' : ($ticket->remaining === null ? 'Available' : $ticket->remaining . ' left') }}</span>
+                                                        </span>
+                                                    </span>
+                                                </label>
+                                            @endforeach
+                                        </div>
+                                        @error('ticket_type_id')<div class="text-danger small mt-2">{{ $message }}</div>@enderror
+                                    </div>
+                                @else
+                                    <div class="ems-form-span-12">
+                                        <div class="alert alert-success border-0 rounded-4 mb-0"><strong>Free admission</strong> — no ticket payment is required.</div>
+                                    </div>
+                                @endif
                                 <div class="ems-form-span-12">
                                     <label for="name" class="form-label">Full name</label>
                                     <input type="text" name="name" class="form-control" id="name"
@@ -162,13 +198,14 @@
                             <div class="ems-card mt-4">
                                 <div class="ems-card-body d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
                                     <div>
-                                        <div class="ems-badge ems-badge--info mb-2">Secure booking</div>
+                                        <div class="ems-badge ems-badge--info mb-2">Booking confirmation</div>
                                         <p class="mb-0 text-muted">
-                                            A unique reference and QR code will be generated after submission.
+                                            Your booking reference and entry pass will be generated after submission.
                                         </p>
                                     </div>
-                                    <button type="submit" class="btn btn-primary px-4">
-                                        <i class="ti ti-qrcode me-2"></i>
+                                    <button type="submit" class="btn btn-primary px-4"
+                                        @disabled($event->attendees_count >= $event->max_attendees || now()->lt($event->booking_start_date) || now()->gt($event->booking_end_date?->endOfDay()))>
+                                        <i class="ti ti-ticket me-2"></i>
                                         Confirm booking
                                     </button>
                                 </div>

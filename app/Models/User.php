@@ -27,6 +27,7 @@ class User extends Authenticatable
     'user_type',
     'country',
     'role_id',
+    'organizer_id',
     'gender',
     'dob',
     'address',
@@ -59,11 +60,45 @@ class User extends Authenticatable
     return [
       'email_verified_at' => 'datetime',
       'password' => 'hashed',
+      'status' => 'boolean',
     ];
   }
   public function role()
   {
     return $this->belongsTo(Role::class);
+  }
+  public function events()
+  {
+    return $this->hasMany(Event::class);
+  }
+  public function isSuperadmin(): bool
+  {
+    return $this->role?->name === 'superadmin' || $this->user_type === 'superadmin';
+  }
+
+  public function isOrganizer(): bool
+  {
+    return $this->role?->name === 'organizer' || $this->user_type === 'organizer';
+  }
+  public function isSecurityOfficer(): bool
+  {
+    return $this->role?->name === 'security_officer' || $this->user_type === 'security_officer';
+  }
+  public function organizer(): BelongsTo
+  {
+    return $this->belongsTo(User::class, 'organizer_id');
+  }
+  public function securityOfficers()
+  {
+    return $this->hasMany(User::class, 'organizer_id')->where('user_type', 'security_officer');
+  }
+  public function assignedEvents()
+  {
+    return $this->belongsToMany(Event::class, 'event_security_officer')->withTimestamps();
+  }
+  public function checkInAttempts()
+  {
+    return $this->hasMany(CheckInAttempt::class);
   }
   // If user is a parent
   public function children()

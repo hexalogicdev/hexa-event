@@ -63,7 +63,7 @@ class EventsAndAttendeesSeeder extends Seeder
             'Faisalabad Tech Campus',
         ];
 
-        for ($eventIndex = 1; $eventIndex <= 50; $eventIndex++) {
+        for ($eventIndex = 1; $eventIndex <= 5; $eventIndex++) {
             $startDate = now()->addDays(20 + $eventIndex)->setTime(18, 0, 0);
             $endDate = (clone $startDate)->addHours(4);
             $bookingStartDate = (clone $startDate)->subDays(15);
@@ -88,7 +88,7 @@ class EventsAndAttendeesSeeder extends Seeder
                 'registration_fields' => [],
             ]);
 
-            for ($attendeeIndex = 1; $attendeeIndex <= 100; $attendeeIndex++) {
+            for ($attendeeIndex = 1; $attendeeIndex <= 10; $attendeeIndex++) {
                 $attendee = Attendee::create([
                     'event_id' => $event->id,
                     'name' => 'Attendee ' . $eventIndex . '-' . $attendeeIndex,

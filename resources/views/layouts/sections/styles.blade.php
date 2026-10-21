@@ -55,4 +55,7 @@
 <!-- Page Styles -->
 @yield('page-style')
 @vite(['resources/css/custom-style.css'])
+@auth
+<link rel="stylesheet" href="{{ asset('assets/css/admin-site.css') }}?v={{ file_exists(public_path('assets/css/admin-site.css')) ? filemtime(public_path('assets/css/admin-site.css')) : time() }}">
+@endauth
 

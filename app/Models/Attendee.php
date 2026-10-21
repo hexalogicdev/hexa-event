@@ -11,6 +11,9 @@ class Attendee extends Model
     use HasFactory;
     protected $fillable = [
         'event_id',
+        'order_id',
+        'order_item_id',
+        'ticket_type_id',
         'name',
         'email',
         'phone',
@@ -26,6 +29,22 @@ class Attendee extends Model
     public function event()
     {
         return $this->belongsTo(Event::class);
+    }
+    public function ticketType()
+    {
+        return $this->belongsTo(TicketType::class);
+    }
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
+    }
+    public function orderItem()
+    {
+        return $this->belongsTo(OrderItem::class);
+    }
+    public function admissionTicket()
+    {
+        return $this->hasOne(Ticket::class);
     }
     public function checkedInBy()
     {

@@ -3,8 +3,7 @@
     $locale = str_replace('_', '-', app()->getLocale());
     $direction = in_array(app()->getLocale(), ['ar', 'fa', 'he', 'ur']) ? 'rtl' : 'ltr';
     $appName = config('app.name', 'Event Management System');
-    $isAuthPage = request()->routeIs('login', 'register', 'password.*');
-    $isCheckinPage = request()->routeIs('attendee.qr*');
+    $isAuthPage = request()->routeIs('login', 'password.*');
     $flashSuccess = session('success');
     $flashError = session('error');
     $validationErrors = $errors->all();
@@ -18,15 +17,16 @@
     <meta name="theme-color" content="#0f766e">
     <title>@yield('title', $appName) | {{ $appName }}</title>
     @vite(['resources/assets/vendor/fonts/tabler-icons.scss', 'resources/css/app.css', 'resources/css/custom-style.css', 'resources/js/app.js'])
+    <link rel="stylesheet" href="{{ asset('assets/css/public-site.css') }}?v={{ filemtime(public_path('assets/css/public-site.css')) }}">
     @yield('vendor-style')
     @yield('page-style')
     @stack('styles')
 </head>
 
-<body class="ems-guest-body {{ $isAuthPage ? 'ems-auth-body' : '' }}">
+<body class="ems-guest-body public-site {{ $isAuthPage ? 'ems-auth-body' : '' }}">
     <div class="ems-guest-shell">
         <header class="ems-topbar">
-            <nav class="navbar navbar-expand-lg navbar-dark ems-nav">
+            <nav class="navbar navbar-expand-lg navbar-light ems-nav">
                 <div class="container-fluid px-3 px-lg-4">
                     <a class="navbar-brand d-flex align-items-center gap-2 gap-lg-3 ems-brand m-0" href="{{ url('/') }}">
                         <img src="{{ asset('assets/img/hexa-logo.png') }}" alt="HexaLogicDev" class="ems-brand-logo">
@@ -39,23 +39,12 @@
 
                     <div class="collapse navbar-collapse mt-3 mt-lg-0" id="guestNavbar">
                         <div class="ms-lg-auto ems-topbar-actions d-flex flex-column flex-lg-row align-items-stretch align-items-lg-center gap-2 gap-lg-3 w-100 w-lg-auto">
-                            <span class="ems-pill justify-content-center justify-content-lg-start d-none d-md-inline-flex">
-                                <i class="ti ti-world"></i>
-                                Global-ready
-                            </span>
-                            <a class="btn btn-outline-light px-4 {{ $isCheckinPage ? 'active' : '' }}" href="{{ route('attendee.qr.scan') }}">
-                                <i class="ti ti-qrcode me-2"></i>
-                                Scan QR
-                            </a>
-                            <a class="btn btn-outline-light px-4" href="{{ route('legal.policy') }}">
-                                <i class="ti ti-file-text me-2"></i>
-                                Policy
-                            </a>
+                            <a class="ems-public-nav-link" href="{{ url('/') }}#events">Explore events</a>
+                            {{-- <a class="ems-public-nav-link" href="{{ route('legal.policy') }}">Privacy</a> --}}
                             @auth
-                                <a class="btn btn-primary px-4" href="{{ route('dashboard') }}">Dashboard</a>
+                                <a class="btn btn-sm btn-primary px-4" href="{{ route('dashboard') }}">Dashboard</a>
                             @else
-                                <a class="btn btn-outline-primary px-4" href="{{ route('login') }}">Log in</a>
-                                <a class="btn btn-primary px-4" href="{{ route('register') }}">Sign up</a>
+                                <a class="btn btn-sm btn-dark px-4" href="{{ route('login') }}">Team login</a>
                             @endauth
                         </div>
                     </div>
@@ -72,10 +61,10 @@
                 <div class="container">
                     <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-2">
                         <p class="mb-0 text-muted">
-                            &copy; {{ date('Y') }} {{ $appName }}. Built for international event teams.
+                            &copy; {{ date('Y') }} {{ $appName }}. Discover and book memorable events.
                         </p>
                         <p class="mb-0 text-muted">
-                            Public bookings, secure QR verification, multilingual-ready layouts.
+                            Event information, ticket selection, and simple online registration.
                         </p>
                     </div>
                 </div>

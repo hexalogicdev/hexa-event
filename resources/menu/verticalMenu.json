@@ -1,20 +1,14 @@
 {
   "menu": [
-    {
-      "name": "Dashboard",
-      "icon": "menu-icon tf-icons ti ti-smart-home",
-      "slug": "dashboard",
-      "url": "dashboard",
-      "roles": ["admin", "organizer"],
-      "env": ["local","staging" , "production"]
-    },
-    {
-      "name": "Events",
-      "icon": "menu-icon tf-icons ti ti-shopping-cart",
-      "slug": "events.index",
-      "url": "events.index",
-      "roles": ["admin", "organizer"],
-      "env": ["local","staging" , "production"]
-    }
+    {"menuHeader":"Workspace","roles":["superadmin","organizer"],"env":["local","staging","production"]},
+    {"name":"Overview","icon":"menu-icon tf-icons ti ti-layout-dashboard","slug":"dashboard","url":"dashboard","roles":["superadmin","organizer"],"env":["local","staging","production"]},
+    {"name":"Events","icon":"menu-icon tf-icons ti ti-calendar-event","slug":"events","url":"events.index","roles":["superadmin","organizer"],"env":["local","staging","production"]},
+    {"name":"Create event","icon":"menu-icon tf-icons ti ti-calendar-plus","slug":"events.create","url":"events.create","roles":["superadmin","organizer"],"env":["local","staging","production"]},
+    {"menuHeader":"Platform","roles":["superadmin"],"env":["local","staging","production"]},
+    {"name":"Organizers","icon":"menu-icon tf-icons ti ti-building-community","slug":"User","url":"User.index","roles":["superadmin"],"env":["local","staging","production"]},
+    {"name":"Security officers","icon":"menu-icon tf-icons ti ti-shield-lock","slug":"security-officers","url":"security-officers.index","roles":["superadmin","organizer"],"env":["local","staging","production"]},
+    {"menuHeader":"Operations","roles":["superadmin","organizer","security_officer"],"env":["local","staging","production"]},
+    {"name":"QR check-in","icon":"menu-icon tf-icons ti ti-scan","slug":"attendee.qr","url":"attendee.qr.scan","roles":["superadmin","organizer","security_officer"],"env":["local","staging","production"]},
+    {"name":"Public website","icon":"menu-icon tf-icons ti ti-world","slug":"public.home","url":"/","target":"_blank","roles":["superadmin","organizer"],"env":["local","staging","production"]}
   ]
 }

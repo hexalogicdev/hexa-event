@@ -10,9 +10,9 @@ $configData = Helper::appClasses();
 $contentNavbar = ($contentNavbar ?? true);
 $containerNav = ($containerNav ?? 'container-xxl');
 $isNavbar = ($isNavbar ?? true);
-$isMenu = ($isMenu ?? true);
+$isMenu = ($isMenu ?? true) && !(auth()->check() && auth()->user()->isSecurityOfficer());
 $isFlex = ($isFlex ?? false);
-$isFooter = ($isFooter ?? true);
+$isFooter = ($isFooter ?? true) && !(auth()->check() && auth()->user()->isSecurityOfficer());
 $customizerHidden = ($customizerHidden ?? '');
 
 /* HTML Classes */

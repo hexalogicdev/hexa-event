@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.layoutMaster')
 
 @section('title', 'Event Check-In')
 
@@ -15,7 +15,7 @@
                         <div>
                             <h1 class="ems-checkin-title mb-1">Confirm attendance with a clean, fast check-in flow.</h1>
                             <p class="ems-checkin-subtitle mb-0">
-                                Scan or open the booking link, enter the event password, and mark the attendee as present in one step.
+                                Review the booking status and mark the attendee present in one step.
                             </p>
                         </div>
                     </div>
@@ -25,10 +25,9 @@
                             <i class="ti ti-scan me-2"></i>
                             Open scanner
                         </a>
-                        <a href="{{ url('/') }}" class="btn btn-primary">
-                            <i class="ti ti-home-2 me-2"></i>
-                            Home
-                        </a>
+                        @unless(auth()->user()->isSecurityOfficer())
+                            <a href="{{ route('dashboard') }}" class="btn btn-primary"><i class="ti ti-layout-dashboard me-2"></i>Dashboard</a>
+                        @endunless
                     </div>
                 </div>
 
@@ -47,9 +46,9 @@
                                 @endif
                             </div>
 
-                            <h2 class="ems-checkin-hero__title">Fast, themed verification for venue staff.</h2>
+                            <h2 class="ems-checkin-hero__title">Clear ticket verification for venue staff.</h2>
                             <p class="ems-checkin-hero__text">
-                                The full-screen layout keeps the attendee summary, event password, and action buttons readable on desktop and mobile.
+                                Attendee identity, ticket status, and the check-in action remain readable on desktop and mobile.
                             </p>
 
                             <div class="ems-checkin-summary">
@@ -77,7 +76,7 @@
                                         <i class="ti ti-shield-check"></i>
                                         <div>
                                             <div class="fw-semibold">Secure verification</div>
-                                            <div class="text-white-50">The booking must match the event password before the attendee is marked present.</div>
+                                            <div class="text-white-50">Only authenticated event staff can mark this ticket present.</div>
                                         </div>
                                     </li>
                                     <li>
@@ -110,7 +109,7 @@
                                 @if ($attendee->checked_in)
                                     <span class="ems-badge ems-badge--success">Verified</span>
                                 @else
-                                    <span class="ems-badge ems-badge--warning">Needs password</span>
+                                    <span class="ems-badge ems-badge--warning">Ready to check in</span>
                                 @endif
                             </div>
 
@@ -143,16 +142,6 @@
 
                                 <form action="{{ route('attendee.qr.verify', $attendee->qr_id) }}" method="POST" class="d-grid gap-3">
                                     @csrf
-                                    <div>
-                                        <label for="checkin_password" class="form-label">Check-in password</label>
-                                        <input type="password" name="checkin_password" id="checkin_password"
-                                            class="form-control form-control-lg @error('checkin_password') is-invalid @enderror"
-                                            placeholder="Enter the event password" required>
-                                        @error('checkin_password')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-
                                     <button type="submit" class="btn btn-primary btn-lg w-100">
                                         <i class="ti ti-circle-check me-2"></i>
                                         Confirm check-in

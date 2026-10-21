@@ -42,6 +42,16 @@
                         @endif
 
                         <div class="ems-form-grid">
+                            @if (auth()->user()->isSuperadmin())
+                                <div class="ems-form-span-12">
+                                    <label for="organizer_id" class="form-label">Event organizer</label>
+                                    <select class="form-select" id="organizer_id" name="organizer_id" required>
+                                        @foreach ($organizers as $organizer)
+                                            <option value="{{ $organizer->id }}" @selected((string) old('organizer_id', $event->user_id) === (string) $organizer->id)>{{ $organizer->name }} — {{ $organizer->email }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            @endif
                             <div class="ems-form-span-6">
                                 <label for="name" class="form-label">Event title</label>
                                 <input type="text" class="form-control" id="name" name="name"
@@ -81,12 +91,7 @@
                                 <input type="number" class="form-control" id="max_attendees" name="max_attendees"
                                     value="{{ old('max_attendees', $event->max_attendees) }}" required min="1">
                             </div>
-                            <div class="ems-form-span-4">
-                                <label for="price" class="form-label">Price</label>
-                                <input type="number" class="form-control" id="price" name="price"
-                                    value="{{ old('price', $event->price) }}" min="0" max="10000" step="0.01">
-                            </div>
-                            <div class="ems-form-span-4">
+                            <div class="ems-form-span-8">
                                 <label for="banner_image" class="form-label">Banner image</label>
                                 <input type="file" class="form-control" id="banner_image" name="banner_image" accept="image/*">
                                 @if ($event->banner_image)
@@ -96,6 +101,7 @@
                                     </div>
                                 @endif
                             </div>
+                            @include('events.partials.ticket-types')
                             <div class="ems-form-span-4">
                                 <label for="status" class="form-label">Event status</label>
                                 <select class="form-select" id="status" name="status">

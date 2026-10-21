@@ -44,3 +44,4 @@
 ])
 @stack('pricing-script')
 @yield('page-script')
+@stack('scripts')

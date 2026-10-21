@@ -1,0 +1,123 @@
+html body.public-site {
+  min-height: 100vh;
+  background: #fff !important;
+  color: #161b22 !important;
+  color-scheme: light !important;
+  font-family: Inter, "Segoe UI", sans-serif;
+}
+body.public-site .ems-guest-shell,
+body.public-site .ems-page { background: #fff !important; }
+body.public-site .ems-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: rgba(255,255,255,.96) !important;
+  border-bottom: 1px solid #e8ebef !important;
+  box-shadow: 0 1px 0 rgba(16,24,40,.02) !important;
+  backdrop-filter: blur(16px);
+}
+body.public-site .ems-nav { min-height: 74px; }
+body.public-site .navbar-toggler-icon { filter: none !important; }
+body.public-site .ems-public-nav-link { padding: .65rem .35rem; color: #4b5563 !important; font-weight: 600; text-decoration: none; }
+body.public-site .ems-public-nav-link:hover { color: #111827 !important; }
+body.public-site footer { border-top: 1px solid #edf0f3; background: #fafbfc !important; }
+
+body.public-site .ems-public-hero {
+  overflow: hidden;
+  padding: 6rem 0 5rem;
+  background: radial-gradient(circle at 84% 12%,rgba(235,171,65,.16),transparent 28%),radial-gradient(circle at 8% 90%,rgba(40,106,255,.08),transparent 26%),#f7f8fa !important;
+  border-bottom: 1px solid #eaecf0;
+}
+body.public-site .ems-public-eyebrow { display: inline-flex; align-items: center; gap: .5rem; margin-bottom: 1.25rem; color: #8a5c12 !important; font-size: .78rem; font-weight: 800; letter-spacing: .11em; text-transform: uppercase; }
+body.public-site .ems-public-hero h1 { max-width: 760px; margin: 0 0 1.5rem; color: #101828 !important; font-size: clamp(3.2rem,7vw,6.6rem); font-weight: 750; letter-spacing: -.075em; line-height: .92; }
+body.public-site .ems-public-hero h1 span { color: #b7791f !important; }
+body.public-site .ems-public-hero > .container > .row > .col-lg-7 > p { max-width: 650px; margin-bottom: 2rem; color: #5d6675 !important; font-size: 1.15rem; line-height: 1.75; }
+body.public-site .ems-public-trust { display: flex; flex-wrap: wrap; gap: 1.25rem; margin-top: 2.25rem; color: #667085 !important; font-size: .88rem; font-weight: 600; }
+body.public-site .ems-public-trust i { margin-right: .35rem; color: #198754; }
+body.public-site .ems-public-featured { overflow: hidden; border-radius: 26px; background: #111827 !important; box-shadow: 0 30px 70px rgba(16,24,40,.2); transform: rotate(1.5deg); }
+body.public-site .ems-public-featured > img, body.public-site .ems-public-featured__placeholder { width: 100%; height: 270px; object-fit: cover; }
+body.public-site .ems-public-featured__placeholder { display: grid; place-items: center; color: #d8a646; background: linear-gradient(135deg,#1f2937,#101828); font-size: 4rem; }
+body.public-site .ems-public-featured__content { padding: 1.75rem; color: #fff !important; }
+body.public-site .ems-public-featured__content > span { color: #e7b95f !important; font-size: .75rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+body.public-site .ems-public-featured__content h2 { margin: .5rem 0 1rem; color: #fff !important; font-size: 1.65rem; letter-spacing: -.035em; }
+body.public-site .ems-public-featured__content p { margin-bottom: .45rem; color: #cbd5e1 !important; }
+body.public-site .ems-public-featured__content a { display: inline-flex; gap: .4rem; align-items: center; margin-top: 1rem; color: #fff !important; font-weight: 700; text-decoration: none; }
+
+body.public-site .ems-public-events { padding: 6rem 0; background: #fff !important; }
+body.public-site .ems-public-section-head { display: flex; align-items: end; justify-content: space-between; gap: 2rem; margin-bottom: 2.5rem; }
+body.public-site .ems-public-section-head h2, body.public-site .ems-public-how h2 { margin: 0 0 .65rem; color: #101828 !important; font-size: clamp(2.3rem,4vw,3.5rem); letter-spacing: -.055em; }
+body.public-site .ems-public-section-head p, body.public-site .ems-public-how p { margin: 0; color: #667085 !important; }
+body.public-site .ems-public-count { padding: .55rem .9rem; border: 1px solid #dfe3e8; border-radius: 999px; color: #475467 !important; font-size: .85rem; font-weight: 700; white-space: nowrap; }
+body.public-site .ems-public-event-card { height: 100%; overflow: hidden; border: 1px solid #e4e7ec; border-radius: 20px; background: #fff !important; box-shadow: 0 8px 24px rgba(16,24,40,.05); transition: transform .2s ease,box-shadow .2s ease; }
+body.public-site .ems-public-event-card:hover { transform: translateY(-5px); box-shadow: 0 20px 45px rgba(16,24,40,.11); }
+body.public-site .ems-public-event-card__media { position: relative; height: 220px; overflow: hidden; background: #f2f4f7; }
+body.public-site .ems-public-event-card__media img { width: 100%; height: 100%; object-fit: cover; }
+body.public-site .ems-public-event-card__placeholder { display: grid; width: 100%; height: 100%; place-items: center; color: #98a2b3; font-size: 3rem; background: linear-gradient(135deg,#f2f4f7,#e4e7ec); }
+body.public-site .ems-public-date { position: absolute; top: 1rem; left: 1rem; display: grid; min-width: 58px; padding: .55rem; border-radius: 12px; background: #fff !important; color: #101828 !important; text-align: center; box-shadow: 0 8px 20px rgba(16,24,40,.15); text-transform: uppercase; font-size: .7rem; font-weight: 800; }
+body.public-site .ems-public-date strong { font-size: 1.4rem; line-height: 1; }
+body.public-site .ems-public-price { position: absolute; right: 1rem; bottom: 1rem; padding: .45rem .7rem; border-radius: 8px; background: rgba(16,24,40,.92) !important; color: #fff !important; font-size: .78rem; font-weight: 700; }
+body.public-site .ems-public-event-card__body { display: flex; height: calc(100% - 220px); flex-direction: column; padding: 1.4rem; }
+body.public-site .ems-public-event-meta { color: #8a5c12 !important; font-size: .8rem; font-weight: 700; }
+body.public-site .ems-public-event-card h3 { margin: .7rem 0 .6rem; color: #101828 !important; font-size: 1.35rem; letter-spacing: -.025em; }
+body.public-site .ems-public-event-card p { flex: 1; color: #667085 !important; line-height: 1.6; }
+body.public-site .ems-public-capacity { display: flex; justify-content: space-between; margin: .5rem 0 .4rem; color: #667085 !important; font-size: .75rem; }
+body.public-site .ems-public-event-card .progress { height: 5px; margin-bottom: 1.2rem; background: #eaecf0; }
+body.public-site .ems-public-event-card .progress-bar { background: #b7791f; }
+body.public-site .ems-public-how { padding: 6rem 0; border-top: 1px solid #eaecf0; background: #f8fafc !important; }
+body.public-site .ems-public-step { height: 100%; padding: 2rem; border: 1px solid #e4e7ec; border-radius: 18px; background: #fff !important; }
+body.public-site .ems-public-step > span { display: inline-grid; width: 44px; height: 44px; place-items: center; border-radius: 12px; background: #101828 !important; color: #fff !important; font-weight: 800; }
+body.public-site .ems-public-step h3 { margin: 1.5rem 0 .65rem; color: #101828 !important; }
+
+body.public-site .ems-surface, body.public-site .ems-card { border-color: #e4e7ec !important; background: #fff !important; color: #101828 !important; box-shadow: 0 10px 30px rgba(16,24,40,.06) !important; }
+body.public-site .ems-surface .text-muted, body.public-site .ems-card .text-muted { color: #667085 !important; }
+body.public-site .form-control, body.public-site .form-select, body.public-site textarea.form-control { background: #fff !important; border-color: #d0d5dd !important; color: #101828 !important; }
+
+body.public-site .ems-login-page { display: grid; min-height: calc(100vh - 74px); align-items: center; padding: 3rem 1rem; background: radial-gradient(circle at 12% 15%,rgba(183,121,31,.08),transparent 25%),#f4f6f8 !important; }
+body.public-site .ems-login-shell { display: grid; grid-template-columns: 1.05fr .95fr; width: min(100%,1180px); min-height: min(690px,calc(100vh - 130px)); margin: 0 auto; overflow: hidden; border: 1px solid #e4e7ec; border-radius: 28px; background: #fff !important; box-shadow: 0 30px 80px rgba(16,24,40,.12); }
+body.public-site .ems-login-intro { position: relative; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden; padding: clamp(2rem,5vw,3.5rem); color: #fff !important; background: radial-gradient(circle at 90% 10%,rgba(215,164,75,.24),transparent 28%),linear-gradient(145deg,#101828,#1d2939) !important; }
+body.public-site .ems-login-intro::after { position: absolute; right: -5rem; bottom: 7rem; width: 17rem; height: 17rem; border: 1px solid rgba(255,255,255,.08); border-radius: 50%; box-shadow: 0 0 0 2rem rgba(255,255,255,.025),0 0 0 4rem rgba(255,255,255,.02); content: ""; pointer-events: none; }
+body.public-site .ems-login-intro > * { position: relative; z-index: 1; }
+body.public-site .ems-login-back { display: inline-flex; align-items: center; gap: .5rem; align-self: flex-start; color: #d0d5dd !important; text-decoration: none; font-weight: 600; }
+body.public-site .ems-login-back:hover { color: #fff !important; }
+body.public-site .ems-login-intro h1 { margin: 1rem 0; color: #fff !important; font-size: clamp(3rem,5vw,5rem); line-height: .98; letter-spacing: -.065em; }
+body.public-site .ems-login-intro > div > p { color: #d0d5dd !important; }
+body.public-site .ems-login-role-grid > div { display: flex; align-items: center; gap: 1rem; padding: 1rem; border: 1px solid rgba(255,255,255,.1); border-radius: 14px; background: rgba(255,255,255,.05) !important; transition: background .2s ease,border-color .2s ease,transform .2s ease; }
+body.public-site .ems-login-role-grid > div:hover { transform: translateX(3px); border-color: rgba(255,255,255,.2); background: rgba(255,255,255,.09) !important; }
+body.public-site .ems-login-role-grid { display: grid; gap: .75rem; }
+body.public-site .ems-login-role-grid strong, body.public-site .ems-login-role-grid small { display: block; }
+body.public-site .ems-login-role-grid small { color: #98a2b3 !important; }
+body.public-site .ems-login-form-panel { display: grid; place-items: center; padding: clamp(2rem,5vw,3.5rem); background: #fff !important; }
+body.public-site .ems-login-form-wrap { width: min(100%,430px); }
+body.public-site .ems-login-form-wrap h2 { color: #101828 !important; }
+body.public-site .ems-login-form-wrap p { color: #667085 !important; }
+body.public-site .ems-login-form .form-label { color: #344054; font-size: .9rem; font-weight: 650; }
+body.public-site .ems-login-form .form-control:focus { position: relative; z-index: 3; border-color: #b7791f !important; box-shadow: 0 0 0 .2rem rgba(183,121,31,.12); }
+body.public-site .ems-login-form .form-check { color: #475467; font-size: .88rem; }
+body.public-site .ems-login-submit { min-height: 54px; border: 0; background: linear-gradient(110deg,#111827,#263448); box-shadow: 0 8px 18px rgba(16,24,40,.15); transition: transform .2s ease,box-shadow .2s ease,opacity .2s ease; }
+body.public-site .ems-login-submit:hover:not(:disabled) { transform: translateY(-1px); background: linear-gradient(110deg,#111827,#263448); box-shadow: 0 12px 24px rgba(16,24,40,.2); }
+body.public-site .ems-login-submit:disabled { cursor: wait; opacity: .78; }
+body.public-site .ems-login-help i { flex: 0 0 auto; margin-top: .1rem; color: #8a5c12; }
+
+@media (max-width:991.98px) {
+  body.public-site .ems-public-hero { padding: 4rem 0; }
+  body.public-site .ems-public-featured { transform: none; }
+  body.public-site .ems-login-shell { grid-template-columns: 1fr; }
+  body.public-site .ems-login-shell { min-height: 0; }
+  body.public-site .ems-login-intro { min-height: 0; gap: 2rem; padding: 2.25rem; }
+  body.public-site .ems-login-role-grid { grid-template-columns: repeat(3,minmax(0,1fr)); }
+  body.public-site .ems-login-role-grid > div { align-items: flex-start; padding: .85rem; }
+}
+@media (max-width:575.98px) {
+  body.public-site .ems-public-hero h1 { font-size: 3.15rem; }
+  body.public-site .ems-public-section-head { align-items: flex-start; flex-direction: column; }
+  body.public-site .ems-public-trust { flex-direction: column; gap: .65rem; }
+  body.public-site .ems-login-page { padding: 1rem .75rem; }
+  body.public-site .ems-login-shell { border-radius: 20px; }
+  body.public-site .ems-login-intro { gap: 1.75rem; padding: 1.5rem; }
+  body.public-site .ems-login-intro h1 { font-size: clamp(2.4rem,11vw,3.1rem); }
+  body.public-site .ems-login-intro > div > p { font-size: .96rem; }
+  body.public-site .ems-login-role-grid { grid-template-columns: 1fr; }
+  body.public-site .ems-login-role-grid > div { align-items: center; padding: .7rem .85rem; }
+  body.public-site .ems-login-form-panel { padding: 2rem 1.25rem; }
+  body.public-site .ems-login-form-wrap h2 { font-size: 1.9rem; }
+}
