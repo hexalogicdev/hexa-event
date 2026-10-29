@@ -9,6 +9,11 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\CheckInController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SecurityOfficerController;
+use App\Http\Controllers\OrganizationController;
+use App\Http\Controllers\OrganizationInvitationController;
+use App\Http\Controllers\OrganizationMemberController;
+use App\Http\Controllers\OrganizationEventAllowanceController;
+use App\Http\Controllers\EventAllowanceRequestController;
 
 // Accounts are provisioned by the platform administrator. Keep the existing
 // registration controller/views in place, but do not expose public sign-up.
@@ -39,12 +44,29 @@ Route::group(['middleware' => ['auth', 'active']], function () {
   Route::middleware('role:superadmin')->group(function () {
     Route::resource('User', UserController::class);
     Route::get('changeStatus/{model}/{id}', [UserController::class, 'changeStatus'])->name('changeStatus');
+    Route::post('organizations', [OrganizationController::class, 'store'])->name('organizations.store');
+    Route::patch('organizations/{organization}/status', [OrganizationController::class, 'updateStatus'])->name('organizations.status');
+    Route::post('organizations/{organization}/event-allowance-adjustments', [OrganizationEventAllowanceController::class, 'store'])->name('organizations.event-allowance-adjustments.store');
+    Route::get('event-allowance-requests', [EventAllowanceRequestController::class, 'index'])->name('event-allowance-requests.index');
+    Route::patch('event-allowance-requests/{allowanceRequest}', [EventAllowanceRequestController::class, 'review'])->name('event-allowance-requests.review');
   });
+
+  Route::get('organizations', [OrganizationController::class, 'index'])->name('organizations.index');
+  Route::get('organizations/{organization}', [OrganizationController::class, 'show'])->name('organizations.show');
+  Route::post('organizations/{organization}/members', [OrganizationMemberController::class, 'store'])->name('organizations.members.store');
+  Route::post('organizations/{organization}/event-allowance-requests', [EventAllowanceRequestController::class, 'store'])->name('organizations.event-allowance-requests.store');
+  Route::patch('event-allowance-requests/{allowanceRequest}/cancel', [EventAllowanceRequestController::class, 'cancel'])->name('event-allowance-requests.cancel');
+  Route::post('organizations/{organization}/event-allowance-requests', [EventAllowanceRequestController::class, 'store'])->name('organizations.event-allowance-requests.store');
+  Route::patch('event-allowance-requests/{allowanceRequest}/cancel', [EventAllowanceRequestController::class, 'cancel'])->name('event-allowance-requests.cancel');
 
   Route::get('/check-in', [CheckInController::class, 'scan'])->name('attendee.qr.scan');
   Route::post('/check-in', [CheckInController::class, 'verifyScan'])->name('attendee.qr.scan.verify');
   Route::get('/check-in/{qr_id}', [CheckInController::class, 'show'])->name('attendee.qr');
   Route::post('/check-in/{qr_id}', [CheckInController::class, 'verifyPassword'])->name('attendee.qr.verify');
+});
+Route::middleware('throttle:20,1')->group(function () {
+  Route::get('organization-invitations/{token}', [OrganizationInvitationController::class, 'show'])->name('organization-invitations.show');
+  Route::post('organization-invitations/{token}', [OrganizationInvitationController::class, 'accept'])->name('organization-invitations.accept');
 });
 Route::post('attendee', [AttendeeController::class, 'store'])->name('attendee.store');
 Route::get('/events/register/{event_code}', [EventController::class, 'registrationForm'])->name('events.registration');

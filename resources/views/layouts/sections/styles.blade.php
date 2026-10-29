@@ -58,4 +58,5 @@
 @auth
 <link rel="stylesheet" href="{{ asset('assets/css/admin-site.css') }}?v={{ file_exists(public_path('assets/css/admin-site.css')) ? filemtime(public_path('assets/css/admin-site.css')) : time() }}">
 @endauth
+<link rel="stylesheet" href="{{ asset('assets/css/event-platform.css') }}?v={{ file_exists(public_path('assets/css/event-platform.css')) ? filemtime(public_path('assets/css/event-platform.css')) : time() }}">
 

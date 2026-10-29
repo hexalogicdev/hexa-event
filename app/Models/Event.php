@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class Event extends Model
@@ -10,6 +11,8 @@ class Event extends Model
     use HasFactory;
     protected $fillable = [
         'user_id',
+        'organization_id',
+        'creation_token',
         'name',
         'description',
         'location',
@@ -31,6 +34,27 @@ class Event extends Model
     public function admin()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+    public function organization()
+    {
+        return $this->belongsTo(Organization::class);
+    }
+    public function scopePubliclyRegistrable(Builder $query): Builder
+    {
+        return $query->where('status', 'published')
+            ->where('visibility', 'public')
+            ->where('is_active', true)
+            ->where(function (Builder $query) {
+                $query->whereNull('organization_id')
+                    ->orWhereHas('organization', fn (Builder $organization) => $organization->where('status', 'active'));
+            });
+    }
+    public function isPubliclyRegistrable(): bool
+    {
+        return $this->status === 'published'
+            && $this->visibility === 'public'
+            && $this->is_active
+            && (! $this->organization_id || $this->organization?->status === 'active');
     }
     public function attendees()
     {

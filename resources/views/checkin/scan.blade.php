@@ -1,8 +1,8 @@
-@extends('layouts.layoutMaster')
+@extends('layouts.security')
 
 @section('title', 'Event Check-in Scanner')
 
-@section('content')
+@section('security-content')
     <style>
         .scan-page {
             --scan-bg: #ecedf0;

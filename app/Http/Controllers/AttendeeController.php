@@ -37,7 +37,7 @@ class AttendeeController extends Controller
     public function store(Request $request)
     {
         $event = Event::with('ticketTypes')->findOrFail($request->input('event_id'));
-        abort_unless($event->status === 'published' && $event->visibility === 'public' && $event->is_active, 404);
+        abort_unless($event->isPubliclyRegistrable(), 404);
 
         if (now()->lt($event->booking_start_date) || now()->gt($event->booking_end_date?->endOfDay())) {
             return back()->withErrors(['event_id' => 'Registration is not currently open for this event.'])->withInput();
@@ -102,6 +102,7 @@ class AttendeeController extends Controller
 
         $attendee = DB::transaction(function () use ($validated, $event) {
             $lockedEvent = Event::whereKey($event->id)->lockForUpdate()->firstOrFail();
+            abort_unless($lockedEvent->isPubliclyRegistrable(), 404);
             if ($lockedEvent->attendees()->count() >= $lockedEvent->max_attendees) {
                 abort(422, 'This event has reached its registration capacity.');
             }

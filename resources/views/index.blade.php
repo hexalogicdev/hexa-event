@@ -1,93 +1,24 @@
-@extends('layouts.app')
+@extends('layouts.public')
 @section('title', 'Discover Events')
 
-@section('content')
-<section class="ems-public-hero">
-    <div class="container">
-        <div class="row align-items-center g-5">
-            <div class="col-lg-7">
-                <span class="ems-public-eyebrow"><i class="ti ti-sparkles"></i> Events worth showing up for</span>
-                <h1>Find your next<br><span>great experience.</span></h1>
-                <p>Explore upcoming events, compare ticket options, and reserve your place through a fast, straightforward booking experience.</p>
-                <div class="d-flex flex-column flex-sm-row gap-3">
-                    <a href="#events" class="btn btn-dark btn-lg px-4">Browse upcoming events <i class="ti ti-arrow-down ms-2"></i></a>
-                    <a href="{{ route('login') }}" class="btn btn-outline-dark btn-lg px-4">Organizer login</a>
-                </div>
-                <div class="ems-public-trust">
-                    <span><i class="ti ti-shield-check"></i> Secure registration</span>
-                    <span><i class="ti ti-ticket"></i> Clear ticket options</span>
-                    <span><i class="ti ti-device-mobile"></i> Mobile friendly</span>
-                </div>
-            </div>
-            <div class="col-lg-5">
-                <div class="ems-public-featured">
-                    @if($events->first()?->banner_image)
-                        <img src="{{ asset('storage/'.$events->first()->banner_image) }}" alt="{{ $events->first()->name }}">
-                    @else
-                        <div class="ems-public-featured__placeholder"><i class="ti ti-calendar-event"></i></div>
-                    @endif
-                    <div class="ems-public-featured__content">
-                        <span>Next up</span>
-                        <h2>{{ $events->first()?->name ?? 'New events coming soon' }}</h2>
-                        @if($events->first())
-                            <p><i class="ti ti-calendar me-2"></i>{{ $events->first()->event_start_date?->format('D, d M Y') }}</p>
-                            <p><i class="ti ti-map-pin me-2"></i>{{ $events->first()->location }}</p>
-                            <a href="{{ route('events.registration', $events->first()->event_code) }}">View event <i class="ti ti-arrow-up-right"></i></a>
-                        @else
-                            <p>Our next public event will appear here as soon as booking opens.</p>
-                        @endif
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+@section('public-content')
+<section class="eventify-hero"><div class="container eventify-hero__content"><span class="eventify-kicker">Discover <i></i> Book <i></i> Experience</span><h1>Find &amp; Book <em>Amazing</em><br>Events Near You</h1><p>From concerts and conferences to workshops and festivals — find memorable events, reserve your spot, and enjoy the experience.</p>
+<form class="eventify-search" id="event-search" method="GET" action="{{ url('/') }}"><label><i class="ti ti-search"></i><span class="visually-hidden">Search events</span><input type="search" name="q" value="{{ request('q') }}" placeholder="Search events, artists, venues..."></label><label><i class="ti ti-map-pin"></i><span class="visually-hidden">Location</span><input type="text" name="location" value="{{ request('location') }}" placeholder="Location"></label><label><i class="ti ti-calendar"></i><span class="visually-hidden">Event date</span><input type="date" name="date" value="{{ request('date') }}"></label><button type="submit" class="btn btn-eventify">Search</button></form></div></section>
 
-<section class="ems-public-events" id="events">
-    <div class="container">
-        <div class="ems-public-section-head">
-            <div><span class="ems-public-eyebrow">Upcoming calendar</span><h2>Choose an event</h2><p>Everything you need to decide, presented clearly.</p></div>
-            <span class="ems-public-count">{{ $events->count() }} {{ \Illuminate\Support\Str::plural('event', $events->count()) }}</span>
-        </div>
-        <div class="row g-4">
-            @forelse($events as $event)
-                @php
-                    $soldOut = $event->attendees_count >= $event->max_attendees;
-                    $fromPrice = $event->ticketing_type === 'ticketed' ? $event->ticketTypes->min('price') : 0;
-                    $remaining = max($event->max_attendees - $event->attendees_count, 0);
-                @endphp
-                <div class="col-md-6 col-xl-4">
-                    <article class="ems-public-event-card">
-                        <div class="ems-public-event-card__media">
-                            @if($event->banner_image)<img src="{{ asset('storage/'.$event->banner_image) }}" alt="{{ $event->name }}">@else<div class="ems-public-event-card__placeholder"><i class="ti ti-calendar-event"></i></div>@endif
-                            <span class="ems-public-date"><strong>{{ $event->event_start_date?->format('d') }}</strong>{{ $event->event_start_date?->format('M') }}</span>
-                            <span class="ems-public-price">{{ $soldOut ? 'Sold out' : ($fromPrice > 0 ? 'From '.number_format($fromPrice, 2) : 'Free') }}</span>
-                        </div>
-                        <div class="ems-public-event-card__body">
-                            <div class="ems-public-event-meta"><span><i class="ti ti-map-pin"></i>{{ $event->location }}</span></div>
-                            <h3>{{ $event->name }}</h3>
-                            <p>{{ \Illuminate\Support\Str::limit($event->description ?: 'View event information and reserve your place online.', 110) }}</p>
-                            <div class="ems-public-capacity"><span>{{ $soldOut ? 'No places remaining' : $remaining.' places remaining' }}</span><span>{{ $event->attendees_count }}/{{ $event->max_attendees }}</span></div>
-                            <div class="progress"><div class="progress-bar" style="width: {{ min(($event->attendees_count / max($event->max_attendees, 1))*100, 100) }}%"></div></div>
-                            <a href="{{ route('events.registration', $event->event_code) }}" class="btn btn-dark w-100 {{ $soldOut ? 'disabled' : '' }}">{{ $soldOut ? 'Fully booked' : 'View details and book' }}</a>
-                        </div>
-                    </article>
-                </div>
-            @empty
-                <div class="col-12"><div class="ems-public-empty"><i class="ti ti-calendar-off"></i><h3>No events are open right now</h3><p>New public events will appear here when registration opens.</p></div></div>
-            @endforelse
-        </div>
-    </div>
-</section>
+<section class="eventify-section" id="events"><div class="container"><header class="eventify-section-head"><div><h2>{{ request()->hasAny(['q','location','date']) ? 'Search Results' : 'Popular Events' }}</h2><p>Handpicked upcoming events you should not miss.</p></div>@if(request()->hasAny(['q','location','date']))<a href="{{ url('/') }}#events">Clear filters <i class="ti ti-x"></i></a>@endif</header><div class="row g-4">
+@forelse($events as $event)
+@php $soldOut=$event->attendees_count >= $event->max_attendees; $fromPrice=$event->ticketing_type === 'ticketed' ? $event->ticketTypes->min('price') : 0; @endphp
+<div class="col-md-6 col-xl-3"><article class="eventify-event-card"><div class="eventify-event-card__media">@if($event->banner_image)<img src="{{ asset('storage/'.$event->banner_image) }}" alt="{{ $event->name }}">@else<div class="eventify-event-card__fallback"><i class="ti ti-calendar-event"></i></div>@endif<span class="eventify-event-tag">{{ $event->ticketing_type === 'ticketed' ? 'Ticketed' : 'Free event' }}</span><span class="eventify-event-heart" aria-hidden="true"><i class="ti ti-heart"></i></span></div><div class="eventify-event-card__body"><div class="eventify-event-date"><i class="ti ti-calendar"></i>{{ $event->event_start_date?->format('D, M j, Y · g:i A') }}</div><h3>{{ $event->name }}</h3><div class="eventify-event-location"><i class="ti ti-map-pin"></i>{{ $event->location ?: 'Location to be announced' }}</div><div class="eventify-event-price">{{ $soldOut ? 'Sold out' : ($fromPrice > 0 ? 'From GBP '.number_format($fromPrice,2) : 'Free admission') }}</div><a href="{{ route('events.registration',$event->event_code) }}" class="btn btn-eventify w-100 {{ $soldOut ? 'disabled' : '' }}">{{ $soldOut ? 'Fully booked' : 'Book now' }} <i class="ti ti-arrow-right"></i></a></div></article></div>
+@empty
+<div class="col-12"><x-ui.empty-state title="No matching events" description="Try a different search, location, or date." icon="calendar-off"><a href="{{ url('/') }}#events" class="btn btn-eventify mt-3">View all events</a></x-ui.empty-state></div>
+@endforelse
+</div></div></section>
 
-<section class="ems-public-how">
-    <div class="container">
-        <div class="text-center mx-auto mb-5" style="max-width: 620px"><span class="ems-public-eyebrow">Simple by design</span><h2>Book your place in minutes</h2><p>Clear information and no unnecessary account creation.</p></div>
-        <div class="row g-4">
-            @foreach([['01','Choose','Browse upcoming events and open the one that interests you.'],['02','Select','Review admission options and select the right ticket.'],['03','Register','Enter your details and receive your booking confirmation.']] as [$number,$title,$copy])
-                <div class="col-md-4"><div class="ems-public-step"><span>{{ $number }}</span><h3>{{ $title }}</h3><p>{{ $copy }}</p></div></div>
-            @endforeach
-        </div>
-    </div>
-</section>
+<section class="eventify-benefits" id="why-us"><div class="container"><header class="eventify-centered-head"><h2>Why Choose {{ config('app.name','Eventify') }}?</h2><p>Your trusted platform for discovering and booking events.</p></header><div class="row g-4">
+@foreach([['shield-check','Secure booking','Your registration details and personal information are protected.','violet'],['ticket','Wide variety','From local events to major experiences — find it all here.','blue'],['bolt','Instant confirmation','Receive your booking confirmation without unnecessary delays.','green'],['users','Trusted platform','Built for organizers, event teams, and attendees.','pink']] as [$icon,$title,$copy,$tone])<div class="col-sm-6 col-lg-3"><article class="eventify-benefit"><span class="is-{{ $tone }}"><i class="ti ti-{{ $icon }}"></i></span><h3>{{ $title }}</h3><p>{{ $copy }}</p></article></div>@endforeach
+</div></div></section>
+
+<section class="eventify-section eventify-categories" id="categories"><div class="container"><header class="eventify-section-head"><div><h2>Browse by Category</h2><p>Explore experiences based on your interests.</p></div><a href="#events">View all events <i class="ti ti-arrow-right"></i></a></header><div class="eventify-category-grid">
+@foreach([['music','Music','rose'],['ball-football','Sports','blue'],['briefcase','Business','green'],['palette','Arts & Culture','violet'],['tools-kitchen-2','Food & Drink','orange'],['book-2','Workshops','cyan']] as [$icon,$label,$tone])<a class="eventify-category is-{{ $tone }}" href="{{ url('/?q='.urlencode($label)) }}#events"><i class="ti ti-{{ $icon }}"></i><strong>{{ $label }}</strong><span>Explore events</span></a>@endforeach
+</div><div class="eventify-cta"><div><span>Ready to join?</span><h2>Book Your Next Great Experience</h2><p>Discover and book the best events available near you.</p></div><a class="btn btn-eventify" href="#events">Explore events <i class="ti ti-arrow-right"></i></a></div></div></section>
 @endsection

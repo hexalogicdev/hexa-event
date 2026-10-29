@@ -30,6 +30,7 @@
                 <div class="ems-card-body">
                     <form action="{{ route('events.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
+                        <input type="hidden" name="creation_token" value="{{ old('creation_token', $creationToken) }}">
                         @if ($errors->any())
                             <div class="alert alert-danger border-0 rounded-4">
                                 {{ $errors->first() }}

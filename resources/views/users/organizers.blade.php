@@ -1,19 +1,10 @@
-@extends('layouts.layoutMaster')
+@extends('layouts.dashboard')
 @section('title', 'Organizers')
 
-@section('content')
-<div class="ems-page-section">
-    <div class="ems-dashboard-hero ems-fade-up">
-        <div class="d-flex flex-column flex-xl-row justify-content-between align-items-xl-end gap-4">
-            <div>
-                <span class="ems-badge ems-badge--info mb-3">Super admin</span>
-                <h1 class="ems-dashboard-title">Organizer access management</h1>
-                <p class="ems-dashboard-hero__text mb-0">Create controlled organizer accounts. Public account registration remains disabled.</p>
-            </div>
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createOrganizer"><i class="ti ti-user-plus me-2"></i>Onboard organizer</button>
-        </div>
-    </div>
-</div>
+@section('dashboard-content')
+<x-ui.page-header eyebrow="Platform administration" title="Organizer access management" description="Create controlled organizer accounts. Public account registration remains disabled.">
+    <x-slot:actions><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createOrganizer"><i class="ti ti-user-plus me-2"></i>Onboard organizer</button></x-slot:actions>
+</x-ui.page-header>
 
 @if ($errors->any())
     <div class="alert alert-danger rounded-4 border-0">{{ $errors->first() }}</div>
@@ -32,7 +23,7 @@
                     <tr>
                         <td><div class="fw-semibold">{{ $organizer->name }}</div><div class="text-muted small">{{ $organizer->email }}</div></td>
                         <td>{{ $organizer->events_count }}</td>
-                        <td><span class="ems-badge {{ $organizer->status ? 'ems-badge--success' : 'ems-badge--warning' }}">{{ $organizer->status ? 'Active' : 'Suspended' }}</span></td>
+                        <td><x-ui.status :tone="$organizer->status ? 'success' : 'warning'">{{ $organizer->status ? 'Active' : 'Suspended' }}</x-ui.status></td>
                         <td>{{ $organizer->created_at?->format('d M Y') }}</td>
                         <td class="text-end">
                             <a href="{{ route('changeStatus', ['User', $organizer->id]) }}" class="btn btn-sm btn-outline-primary">{{ $organizer->status ? 'Suspend' : 'Activate' }}</a>

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Attendee;
 use App\Models\Event;
 use App\Models\User;
+use App\Models\Organization;
+use App\Services\Organizations\EventAllowanceService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -35,7 +37,12 @@ class EventController extends Controller
                 },
             ])
             ->when(! $user?->isSuperadmin(), function ($query) use ($user) {
-                $query->where('user_id', $user->id);
+                $organizationIds = $user->activeOrganizations()->pluck('organizations.id');
+                $query->where(function ($query) use ($user, $organizationIds) {
+                    $query->whereIn('organization_id', $organizationIds)->orWhere(function ($query) use ($user) {
+                        $query->whereNull('organization_id')->where('user_id', $user->id);
+                    });
+                });
             })
             ->latest()
             ->get()
@@ -56,16 +63,26 @@ class EventController extends Controller
             ? User::where('user_type', 'organizer')->where('status', true)->orderBy('name')->get(['id', 'name', 'email'])
             : collect();
 
-        return view('events.create', compact('organizers'));
+        $creationToken = (string) Str::uuid();
+
+        return view('events.create', compact('organizers', 'creationToken'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request, EventAllowanceService $allowances)
     {
         $validated = $this->validateEventRequest($request);
         $validated['event_code'] = $this->generateEventCode();
         $validated['user_id'] = Auth::user()->isSuperadmin()
             ? (int) $request->validate(['organizer_id' => ['required', Rule::exists('users', 'id')->where(fn ($query) => $query->where('user_type', 'organizer')->where('status', true))]])['organizer_id']
             : Auth::id();
+        $organization = User::find($validated['user_id'])?->activeOrganizations()->first();
+        if (! $organization) {
+            throw \Illuminate\Validation\ValidationException::withMessages([
+                'organizer_id' => 'The selected organizer does not have an active organization.',
+            ]);
+        }
+        $validated['organization_id'] = $organization->id;
+        $validated['creation_token'] = $validated['creation_token'] ?? (string) Str::uuid();
         $validated['status'] = $request->input('status', 'draft');
         $validated['visibility'] = $request->input('visibility', 'public');
         $validated['is_active'] = $request->boolean('is_active', true);
@@ -75,8 +92,7 @@ class EventController extends Controller
             $validated['banner_image'] = $this->storeBannerImage($request->file('banner_image'));
         }
 
-        DB::transaction(function () use ($validated, $request) {
-            $event = Event::create($validated);
+        $allowances->createEvent($organization, $validated, function (Event $event) use ($request) {
             $this->syncTicketTypes($event, $request);
         });
 
@@ -91,11 +107,7 @@ class EventController extends Controller
                 $query->where('checked_in', true);
             },
         ])->findOrFail($id);
-        $user = Auth::user();
-
-        if (! $user?->isSuperadmin() && $event->user_id !== $user->id) {
-            abort(403, 'Unauthorized access');
-        }
+        $this->authorize('view', $event);
 
         $attendees = $event->attendees()->latest()->take(6)->get();
         $checkedInCount = $event->checked_in_total ?? 0;
@@ -273,7 +285,7 @@ class EventController extends Controller
             ->where('event_code', $event_code)
             ->firstOrFail();
 
-        if ($event->status !== 'published' || ! $event->is_active || $event->visibility !== 'public') {
+        if (! $event->isPubliclyRegistrable()) {
             abort(404);
         }
 
@@ -304,6 +316,7 @@ class EventController extends Controller
             'status' => 'nullable|in:draft,published',
             'visibility' => 'nullable|in:public,private',
             'banner_image' => 'nullable|image|max:4096',
+            'creation_token' => 'nullable|uuid',
         ]);
     }
 
@@ -376,11 +389,7 @@ class EventController extends Controller
     private function findAccessibleEvent(string $id): Event
     {
         $event = Event::with('ticketTypes')->withCount('attendees')->findOrFail($id);
-        $user = Auth::user();
-
-        if (! $user?->isSuperadmin() && $event->user_id !== $user->id) {
-            abort(403, 'Unauthorized access');
-        }
+        $this->authorize('update', $event);
 
         return $event;
     }

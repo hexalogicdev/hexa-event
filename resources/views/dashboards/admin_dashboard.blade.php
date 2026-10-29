@@ -1,13 +1,12 @@
-@extends('layouts.layoutMaster')
+@extends('layouts.dashboard')
 @section('title', 'Dashboard')
 
-@section('content')
+@section('dashboard-content')
 @php $isAdmin = auth()->user()->isSuperadmin(); @endphp
 <div class="ems-admin-page">
-  <div class="ems-page-heading">
-    <div><span class="ems-page-eyebrow">{{ $isAdmin ? 'Platform overview' : 'Organizer overview' }}</span><h1>Welcome back, {{ auth()->user()->name }}</h1><p>{{ $isAdmin ? 'Monitor organizers, events, registrations, and venue activity across the platform.' : 'Manage your events, registrations, ticket inventory, and check-in activity.' }}</p></div>
-    <div class="ems-page-actions"><a href="{{ route('events.index') }}" class="btn btn-outline-secondary"><i class="ti ti-calendar-event me-2"></i>All events</a><a href="{{ route('events.create') }}" class="btn btn-primary"><i class="ti ti-plus me-2"></i>Create event</a></div>
-  </div>
+  <x-ui.page-header :eyebrow="$isAdmin ? 'Platform overview' : 'Organizer overview'" :title="'Welcome back, '.auth()->user()->name" :description="$isAdmin ? 'Monitor organizers, events, registrations, and venue activity across the platform.' : 'Manage your events, registrations, ticket inventory, and check-in activity.'">
+    <x-slot:actions><a href="{{ route('events.index') }}" class="btn btn-outline-secondary"><i class="ti ti-calendar-event me-2"></i>All events</a><a href="{{ route('events.create') }}" class="btn btn-primary"><i class="ti ti-plus me-2"></i>Create event</a></x-slot:actions>
+  </x-ui.page-header>
 
   <div class="ems-kpi-grid">
     <div class="ems-kpi-card"><span class="ems-kpi-icon is-blue"><i class="ti ti-calendar-event"></i></span><div><small>Total events</small><strong>{{ number_format($eventsCount) }}</strong><span>{{ $publishedEvents }} published, {{ $draftEvents }} draft</span></div></div>

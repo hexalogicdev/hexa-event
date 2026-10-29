@@ -96,6 +96,29 @@ class User extends Authenticatable
   {
     return $this->belongsToMany(Event::class, 'event_security_officer')->withTimestamps();
   }
+  public function organizations()
+  {
+    return $this->belongsToMany(Organization::class, 'organization_memberships')
+      ->withPivot(['role', 'status', 'invited_by', 'joined_at'])->withTimestamps();
+  }
+  public function ownedOrganizations()
+  {
+    return $this->hasMany(Organization::class, 'owner_id');
+  }
+  public function activeOrganizations()
+  {
+    return $this->organizations()->wherePivot('status', 'active')->where('organizations.status', 'active');
+  }
+  public function hasOrganizationRole(Organization $organization, array|string $roles): bool
+  {
+    if ($this->isSuperadmin()) {
+      return true;
+    }
+
+    return $this->organizations()->whereKey($organization->id)
+      ->where('organizations.status', 'active')
+      ->wherePivot('status', 'active')->wherePivotIn('role', (array) $roles)->exists();
+  }
   public function checkInAttempts()
   {
     return $this->hasMany(CheckInAttempt::class);

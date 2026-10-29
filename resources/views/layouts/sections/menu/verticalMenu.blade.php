@@ -6,8 +6,9 @@
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
     @if (!isset($navbarFull))
         <div class="app-brand">
-            <a href="{{ route('dashboard') }}" class="app-brand-link">
-                <img src="{{ asset('assets/img/hexa-logo.png') }}" alt="EventOps" class="ems-sidebar-logo">
+            <a href="{{ route('dashboard') }}" class="app-brand-link ep-sidebar-brand">
+                <span class="ep-sidebar-brand__mark"><i class="ti ti-calendar-event"></i></span>
+                <span class="ep-sidebar-brand__copy"><strong>{{ config('app.name', 'EventOps') }}</strong><small>Management platform</small></span>
             </a>
             <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-xl-none"><i class="ti ti-x"></i></a>
         </div>
@@ -18,7 +19,7 @@
     <ul class="menu-inner py-1">
         @foreach ($menuData[0]->menu as $menu)
             {{-- Check if user has access to this menu item and if it matches the environment --}}
-            @if (isset($menu->roles) && in_array(auth()->user()->user_type, $menu->roles))
+            @if (\App\Support\NavigationAccess::allows(auth()->user(), $menu))
 
                 @if (isset($menu->menuHeader))
                     <li class="menu-header small">
@@ -60,7 +61,7 @@
                             @isset($menu->icon)
                                 <i class="{{ $menu->icon }}"></i>
                             @endisset
-                            <div>{{ isset($menu->name) ? __($menu->name) : '' }}</div>
+                            <div class="ep-menu-label">{{ isset($menu->name) ? __($menu->name) : '' }}</div>
                             @isset($menu->badge)
                                 <div class="badge bg-{{ $menu->badge[0] }} rounded-pill ms-auto">{{ $menu->badge[1] }}</div>
                             @endisset

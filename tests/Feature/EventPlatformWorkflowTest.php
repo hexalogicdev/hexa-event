@@ -18,6 +18,8 @@ class EventPlatformWorkflowTest extends TestCase
 
     public function test_public_account_registration_is_disabled(): void
     {
+        $this->get('/')->assertOk()->assertSee('data-ep-shell="public"', false);
+        $this->get('/?q=conference&location=London')->assertOk()->assertSee('Search Results');
         $this->get('/register')->assertNotFound();
         $this->post('/register', [])->assertNotFound();
         $this->get('/check-in')->assertRedirect('/login');
@@ -89,7 +91,10 @@ class EventPlatformWorkflowTest extends TestCase
         $this->actingAs($officer)->get('/dashboard')->assertRedirect(route('attendee.qr.scan'));
         $this->actingAs($officer)->get('/events')->assertForbidden();
         $this->actingAs($officer)->get('/profile')->assertForbidden();
-        $this->actingAs($officer)->get('/check-in')->assertOk()->assertDontSee('id="layout-menu"', false);
+        $this->actingAs($officer)->get('/check-in')
+            ->assertOk()
+            ->assertSee('data-ep-shell="security"', false)
+            ->assertDontSee('id="layout-menu"', false);
 
         $this->actingAs($organizer)->patch(route('security-officers.status', $officer), ['status' => 0])
             ->assertRedirect();
@@ -112,6 +117,7 @@ class EventPlatformWorkflowTest extends TestCase
 
         $this->actingAs($organizer)->get('/dashboard')
             ->assertOk()
+            ->assertSee('data-ep-shell="dashboard"', false)
             ->assertSee('id="layout-menu"', false)
             ->assertSee('Overview')
             ->assertSee('Events')

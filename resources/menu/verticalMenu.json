@@ -5,6 +5,8 @@
     {"name":"Events","icon":"menu-icon tf-icons ti ti-calendar-event","slug":"events","url":"events.index","roles":["superadmin","organizer"],"env":["local","staging","production"]},
     {"name":"Create event","icon":"menu-icon tf-icons ti ti-calendar-plus","slug":"events.create","url":"events.create","roles":["superadmin","organizer"],"env":["local","staging","production"]},
     {"menuHeader":"Platform","roles":["superadmin"],"env":["local","staging","production"]},
+    {"name":"Organizations","icon":"menu-icon tf-icons ti ti-building","slug":"organizations","url":"organizations.index","ability":"organizations.viewAny","roles":["superadmin","organizer"],"env":["local","staging","production"]},
+    {"name":"Allowance requests","icon":"menu-icon tf-icons ti ti-adjustments-plus","slug":"event-allowance-requests","url":"event-allowance-requests.index","roles":["superadmin"],"env":["local","staging","production"]},
     {"name":"Organizers","icon":"menu-icon tf-icons ti ti-building-community","slug":"User","url":"User.index","roles":["superadmin"],"env":["local","staging","production"]},
     {"name":"Security officers","icon":"menu-icon tf-icons ti ti-shield-lock","slug":"security-officers","url":"security-officers.index","roles":["superadmin","organizer"],"env":["local","staging","production"]},
     {"menuHeader":"Operations","roles":["superadmin","organizer","security_officer"],"env":["local","staging","production"]},
