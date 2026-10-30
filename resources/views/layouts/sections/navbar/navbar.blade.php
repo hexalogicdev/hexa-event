@@ -25,21 +25,21 @@
 <nav class="layout-navbar ems-app-navbar navbar navbar-expand-xl" id="layout-navbar">
     <div class="{{ $containerNav }}">
         <div class="ems-app-navbar__inner w-100">
-            <a href="javascript:void(0);" class="layout-menu-toggle menu-link d-xl-none ems-navbar-toggle" aria-label="Open navigation"><i class="ti ti-menu-2 ti-md"></i></a>
+            <button type="button" class="layout-menu-toggle menu-link d-xl-none ems-navbar-toggle" aria-label="Open navigation" aria-controls="layout-menu" aria-expanded="false"><i class="ti ti-menu-2 ti-md" aria-hidden="true"></i></button>
             <div class="ems-navbar-context">
                 <div class="ems-app-navbar__eyebrow">{{ $user->isSuperadmin() ? 'Platform administration' : ($user->isSecurityOfficer() ? 'Venue access control' : 'Organizer workspace') }}</div>
                 <h1 class="ems-app-navbar__title">{{ $pageTitle }}</h1>
             </div>
             <div class="ems-navbar-actions">
                 @unless($user->isSecurityOfficer())
-                    <a href="{{ route('events.create') }}" class="btn btn-primary d-none d-sm-inline-flex"><i class="ti ti-plus me-2"></i>New event</a>
-                    <a href="{{ url('/') }}" target="_blank" class="btn btn-outline-secondary d-none d-md-inline-flex"><i class="ti ti-external-link me-2"></i>View site</a>
+                    <a href="{{ route('events.create') }}" class="btn btn-primary ems-navbar-action d-none d-sm-inline-flex"><i class="ti ti-plus" aria-hidden="true"></i><span>New event</span></a>
+                    <a href="{{ url('/') }}" target="_blank" rel="noopener" class="btn btn-outline-secondary ems-navbar-action d-none d-md-inline-flex"><i class="ti ti-external-link" aria-hidden="true"></i><span>View site</span></a>
                 @endunless
                 <div class="dropdown">
                     <button class="ems-account-button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Open account menu">
                         <span class="ems-sidebar-avatar">{{ strtoupper(substr($user->name, 0, 1)) }}</span>
                         <span class="d-none d-lg-block text-start"><strong>{{ $user->name }}</strong><small>{{ $user->isSuperadmin() ? 'Superadmin' : ($user->isSecurityOfficer() ? 'Security officer' : 'Organizer') }}</small></span>
-                        <i class="ti ti-chevron-down"></i>
+                        <i class="ti ti-chevron-down" aria-hidden="true"></i>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end mt-2">
                         @unless($user->isSecurityOfficer())

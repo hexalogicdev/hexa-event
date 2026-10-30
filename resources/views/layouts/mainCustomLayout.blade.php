@@ -30,6 +30,7 @@
 @endphp
 
 @section('layoutContent')
+    <a class="ep-skip-link" href="#admin-main-content">Skip to main content</a>
     <div class="layout-wrapper layout-content-navbar {{ $isMenu ? '' : 'layout-without-menu' }}">
         <div class="layout-container">
             @if ($isMenu)
@@ -44,11 +45,11 @@
                     @if ($isFlex)
                         <div class="{{ $container }} d-flex align-items-stretch flex-grow-1 p-0">
                         @else
-                            <div class="{{ $container }} flex-grow-1 container-p-y">
+                            <main id="admin-main-content" class="{{ $container }} flex-grow-1 container-p-y" tabindex="-1">
                     @endif
                     @yield('content')
 
-                </div>
+                @if ($isFlex)</div>@else</main>@endif
                 @if ($isFooter)
                     @include('layouts/sections/footer/footer')
                 @endif
@@ -66,5 +67,35 @@
         window.successMessage = @json(session('success'));
         window.errorMessage = @json(session('error'));
         window.validationErrors = @json($errors->all());
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const menu = document.getElementById('layout-menu');
+            const openButton = document.querySelector('.ems-navbar-toggle');
+            const closeButton = document.querySelector('.ep-menu-close');
+            if (!menu || !openButton) return;
+
+            const expanded = () => document.documentElement.classList.contains('layout-menu-expanded') || document.body.classList.contains('layout-menu-expanded');
+            const syncMenuState = () => {
+                const isOpen = expanded();
+                openButton.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+                menu.setAttribute('aria-hidden', window.innerWidth < 1200 && !isOpen ? 'true' : 'false');
+            };
+
+            openButton.setAttribute('aria-expanded', 'false');
+            openButton.addEventListener('click', () => window.setTimeout(() => {
+                syncMenuState();
+                if (expanded()) menu.querySelector('a,button')?.focus();
+            }, 0));
+            closeButton?.addEventListener('click', () => window.setTimeout(() => {
+                syncMenuState();
+                openButton.focus();
+            }, 0));
+            document.addEventListener('keydown', event => {
+                if (event.key !== 'Escape' || !expanded() || window.innerWidth >= 1200) return;
+                closeButton?.click();
+            });
+            window.addEventListener('resize', syncMenuState);
+            syncMenuState();
+        });
     </script>
 @endsection

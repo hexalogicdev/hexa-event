@@ -119,9 +119,38 @@ class EventPlatformWorkflowTest extends TestCase
             ->assertOk()
             ->assertSee('data-ep-shell="dashboard"', false)
             ->assertSee('id="layout-menu"', false)
+            ->assertSee('href="#admin-main-content"', false)
+            ->assertSee('id="admin-main-content"', false)
+            ->assertSee('aria-current="page"', false)
+            ->assertSee('aria-label="Primary navigation"', false)
+            ->assertSee('aria-controls="layout-menu"', false)
             ->assertSee('Overview')
             ->assertSee('Events')
             ->assertSee('QR check-in');
+
+        $event = Event::create([
+            'user_id' => $organizer->id,
+            'name' => 'Navigation Event',
+            'location' => 'Main Hall',
+            'event_start_date' => now()->addDays(3),
+            'event_end_date' => now()->addDays(4),
+            'booking_start_date' => now()->subDay(),
+            'booking_end_date' => now()->addDay(),
+            'max_attendees' => 20,
+            'event_code' => Str::upper(Str::random(10)),
+            'checkin_password' => 'unused',
+            'price' => 0,
+            'ticketing_type' => 'free',
+            'status' => 'draft',
+            'visibility' => 'private',
+            'is_active' => true,
+        ]);
+
+        $this->actingAs($organizer)->get(route('events.show', $event))
+            ->assertOk()
+            ->assertSee('aria-label="Back to all events"', false)
+            ->assertSee('Event workspace')
+            ->assertSee('aria-current="page"', false);
     }
 
     public function test_suspended_authenticated_account_is_logged_out(): void
@@ -218,5 +247,36 @@ class EventPlatformWorkflowTest extends TestCase
         $this->assertSame(1, $order->attendees()->count());
         $this->assertSame(1, $order->tickets()->count());
         $this->assertSame('valid', $order->tickets()->first()->status);
+    }
+
+    public function test_profile_workspace_renders_and_preserves_profile_updates(): void
+    {
+        $role = Role::firstOrCreate(['name' => 'organizer']);
+        $organizer = User::create([
+            'name' => 'Profile Owner',
+            'email' => 'profile-' . Str::uuid() . '@example.test',
+            'password' => Hash::make('Password!1'),
+            'user_type' => 'organizer',
+            'role_id' => $role->id,
+            'status' => true,
+        ]);
+
+        $this->actingAs($organizer)->get(route('profile.show'))
+            ->assertOk()
+            ->assertSee('ep-profile-layout', false)
+            ->assertSee('Personal details')
+            ->assertSee('Password security')
+            ->assertSee('data-password-toggle="password"', false);
+
+        $newEmail = 'updated-' . Str::uuid() . '@example.test';
+        $this->actingAs($organizer)->post(route('profile.update'), [
+            'type' => 'profile',
+            'name' => 'Updated Owner',
+            'email' => $newEmail,
+        ])->assertRedirect(route('profile.show'));
+
+        $organizer->refresh();
+        $this->assertSame('Updated Owner', $organizer->name);
+        $this->assertSame($newEmail, $organizer->email);
     }
 }

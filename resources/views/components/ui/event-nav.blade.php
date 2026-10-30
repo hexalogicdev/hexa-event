@@ -12,15 +12,18 @@
 @endphp
 
 <nav class="ep-event-nav" aria-label="{{ $event->name }} management">
+    <a href="{{ route('events.index') }}" class="ep-event-nav__back" aria-label="Back to all events" title="Back to all events">
+        <i class="ti ti-arrow-left" aria-hidden="true"></i>
+    </a>
     <div class="ep-event-nav__context">
-        <span class="ep-event-nav__label">Managing event</span>
+        <span class="ep-event-nav__label">Event workspace</span>
         <strong>{{ $event->name }}</strong>
     </div>
     <div class="ep-event-nav__links">
         @foreach ($items as $item)
             <a href="{{ route($item['route'], $event) }}" @class(['is-active' => request()->routeIs($item['route'])])
                 @if(request()->routeIs($item['route'])) aria-current="page" @endif>
-                <i class="ti ti-{{ $item['icon'] }}"></i><span>{{ $item['label'] }}</span>
+                <i class="ti ti-{{ $item['icon'] }}" aria-hidden="true"></i><span>{{ $item['label'] }}</span>
             </a>
         @endforeach
     </div>

@@ -31,6 +31,7 @@ $container = (isset($configData['contentLayout']) && $configData['contentLayout'
 @endphp
 
 @section('layoutContent')
+<a class="ep-skip-link" href="#admin-main-content">Skip to main content</a>
 <div class="layout-wrapper layout-content-navbar {{ $isMenu ? '' : 'layout-without-menu' }}">
   <div class="layout-container">
 
@@ -59,12 +60,12 @@ $container = (isset($configData['contentLayout']) && $configData['contentLayout'
         @if ($isFlex)
         <div class="{{$container}} d-flex align-items-stretch flex-grow-1 p-0">
           @else
-          <div class="{{$container}} flex-grow-1 container-p-y">
+          <main id="admin-main-content" class="{{$container}} flex-grow-1 container-p-y" tabindex="-1">
             @endif
 
             @yield('content')
 
-          </div>
+          @if ($isFlex)</div>@else</main>@endif
           <!-- / Content -->
 
           <!-- Footer -->

@@ -6,16 +6,17 @@
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
     @if (!isset($navbarFull))
         <div class="app-brand">
-            <a href="{{ route('dashboard') }}" class="app-brand-link ep-sidebar-brand">
+            <a href="{{ route('dashboard') }}" class="app-brand-link ep-sidebar-brand" aria-label="{{ config('app.name', 'EventOps') }} dashboard">
                 <span class="ep-sidebar-brand__mark"><i class="ti ti-calendar-event"></i></span>
                 <span class="ep-sidebar-brand__copy"><strong>{{ config('app.name', 'EventOps') }}</strong><small>Management platform</small></span>
             </a>
-            <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-xl-none"><i class="ti ti-x"></i></a>
+            <button type="button" class="layout-menu-toggle menu-link text-large ms-auto d-xl-none ep-menu-close" aria-label="Close navigation" aria-controls="layout-menu"><i class="ti ti-x" aria-hidden="true"></i></button>
         </div>
     @endif
 
     <div class="menu-inner-shadow"></div>
 
+    <nav class="ep-sidebar-nav" aria-label="Primary navigation">
     <ul class="menu-inner py-1">
         @foreach ($menuData[0]->menu as $menu)
             {{-- Check if user has access to this menu item and if it matches the environment --}}
@@ -57,9 +58,12 @@
                     <li class="menu-item {{ $activeClass }}">
                         <a href="{{ isset($menu->url) ? (Route::has($menu->url) ? route($menu->url) : url($menu->url)) : 'javascript:void(0);' }}"
                             class="{{ isset($menu->submenu) ? 'menu-link menu-toggle' : 'menu-link' }}"
+                            title="{{ isset($menu->name) ? __($menu->name) : '' }}"
+                            @if ($activeClass) aria-current="page" @endif
+                            @if (isset($menu->submenu)) aria-expanded="{{ str_contains((string) $activeClass, 'open') ? 'true' : 'false' }}" @endif
                             @if (isset($menu->target) && !empty($menu->target)) target="_blank" @endif>
                             @isset($menu->icon)
-                                <i class="{{ $menu->icon }}"></i>
+                                <i class="{{ $menu->icon }}" aria-hidden="true"></i>
                             @endisset
                             <div class="ep-menu-label">{{ isset($menu->name) ? __($menu->name) : '' }}</div>
                             @isset($menu->badge)
@@ -76,12 +80,13 @@
             @endif
         @endforeach
     </ul>
+    </nav>
     <div class="ems-sidebar-account">
         <div class="ems-sidebar-avatar">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</div>
         <div class="min-w-0">
             <div class="fw-semibold text-truncate">{{ auth()->user()->name }}</div>
             <div class="small text-muted text-truncate">{{ auth()->user()->isSuperadmin() ? 'Superadmin' : (auth()->user()->isSecurityOfficer() ? 'Security officer' : 'Organizer') }}</div>
         </div>
-        <a href="{{ route('profile.show') }}" class="ms-auto" aria-label="Account settings"><i class="ti ti-settings"></i></a>
+        <a href="{{ route('profile.show') }}" class="ems-sidebar-settings ms-auto" aria-label="Account settings" title="Account settings"><i class="ti ti-settings" aria-hidden="true"></i></a>
     </div>
 </aside>
