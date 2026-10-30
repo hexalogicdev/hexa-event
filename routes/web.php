@@ -70,7 +70,10 @@ Route::middleware('throttle:20,1')->group(function () {
 });
 Route::post('attendee', [AttendeeController::class, 'store'])->name('attendee.store');
 Route::get('/events/register/{event_code}', [EventController::class, 'registrationForm'])->name('events.registration');
-Route::view('/legal/privacy-terms', 'profile.policy')->name('legal.policy');
+Route::view('/legal/privacy-policy', 'profile.policy', ['policy' => 'privacy'])->name('legal.privacy');
+Route::view('/legal/terms', 'profile.policy', ['policy' => 'terms'])->name('legal.terms');
+Route::view('/legal/refund-policy', 'profile.policy', ['policy' => 'refund'])->name('legal.refund');
+Route::redirect('/legal/privacy-terms', '/legal/privacy-policy', 301)->name('legal.policy');
 Route::get('thankYou/{id}', [CheckInController::class, 'thankYou'])->middleware('signed')->name('thankYou');
 
 // Main Page Route

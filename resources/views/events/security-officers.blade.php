@@ -2,6 +2,7 @@
 @section('title', 'Event Security Team')
 
 @section('content')
+    <x-ui.event-nav :event="$event" />
 <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3 mb-4">
     <div>
         <a href="{{ route('events.show', $event) }}" class="text-muted small">&larr; Back to event</a>

@@ -2,6 +2,7 @@
 @section('title', 'Attendees')
 
 @section('content')
+    <x-ui.event-nav :event="$event" />
     @php
         $total = $attendees->count();
         $checkedIn = $attendees->where('checked_in', true)->count();

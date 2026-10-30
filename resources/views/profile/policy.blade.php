@@ -1,184 +1,54 @@
+@php
+    $documents = [
+        'privacy' => ['title' => 'Privacy Policy', 'intro' => 'How we collect, use, protect, and retain information across event discovery, registration, organizer tools, and check-in.', 'route' => 'legal.privacy', 'sections' => [
+            ['scope', '1. Scope and overview', ['This policy explains how the Event Management Software handles personal information across public booking pages, organizer dashboards, and QR check-in flows. It applies to attendees, organizers, security officers, and platform administrators.', 'This page is a product-level policy draft tailored to the current application behavior. It is not legal advice and should be reviewed and adapted to your final operational needs, jurisdiction, and compliance requirements before publication.']],
+            ['information', '2. Information we collect', ['We collect the information users provide during registration, login, event creation, attendee booking, QR check-in, profile updates, and support interactions. This may include name, email address, phone number, country, address, password hashes, event details, booking references, attendance records, and uploaded assets such as banners.', 'Public event pages may collect attendee details requested by the organizer. Those fields are presented to attendees before submission and are used only for that event\'s registration and attendance process.']],
+            ['use', '3. How information is used', ['Data is used to authenticate users, assign organizer or admin access, create and manage events, display public registration forms, generate booking references, verify QR scans, record attendance, show reports, and send operational notices. We do not use attendee data for unrelated purposes.']],
+            ['access', '4. Access and disclosure', ['Organizers can access only the events and attendee records they manage. Admin users can access the full platform for oversight, support, security, and product administration.', 'Information may be disclosed where needed to operate the service, comply with a valid legal obligation, protect users or the platform, or support an event workflow. The current repository does not establish a complete list of external processors; that list must be confirmed before publication.']],
+            ['technology', '5. Cookies, camera, and service technology', ['The application uses authenticated sessions and related browser storage needed to keep users signed in and protect requests. No separate advertising or analytics platform is confirmed in the current implementation.', 'Camera permission is requested only when a user opens the QR check-in screen or starts scanner mode. The camera is used solely to read QR codes and is not stored or transmitted as a video recording by the application.']],
+            ['retention', '6. Storage, retention, and security', ['Event records, registrations, attendance timestamps, and audit trails are retained for operational and reporting purposes. Passwords are stored as secure hashes. Where possible, we keep data only as long as needed for the platform, legal obligations, security, and support.', 'The application uses role-based access, authenticated sessions, validated forms, and guarded check-in actions. Users are responsible for keeping login credentials private and for protecting their devices during live check-in.']],
+            ['rights', '7. Your privacy rights', ['Depending on the applicable jurisdiction, users may have rights to request access, correction, deletion, restriction, or a copy of their personal information, and to object to certain processing. The operating entity, applicable jurisdiction, response process, and any legally required identity checks must be confirmed before publication.']],
+            ['updates', '8. Questions and policy updates', ['Privacy questions may be sent to support@example.com. The production privacy contact and legal entity details must be confirmed before publication.', 'We may update this policy as the platform, operational practices, or legal requirements change. Material updates should be communicated through an appropriate platform notice and shown with an effective date.']],
+        ]],
+        'terms' => ['title' => 'Terms & Conditions', 'intro' => 'The ground rules for using the platform, publishing events, registering attendees, and managing admission.', 'route' => 'legal.terms', 'sections' => [
+            ['acceptance', '1. Acceptance and eligibility', ['By accessing or using the platform, you agree to follow these terms. The contracting legal entity, minimum user age, operating territories, and effective date must be confirmed before these terms are published as a binding agreement.', 'The interface and data handling are designed to support international use, responsive layouts, and multilingual-ready structures. Any local compliance obligations remain the responsibility of the event owner or organization.']],
+            ['accounts', '2. Accounts and responsibilities', ['Users must provide accurate information, keep credentials secure, and use the platform only for legitimate event operations. Organizer accounts are for managing their own events, while admin accounts are reserved for platform oversight.', 'Accounts are currently provisioned by the platform administrator. Users must notify support if they suspect unauthorized account access.']],
+            ['conduct', '3. Acceptable use', ['The system may not be used for unlawful activity, unauthorized access, automated abuse, fraudulent attendance marking, or attempts to interfere with the check-in and booking workflow.']],
+            ['events', '4. Events, registrations, and user roles', ['Organizers are responsible for the accuracy, legality, availability, and delivery of their event information and for configuring registration fields appropriately. Attendees are responsible for providing accurate registration details and following event rules.', 'The platform provides tools for event discovery, registration, booking references, tickets, and check-in. It does not itself become the organizer of an event merely by providing those tools.']],
+            ['payments', '5. Pricing and payments', ['Events may be marked as free or ticketed and may display ticket prices and capacity. The current registration workflow records orders with payment marked as not required; paid checkout is not enabled until a payment provider is configured.', 'Payment provider, transaction fees, taxes, settlement arrangements, supported currencies, and paid-booking terms are unresolved business decisions and must be added before paid checkout is launched.']],
+            ['cancellations', '6. Cancellations, refunds, and complaints', ['Any cancellation or refund is subject to the Refund Policy and the event information shown at the time of registration. The current repository does not define customer cancellation windows, organizer cancellation remedies, refund fees, or refund processing commitments.', 'Questions or complaints may be sent to support@example.com. A production support process and response targets must be confirmed before publication.']],
+            ['ownership', '7. Intellectual property and content', ['Users retain responsibility for content they upload and must have the rights needed to use it. The ownership of the platform, licence granted for hosted event content, takedown process, and brand-usage rules require legal and business confirmation.']],
+            ['suspension', '8. Suspension, liability, and changes', ['Access may be restricted where an account is inactive, suspended, used unlawfully, or creates a security risk. A formal notice and appeal process should be confirmed before publication.', 'No unverified warranty disclaimer, liability cap, indemnity, governing-law clause, or dispute forum is stated here. These material terms require approval from a qualified legal professional for the operating jurisdiction.', 'These terms may change as the platform and its services evolve. Material changes should be communicated with an effective date before they apply.']],
+        ]],
+        'refund' => ['title' => 'Refund Policy', 'intro' => 'A plain-language guide to the current payment and cancellation position, including decisions still required before paid bookings launch.', 'route' => 'legal.refund', 'sections' => [
+            ['current', '1. Current payment status', ['The current registration workflow creates booking and ticket records with payment marked as not required. Paid checkout is not available until the platform payment provider is configured.', 'Because the live workflow does not currently collect payment, there is ordinarily no platform payment to refund. Legacy records may contain ticket amounts, but the repository does not establish a live refund mechanism for those records.']],
+            ['eligibility', '2. When a refund may be available', ['Before paid bookings are enabled, the business must confirm whether refunds are available for attendee cancellations, organizer cancellations, cancelled or rescheduled events, duplicate payments, failed payments, and events not delivered as described.', 'No refund deadline, cancellation window, deduction, administrative fee, partial-refund rule, or guarantee is promised by this draft.']],
+            ['customer', '3. Customer and organizer cancellations', ['The repository records cancelled registrations and orders but does not define who may cancel through the public interface or what financial outcome follows. Customer cancellation rights and organizer obligations must be approved and displayed during booking before paid sales begin.']],
+            ['request', '4. Requesting review', ['Until a dedicated refund workflow is implemented, users may contact support@example.com with their booking reference, event name, account email, reason for the request, and any relevant payment evidence. The production support address and identity-verification process must be confirmed.', 'Requests should be reviewed against the event terms, transaction record, payment-provider status, and applicable consumer law. A response target and escalation route remain business decisions.']],
+            ['processing', '5. Processing and payment-provider timing', ['If paid checkout is introduced, approved refunds should normally be returned through the original payment method. The payment provider, processing sequence, settlement rules, and expected bank or card-network timing are not yet configured and must not be promised until confirmed.']],
+            ['relationship', '6. Relationship to the Terms', ['This Refund Policy should be read with the Terms & Conditions and the information displayed for the relevant event. If mandatory consumer rights apply, they are not excluded by this draft.', 'This policy requires legal review and completion of the unresolved business decisions before any paid booking feature is launched.']],
+        ]],
+    ];
+    $document = $documents[$policy] ?? $documents['privacy'];
+@endphp
+
 @extends('layouts.app')
-
-@section('title', 'Privacy Policy & Terms')
-
+@section('title', $document['title'])
 @section('content')
-    <section class="container-fluid py-4 py-lg-5">
-        <div class="ems-surface ems-fade-up">
-            <div class="ems-card-header d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
-                <div>
-                    <span class="ems-badge ems-badge--info mb-3">Legal information</span>
-                    <h1 class="ems-section-title display-6 mb-2">Privacy Policy and Terms</h1>
-                    <p class="ems-section-subtitle mb-0">
-                        This page explains how the Event Management Software collects, uses, stores, and protects data
-                        across public booking pages, organizer dashboards, and QR check-in flows.
-                    </p>
-                </div>
-                <div class="d-flex flex-wrap gap-2">
-                    <a href="{{ url('/') }}" class="btn btn-outline-light">Home</a>
-                    <a href="{{ url('/') }}#events" class="btn btn-primary">Browse events</a>
-                </div>
-            </div>
-
-            <div class="ems-card-body">
-                <div class="row g-4">
-                    <div class="col-lg-4">
-                        <div class="ems-dashboard-card ems-dashboard-card--soft h-100">
-                            <div class="ems-dashboard-card__head">
-                                <div>
-                                    <h2>Policy hierarchy</h2>
-                                    <p>How this document is organized.</p>
-                                </div>
-                            </div>
-                            <div class="ems-dashboard-card__body d-grid gap-3">
-                                <div class="ems-insight-block">
-                                    <div class="label">1. Privacy overview</div>
-                                    <div class="meta">What data is collected and why.</div>
-                                </div>
-                                <div class="ems-insight-block">
-                                    <div class="label">2. Data usage</div>
-                                    <div class="meta">How information is processed and retained.</div>
-                                </div>
-                                <div class="ems-insight-block">
-                                    <div class="label">3. Terms of use</div>
-                                    <div class="meta">Platform rules, permissions, and responsibilities.</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-8">
-                        <div class="d-grid gap-4">
-                            <div class="ems-dashboard-card">
-                                <div class="ems-dashboard-card__head">
-                                    <div>
-                                        <h2>Privacy policy</h2>
-                                        <p>Data handling across the platform.</p>
-                                    </div>
-                                </div>
-                                <div class="ems-dashboard-card__body d-grid gap-3">
-                                    <div class="ems-empty-state">
-                                        <div class="ems-empty-state__title">Information we collect</div>
-                                        <p class="mb-0">
-                                            We collect the information users provide during registration, login, event
-                                            creation, attendee booking, QR check-in, profile updates, and support
-                                            interactions. This may include name, email address, phone number, country,
-                                            address, password hashes, event details, booking references, attendance
-                                            records, and uploaded assets such as banners.
-                                        </p>
-                                    </div>
-                                    <div class="ems-empty-state">
-                                        <div class="ems-empty-state__title">How the data is used</div>
-                                        <p class="mb-0">
-                                            Data is used to authenticate users, assign organizer or admin access, create
-                                            and manage events, display public registration forms, generate booking
-                                            references, verify QR scans, record attendance, show reports, and send
-                                            operational notices. We do not use attendee data for unrelated purposes.
-                                        </p>
-                                    </div>
-                                    <div class="ems-empty-state">
-                                        <div class="ems-empty-state__title">Access by role</div>
-                                        <p class="mb-0">
-                                            Organizers can access only the events and attendee records they manage.
-                                            Admin users can access the full platform for oversight, support, security,
-                                            and product administration.
-                                        </p>
-                                    </div>
-                                    <div class="ems-empty-state">
-                                        <div class="ems-empty-state__title">Camera and QR permissions</div>
-                                        <p class="mb-0">
-                                            Camera permission is requested only when a user opens the QR check-in screen
-                                            or starts scanner mode. The camera is used solely to read QR codes and is not
-                                            stored or transmitted as a video recording by the application.
-                                        </p>
-                                    </div>
-                                    <div class="ems-empty-state">
-                                        <div class="ems-empty-state__title">Storage and retention</div>
-                                        <p class="mb-0">
-                                            Event records, registrations, attendance timestamps, and audit trails are
-                                            retained for operational and reporting purposes. Passwords are stored as
-                                            secure hashes. Where possible, we keep data only as long as needed for the
-                                            platform, legal obligations, security, and support.
-                                        </p>
-                                    </div>
-                                    <div class="ems-empty-state">
-                                        <div class="ems-empty-state__title">Security controls</div>
-                                        <p class="mb-0">
-                                            The application uses role-based access, authenticated sessions, validated
-                                            forms, and guarded check-in actions. Users are responsible for keeping login
-                                            credentials private and for protecting their devices during live check-in.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="ems-dashboard-card">
-                                <div class="ems-dashboard-card__head">
-                                    <div>
-                                        <h2>Terms of use</h2>
-                                        <p>Rules for using the platform responsibly.</p>
-                                    </div>
-                                </div>
-                                <div class="ems-dashboard-card__body d-grid gap-3">
-                                    <div class="ems-empty-state">
-                                        <div class="ems-empty-state__title">Account responsibilities</div>
-                                        <p class="mb-0">
-                                            Users must provide accurate information, keep credentials secure, and use the
-                                            platform only for legitimate event operations. Organizer accounts are for
-                                            managing their own events, while admin accounts are reserved for platform
-                                            oversight.
-                                        </p>
-                                    </div>
-                                    <div class="ems-empty-state">
-                                        <div class="ems-empty-state__title">Acceptable use</div>
-                                        <p class="mb-0">
-                                            The system may not be used for unlawful activity, unauthorized access,
-                                            automated abuse, fraudulent attendance marking, or attempts to interfere with
-                                            the check-in and booking workflow.
-                                        </p>
-                                    </div>
-                                    <div class="ems-empty-state">
-                                        <div class="ems-empty-state__title">Public registration pages</div>
-                                        <p class="mb-0">
-                                            Public event pages may collect attendee details requested by the organizer.
-                                            Those fields are presented to attendees before submission and are used only
-                                            for that event's registration and attendance process.
-                                        </p>
-                                    </div>
-                                    <div class="ems-empty-state">
-                                        <div class="ems-empty-state__title">International readiness</div>
-                                        <p class="mb-0">
-                                            The interface and data handling are designed to support international use,
-                                            responsive layouts, and multilingual-ready structures. Any local compliance
-                                            obligations remain the responsibility of the event owner or organization.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="ems-dashboard-card">
-                                <div class="ems-dashboard-card__head">
-                                    <div>
-                                        <h2>Important notice</h2>
-                                        <p>Review with your legal advisor before going live.</p>
-                                    </div>
-                                </div>
-                                <div class="ems-dashboard-card__body">
-                                    <div class="ems-empty-state">
-                                        <div class="ems-empty-state__title">Draft policy notice</div>
-                                        <p class="mb-0">
-                                            This page is a product-level policy draft tailored to the current
-                                            application behavior. It is not legal advice and should be reviewed and
-                                            adapted to your final operational needs, jurisdiction, and compliance
-                                            requirements before publication.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+<div class="legal-page">
+  <header class="legal-hero"><div class="container">
+    <nav class="legal-breadcrumb" aria-label="Breadcrumb"><a href="{{ url('/') }}">Home</a><i class="ti ti-chevron-right" aria-hidden="true"></i><span>Legal</span></nav>
+    <div class="legal-hero__grid"><div><p class="legal-kicker">Trust &amp; transparency</p><h1>{{ $document['title'] }}</h1><p>{{ $document['intro'] }}</p></div><div class="legal-status"><i class="ti ti-shield-check" aria-hidden="true"></i><div><strong>Plain-language draft</strong><span>Grounded in current platform behaviour</span></div></div></div>
+  </div></header>
+  <nav class="legal-switcher" aria-label="Legal policies"><div class="container"><div class="legal-switcher__inner">
+    @foreach ($documents as $key => $item)<a href="{{ route($item['route']) }}" @class(['is-active' => $key === $policy]) @if($key === $policy) aria-current="page" @endif>{{ $item['title'] }}</a>@endforeach
+  </div></div></nav>
+  <main class="container legal-layout">
+    <aside class="legal-index" aria-label="On this page"><p>On this page</p><ol>@foreach ($document['sections'] as $section)<li><a href="#{{ $section[0] }}">{{ preg_replace('/^\d+\.\s*/', '', $section[1]) }}</a></li>@endforeach</ol></aside>
+    <article class="legal-document"><div class="legal-document__meta"><span>Last reviewed: {{ now()->format('F Y') }}</span><span>{{ count($document['sections']) }} sections</span></div>
+      @foreach ($document['sections'] as $section)<section id="{{ $section[0] }}" class="legal-section"><h2>{{ $section[1] }}</h2>@foreach ($section[2] as $paragraph)<p>{{ $paragraph }}</p>@endforeach</section>@endforeach
+      <footer class="legal-document__footer"><i class="ti ti-info-circle" aria-hidden="true"></i><p><strong>Publication review required.</strong> This draft reflects the current codebase and should be approved by a qualified legal professional after the operating entity, jurisdiction, contacts, and unresolved business rules are confirmed.</p></footer>
+    </article>
+  </main>
+</div>
 @endsection

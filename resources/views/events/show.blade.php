@@ -2,6 +2,7 @@
 @section('title', $event->name)
 
 @section('content')
+    <x-ui.event-nav :event="$event" />
     @php
         $registrationUrl = route('events.registration', $event->event_code);
         $checkedInRate = $event->attendees_count ? round(($checkedInCount / max($event->attendees_count, 1)) * 100) : 0;

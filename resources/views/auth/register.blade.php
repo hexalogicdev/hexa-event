@@ -187,7 +187,7 @@
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" id="terms-conditions" name="terms">
                                 <label class="form-check-label" for="terms-conditions">
-                                    I agree to the <a href="{{ route('legal.policy') }}" target="_blank" rel="noopener noreferrer">privacy policy and terms</a>
+                                    I agree to the <a href="{{ route('legal.privacy') }}" target="_blank" rel="noopener noreferrer">privacy policy</a> and <a href="{{ route('legal.terms') }}" target="_blank" rel="noopener noreferrer">terms</a>
                                 </label>
                             </div>
                         </div>

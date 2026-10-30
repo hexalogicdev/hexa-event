@@ -9,7 +9,9 @@ $containerFooter = (isset($configData['contentLayout']) && $configData['contentL
         &copy; <script>document.write(new Date().getFullYear())</script> Event Management System
       </div>
       <div class="text-body-secondary small">
-        <a href="{{ route('legal.policy') }}" class="text-body-secondary text-decoration-none">Privacy policy and terms</a>
+        <a href="{{ route('legal.privacy') }}" class="text-body-secondary text-decoration-none">Privacy policy</a>
+        <span class="mx-2">&middot;</span>
+        <a href="{{ route('legal.terms') }}" class="text-body-secondary text-decoration-none">Terms</a>
         <span class="mx-2">·</span>
         Premium event operations, booking, and check-in workflows.
       </div>

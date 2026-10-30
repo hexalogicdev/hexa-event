@@ -2,6 +2,7 @@
 @section('title', 'Manage Fields')
 
 @section('content')
+    <x-ui.event-nav :event="$event" />
     <div class="ems-page-section">
         <div class="ems-dashboard-hero ems-fade-up">
             <div class="d-flex flex-column flex-xl-row justify-content-between gap-4 align-items-xl-end">

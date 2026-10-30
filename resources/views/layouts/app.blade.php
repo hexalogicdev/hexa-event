@@ -36,7 +36,7 @@
             <footer class="eventify-footer" id="eventify-footer"><div class="container"><div class="row g-4 eventify-footer-grid">
                         <div class="col-lg-4"><a class="eventify-footer-brand" href="{{ url('/') }}"><span class="eventify-brand-mark"><i class="ti ti-calendar-event"></i></span>{{ $appName }}</a><p>Making event discovery and registration simple, secure, and enjoyable.</p></div>
                         <div class="col-6 col-lg-2"><h2>Quick links</h2><a href="{{ url('/') }}">Home</a><a href="{{ url('/') }}#events">Events</a><a href="{{ url('/') }}#categories">Categories</a><a href="{{ url('/') }}#why-us">About us</a></div>
-                        <div class="col-6 col-lg-2"><h2>Support</h2><a href="{{ route('legal.policy') }}">Privacy policy</a><a href="{{ route('legal.policy') }}">Terms</a><a href="{{ route('legal.policy') }}">Refund policy</a><a href="mailto:support@example.com">Contact</a></div>
+                        <div class="col-6 col-lg-2"><h2>Support</h2><a href="{{ route('legal.privacy') }}">Privacy policy</a><a href="{{ route('legal.terms') }}">Terms</a><a href="{{ route('legal.refund') }}">Refund policy</a><a href="mailto:support@example.com">Contact</a></div>
                         <div class="col-lg-4"><h2>Stay informed</h2><p>Discover newly published events and booking updates.</p><a class="btn btn-eventify" href="{{ url('/') }}#events">Explore events <i class="ti ti-arrow-right"></i></a></div>
                     </div>
                     <div class="eventify-footer-bottom"><span>&copy; {{ date('Y') }} {{ $appName }}. All rights reserved.</span><span>Built for memorable experiences.</span></div></div>
